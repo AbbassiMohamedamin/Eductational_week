@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Guardian AI - Dashboard</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+          tailwind.config = {
+            darkMode: "class",
+            theme: {
+              extend: {
+                "colors": {
+                        "surface-bright": "#f9f9fe",
+                        "secondary-fixed": "#72fe88",
+                        "secondary": "#006e28",
+                        "on-primary-fixed-variant": "#004493",
+                        "on-tertiary-container": "#4f3d00",
+                        "on-secondary-fixed-variant": "#00531c",
+                        "surface-container": "#ededf2",
+                        "primary": "#0058bc",
+                        "on-primary": "#ffffff",
+                        "outline": "#717786",
+                        "surface-dim": "#d9dade",
+                        "background": "#f9f9fe",
+                        "surface-variant": "#e2e2e7",
+                        "on-error": "#ffffff",
+                        "on-surface-variant": "#414755",
+                        "outline-variant": "#c1c6d7",
+                        "on-secondary-container": "#00732a",
+                        "primary-fixed": "#d8e2ff",
+                        "inverse-surface": "#2e3034",
+                        "surface": "#f9f9fe",
+                        "error-container": "#ffdad6",
+                        "on-error-container": "#93000a",
+                        "tertiary-container": "#d0a600",
+                        "on-tertiary-fixed": "#241a00",
+                        "secondary-container": "#6ffb85",
+                        "secondary-fixed-dim": "#53e16f",
+                        "primary-fixed-dim": "#adc6ff",
+                        "surface-container-high": "#e8e8ed",
+                        "on-primary-container": "#fefcff",
+                        "surface-container-highest": "#e2e2e7",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed": "#ffe08b",
+                        "on-tertiary-fixed-variant": "#584400",
+                        "error": "#ba1a1a",
+                        "tertiary-fixed-dim": "#f1c100",
+                        "inverse-primary": "#adc6ff",
+                        "inverse-on-surface": "#f0f0f5",
+                        "primary-container": "#0070eb",
+                        "surface-tint": "#005bc1",
+                        "surface-container-low": "#f3f3f8",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-fixed": "#002107",
+                        "on-surface": "#1a1c1f",
+                        "tertiary": "#745b00",
+                        "on-primary-fixed": "#001a41",
+                        "on-background": "#1a1c1f"
+                },
+                "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "xxl": "1.5rem",
+                        "full": "9999px"
+                },
+                "fontFamily": {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Manrope"],
+                        "label": ["Manrope"]
+                }
+              },
+            },
+          }
+        </script>
+    <style>
+            .material-symbols-outlined {
+                font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            }
+            body {
+                background-color: #f9f9fe;
+                color: #1a1c1f;
+            }
+            .glass-panel {
+                background: rgba(255, 255, 255, 0.7);
+                backdrop-filter: blur(20px);
+            }
+            .custom-scrollbar::-webkit-scrollbar {
+                width: 4px;
+            }
+            .custom-scrollbar::-webkit-scrollbar-track {
+                background: transparent;
+            }
+            .custom-scrollbar::-webkit-scrollbar-thumb {
+                background: #e2e2e7;
+                border-radius: 10px;
+            }
+        </style>
+</head>
+<body class="font-body selection:bg-primary-fixed selection:text-on-primary-fixed">
+    <!-- SideNavBar Shell -->
+    <aside class="fixed left-0 top-0 h-full flex flex-col p-6 bg-slate-50 dark:bg-slate-900 h-screen w-64 border-r border-slate-200/20 dark:border-slate-800/20 z-50">
+        <div class="mb-10">
+            <h1 class="text-2xl font-bold tracking-tighter text-slate-900 dark:text-white font-headline">Guardian AI</h1>
+            <p class="font-body font-semibold text-xs uppercase tracking-widest text-slate-400 mt-1">Digital Curator</p>
+        </div>
+        <nav class="flex-1 space-y-2">
+            <a id="nav-dashboard" class="bg-blue-600 text-white rounded-xl shadow-lg shadow-blue-500/20 flex items-center gap-3 p-3 transition-transform active:scale-95" href="#">
+                <span class="material-symbols-outlined">dashboard</span>
+                <span class="font-headline font-medium text-sm tracking-tight">Dashboard</span>
+            </a>
+            <a id="nav-reports" class="text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-all duration-300 flex items-center gap-3 p-3 rounded-xl" href="#">
+                <span class="material-symbols-outlined">assessment</span>
+                <span class="font-headline font-medium text-sm tracking-tight">Reports</span>
+            </a>
+            <a id="nav-history" class="text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-all duration-300 flex items-center gap-3 p-3 rounded-xl" href="#">
+                <span class="material-symbols-outlined">history</span>
+                <span class="font-headline font-medium text-sm tracking-tight">History</span>
+            </a>
+            <a class="text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-all duration-300 flex items-center gap-3 p-3 rounded-xl" href="#">
+                <span class="material-symbols-outlined">settings</span>
+                <span class="font-headline font-medium text-sm tracking-tight">Settings</span>
+            </a>
+        </nav>
+        <div class="mt-auto">
+            <div class="bg-surface-container-lowest rounded-xxl p-4 mb-4 border border-outline-variant/10">
+                <img alt="Parent Profile Avatar" class="w-10 h-10 rounded-full mb-3 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwla96umUepJM1wKHWAGlYWBPblNaWJmyq060cfKyuqO8HkTs90_uMoJ60l7FledYkx2VKNw6qrwzZtNDke7x7POH4qweHmdheAjXmVixDpsrxUYs8RUTsnXtuEgiXy6VGu9_svQ09J6MtdaFCsd1uWEeqwmtNr83Y-UxHjWSe2Xu7uSrPMKq97CvuzS508ieca0PFN-6AxaQAteVw6VfArWF5Tj5316U_qGUcmFyRSCJTutrodrIgPY9P20ukEKUtvRXJmKlq5i8"/>
+                <p class="text-xs font-bold font-headline mb-3 text-on-surface">Premium Access</p>
+                <button class="w-full py-2 bg-gradient-to-br from-primary to-primary-container text-white text-xs font-bold rounded-lg uppercase tracking-wider transition-all hover:opacity-90">Upgrade Plan</button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Canvas -->
+    <main class="ml-64 min-h-screen flex flex-col bg-surface overflow-y-auto">
+        <!-- TopNavBar Shell -->
+        <header class="flex justify-between items-center h-20 px-8 border-b border-slate-100 dark:border-slate-800 bg-white/70 backdrop-blur-xl sticky top-0 z-40">
+            <div class="flex items-center gap-6">
+                <div class="flex items-center gap-2">
+                    <span id="connection-status" class="w-2 h-2 rounded-full bg-slate-300"></span>
+                    <span id="connection-text" class="font-body font-semibold text-xs uppercase tracking-widest text-slate-400">Disconnected</span>
+                </div>
+                <div class="hidden lg:flex items-center gap-8">
+                    <span id="top-risk-score" class="text-slate-400 font-body font-semibold text-xs uppercase tracking-widest pb-1 border-b-2 border-transparent">Risk Score: --</span>
+                    <span id="top-alert-count" class="text-slate-400 font-body font-semibold text-xs uppercase tracking-widest hover:opacity-80 transition-opacity cursor-pointer">Alerts: 0</span>
+                    <span id="top-child-level" class="text-slate-400 font-body font-semibold text-xs uppercase tracking-widest hover:opacity-80 transition-opacity cursor-pointer">Skill: --</span>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <button class="p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors">
+                    <span class="material-symbols-outlined">notifications</span>
+                </button>
+                <button class="p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors">
+                    <span class="material-symbols-outlined">settings_suggest</span>
+                </button>
+                <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-fixed cursor-pointer" onclick="window.location.href='/dashboard/auth/sign-in.html'">
+                    <img alt="User profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOpeWm5MtDWQzsNPTVMZPIv7XJcuDl094IqIlOKMbVfbA6H3KucxNSluZRO1SWgkLONBda9fy9vR7YyghZRm9ZagI--ltOLGWP2JoZTXy81BqYpvC7haSlt_5FkHKVaPcrBaFA3pNPv9NcL2L9PqTPZv9a1EA3AJK_Fob-Ax0YEMooFZM1TWv762dLOs7UuzkE14imOeB17BNMKWcbjG_2ePwLdPk0RQ2D1EYuaPWCjDTHNPwtsXwEVIQsbpBovMeQnrpz5cFn2kc"/>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <div id="view-dashboard" class="p-8 max-w-7xl mx-auto w-full space-y-8">
+            <!-- Quick Stats Section: Bento Cards -->
+            <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-surface-container-lowest p-6 rounded-xxl shadow-sm border border-outline-variant/10 flex flex-col justify-between h-40">
+                    <span class="font-body text-[10px] uppercase tracking-[0.15em] text-on-surface-variant">Global Safety Score</span>
+                    <div class="flex items-baseline gap-2">
+                        <span id="stat-safety-score" class="text-4xl font-headline font-bold text-primary">--</span>
+                        <span id="stat-safety-label" class="text-sm font-bold text-slate-400">Awaiting Data</span>
+                    </div>
+                    <div class="h-1 w-full bg-surface-container-low rounded-full overflow-hidden">
+                        <div id="stat-safety-bar" class="h-full w-0 bg-primary transition-all duration-500"></div>
+                    </div>
+                </div>
+                <div class="bg-surface-container-lowest p-6 rounded-xxl shadow-sm border border-outline-variant/10 flex flex-col justify-between h-40">
+                    <span class="font-body text-[10px] uppercase tracking-[0.15em] text-on-surface-variant">Active Alerts</span>
+                    <div class="flex items-baseline gap-2">
+                        <span id="stat-alert-count" class="text-4xl font-headline font-bold text-on-surface">00</span>
+                        <span class="text-xs font-semibold text-on-surface-variant">Past 24h</span>
+                    </div>
+                    <div class="flex gap-1">
+                        <div id="alert-indicator-1" class="h-2 w-1/3 bg-surface-container-low rounded-full"></div>
+                        <div id="alert-indicator-2" class="h-2 w-1/3 bg-surface-container-low rounded-full"></div>
+                        <div id="alert-indicator-3" class="h-2 w-1/3 bg-surface-container-low rounded-full"></div>
+                    </div>
+                </div>
+                <div class="bg-surface-container-lowest p-6 rounded-xxl shadow-sm border border-outline-variant/10 flex flex-col justify-between h-40">
+                    <span class="font-body text-[10px] uppercase tracking-[0.15em] text-on-surface-variant">Learning Level</span>
+                    <div class="flex items-baseline gap-2">
+                        <span id="stat-learning-level" class="text-4xl font-headline font-bold text-tertiary">--</span>
+                    </div>
+                    <div class="flex -space-x-2">
+                        <div class="w-6 h-6 rounded-full bg-tertiary-fixed border-2 border-white flex items-center justify-center">
+                            <span class="material-symbols-outlined text-[12px]">auto_awesome</span>
+                        </div>
+                        <div class="w-6 h-6 rounded-full bg-primary-fixed border-2 border-white flex items-center justify-center">
+                            <span class="material-symbols-outlined text-[12px]">school</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-surface-container-lowest p-6 rounded-xxl shadow-sm border border-outline-variant/10 flex flex-col justify-between h-40">
+                    <span class="font-body text-[10px] uppercase tracking-[0.15em] text-on-surface-variant">Child Status</span>
+                    <div class="flex items-center gap-3">
+                        <div class="relative">
+                            <div id="status-pulse" class="w-3 h-3 bg-slate-300 rounded-full"></div>
+                            <div id="status-pulse-ping" class="absolute inset-0 w-3 h-3 bg-slate-300 rounded-full animate-ping opacity-75 hidden"></div>
+                        </div>
+                        <span id="stat-child-status" class="text-2xl font-headline font-bold text-on-surface">Idle</span>
+                    </div>
+                    <span id="stat-child-detail" class="text-xs font-medium text-on-surface-variant">Awaiting system trigger</span>
+                </div>
+            </section>
+
+            <!-- Main Monitoring Row -->
+            <section class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Live Camera Feed (Large) -->
+                <div class="lg:col-span-8 bg-surface-container-low rounded-xxl overflow-hidden relative group h-[500px]">
+                    <div class="absolute inset-0 bg-slate-900">
+                        <img id="camera-feed-img" alt="Camera Feed" class="w-full h-full object-cover opacity-80" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAW9FOxQJmTObmhd1CMHyXiD1_pdjIB1L4PT7JOA_gvfOdLYr4cAsAHo499iAASU4YMlzxHGNb7IfV0LhwxkLeuaqwh1NeT2JErU568jHiZB7tlmvqO6PIXBbdywvh_dXGpK4fZ1412ZEM8ZSnKcUrt1acVsmKNdtAxbFCOrJKzX0UYAnDG9e0DvhgI_GQuBxZtvzNZYbr5GBXf8SFQya_IK6XWz3EPByMJl6gPk0WQiSljydVyHSZhrSSaa17K4ZB-RnM2VLJ8mPk"/>
+                        <video id="webcam-video" class="absolute inset-0 w-full h-full object-cover hidden" autoplay playsinline></video>
+                        <canvas id="capture-canvas" class="hidden"></canvas>
+                    </div>
+                    <!-- AI Overlays Container -->
+                    <div id="ai-overlays" class="absolute inset-0 pointer-events-none">
+                        <!-- Overlays will be injected here dynamically -->
+                    </div>
+                    <!-- Overlay Controls -->
+                    <div class="absolute bottom-6 left-6 right-6 flex items-center justify-between">
+                        <div class="flex gap-2">
+                            <button id="btn-webcam" class="px-4 h-10 rounded-full glass-panel flex items-center gap-2 text-on-surface hover:bg-white transition-all active:scale-95 group">
+                                <span class="material-symbols-outlined">linked_camera</span>
+                                <span class="text-[10px] font-bold uppercase tracking-widest">Use My Camera</span>
+                            </button>
+                            <button id="btn-audio" class="px-4 h-10 rounded-full glass-panel flex items-center gap-2 text-on-surface hover:bg-white transition-all active:scale-95 group">
+                                <span class="material-symbols-outlined">mic</span>
+                                <span class="text-[10px] font-bold uppercase tracking-widest">Record Audio</span>
+                            </button>
+                            <button id="btn-simulate" class="px-4 h-10 rounded-full glass-panel flex items-center gap-2 text-on-surface hover:bg-white transition-all active:scale-95 group">
+                                <span class="material-symbols-outlined group-hover:rotate-180 transition-transform duration-500">autorenew</span>
+                                <span class="text-[10px] font-bold uppercase tracking-widest">Simulate Camera</span>
+                            </button>
+                            <button class="w-10 h-10 rounded-full glass-panel flex items-center justify-center text-on-surface hover:bg-white transition-colors">
+                                <span class="material-symbols-outlined">videocam</span>
+                            </button>
+                            <button class="w-10 h-10 rounded-full glass-panel flex items-center justify-center text-on-surface hover:bg-white transition-colors">
+                                <span class="material-symbols-outlined">mic</span>
+                            </button>
+                        </div>
+                        <div class="glass-panel px-4 py-2 rounded-full flex items-center gap-3">
+                            <span class="text-[10px] font-bold text-on-surface uppercase tracking-widest">4K Live • Playroom</span>
+                            <div class="w-2 h-2 rounded-full bg-error"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat & Alerts Panel -->
+                <div class="lg:col-span-4 flex flex-col gap-6">
+                    <div class="bg-surface-container-lowest p-6 rounded-xxl border border-outline-variant/10 flex-1 shadow-sm overflow-hidden flex flex-col h-[240px]">
+                        <h3 class="text-lg font-headline font-bold mb-4 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary">visibility</span>
+                            Vision Intelligence
+                        </h3>
+                        <div id="vision-log" class="space-y-3 overflow-y-auto pr-2 custom-scrollbar text-xs">
+                            <p class="text-slate-400 italic text-center py-4">Awaiting visual data...</p>
+                        </div>
+                    </div>
+                    <!-- Chat UI Section -->
+                    <div class="bg-surface-container-lowest p-6 rounded-xxl border border-outline-variant/10 flex-1 shadow-sm overflow-hidden flex flex-col h-[360px]">
+                        <h3 class="text-lg font-headline font-bold mb-4 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-secondary">forum</span>
+                            Assistant Chat
+                        </h3>
+                        <div id="chat-messages" class="flex-1 overflow-y-auto pr-2 custom-scrollbar space-y-3 mb-4 text-xs">
+                            <div class="bg-secondary-container/10 p-3 rounded-xl border border-secondary/10 italic text-on-surface">
+                                Hello! I'm your safety assistant. How can I help you today?
+                            </div>
+                        </div>
+                        <div id="typing-indicator" class="hidden text-[10px] text-secondary font-bold animate-pulse mb-2 ml-2">Assistant is thinking...</div>
+                        <div class="flex gap-2">
+                            <div class="relative flex-1">
+                                <input type="text" id="chat-input" placeholder="Type a message..." class="w-full bg-surface-container-low border-none rounded-full px-4 py-2 text-xs focus:ring-2 focus:ring-primary/20 pr-10">
+                                <button id="btn-chat-send" class="absolute right-2 top-1/2 -translate-y-1/2 text-primary hover:scale-110 transition-transform">
+                                    <span class="material-symbols-outlined">send</span>
+                                </button>
+                            </div>
+                            <button id="btn-chat-record" class="w-10 h-10 rounded-full bg-secondary text-white flex items-center justify-center hover:bg-secondary-fixed transition-colors">
+                                <span class="material-symbols-outlined">mic</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Lower Analytics & Insights Row -->
+            <section class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Learning Progress charts -->
+                <div class="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Daily Progress Bar Chart -->
+                    <div class="bg-surface-container-lowest p-6 rounded-xxl border border-outline-variant/10 shadow-sm">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-sm font-headline font-bold uppercase tracking-wider">Daily Focus</h3>
+                            <span class="text-[10px] font-bold text-primary">Hours/Activity</span>
+                        </div>
+                        <div class="flex items-end justify-between h-40 gap-2">
+                            <div class="flex flex-col items-center gap-2 flex-1">
+                                <div class="w-full bg-primary/20 rounded-t-lg h-[40%]"></div>
+                                <span class="text-[10px] font-bold">Math</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-2 flex-1">
+                                <div class="w-full bg-primary rounded-t-lg h-[80%]"></div>
+                                <span class="text-[10px] font-bold">Logic</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-2 flex-1">
+                                <div class="w-full bg-primary/40 rounded-t-lg h-[60%]"></div>
+                                <span class="text-[10px] font-bold">Arts</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-2 flex-1">
+                                <div class="w-full bg-primary/10 rounded-t-lg h-[20%]"></div>
+                                <span class="text-[10px] font-bold">Read</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-2 flex-1">
+                                <div class="w-full bg-primary/60 rounded-t-lg h-[70%]"></div>
+                                <span class="text-[10px] font-bold">Music</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Weekly Trend Line Chart -->
+                    <div class="bg-surface-container-lowest p-6 rounded-xxl border border-outline-variant/10 shadow-sm">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-sm font-headline font-bold uppercase tracking-wider">Weekly Growth</h3>
+                            <span class="text-[10px] font-bold text-secondary">+12% vs LW</span>
+                        </div>
+                        <div class="h-40 flex items-center justify-center relative">
+                            <svg class="w-full h-full" viewbox="0 0 200 100">
+                                <path d="M0,80 Q20,70 40,85 T80,50 T120,60 T160,20 T200,30" fill="none" stroke="#0058bc" stroke-width="3"></path>
+                                <circle cx="160" cy="20" fill="#0058bc" r="4"></circle>
+                            </svg>
+                            <div class="absolute inset-0 flex justify-between items-end px-2 pointer-events-none">
+                                <span class="text-[9px] font-bold opacity-30 uppercase">Mon</span>
+                                <span class="text-[9px] font-bold opacity-30 uppercase">Wed</span>
+                                <span class="text-[9px] font-bold opacity-30 uppercase">Fri</span>
+                                <span class="text-[9px] font-bold opacity-30 uppercase">Sun</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recommendations & Insights -->
+                <div class="lg:col-span-4">
+                    <div class="bg-gradient-to-br from-primary to-primary-container p-8 rounded-xxl shadow-xl shadow-primary/20 text-white h-full">
+                        <div class="flex items-center gap-3 mb-6">
+                            <span class="material-symbols-outlined text-secondary-fixed">lightbulb</span>
+                            <h3 class="text-lg font-headline font-bold">Curator Insights</h3>
+                        </div>
+                        <div id="insights-container" class="space-y-6">
+                            <div class="space-y-2">
+                                <p class="text-xs font-bold uppercase tracking-widest text-primary-fixed">Activity Suggestion</p>
+                                <p id="activity-suggestion" class="text-sm font-medium leading-relaxed italic">Awaiting analysis...</p>
+                            </div>
+                            <div class="h-px bg-white/20"></div>
+                            <div class="space-y-2">
+                                <p class="text-xs font-bold uppercase tracking-widest text-primary-fixed">Parent Tip</p>
+                                <p id="parent-tip" class="text-sm font-medium leading-relaxed italic">Recommendations will appear here.</p>
+                            </div>
+                            <button class="w-full py-3 bg-white text-primary font-bold rounded-xl text-sm transition-transform active:scale-95">Explore Activity Library</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Reports Content -->
+        <div id="view-reports" class="hidden p-8 max-w-7xl mx-auto w-full space-y-8">
+            <h2 class="text-3xl font-headline font-bold text-slate-900">Safety Reports</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-xxl shadow-sm border border-outline-variant/10">
+                    <h3 class="text-xl font-headline font-bold mb-4">Risk Distribution</h3>
+                    <div class="h-64 flex items-center justify-center bg-slate-50 rounded-xl">
+                        <p class="text-slate-400">Loading risk metrics...</p>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-xxl shadow-sm border border-outline-variant/10">
+                    <h3 class="text-xl font-headline font-bold mb-4">Activity Summary</h3>
+                    <div id="reports-summary" class="space-y-4">
+                        <p class="text-slate-600">Total sessions today: 0</p>
+                        <p class="text-slate-600">Average safety score: 0%</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- History Content -->
+        <div id="view-history" class="hidden p-8 max-w-7xl mx-auto w-full space-y-8">
+            <h2 class="text-3xl font-headline font-bold text-slate-900">Alert History</h2>
+            <div class="bg-white rounded-xxl shadow-sm border border-outline-variant/10 overflow-hidden">
+                <table class="w-full text-left">
+                    <thead class="bg-slate-50 border-b border-slate-100">
+                        <tr>
+                            <th class="px-6 py-4 text-xs font-bold uppercase tracking-widest text-slate-500">Time</th>
+                            <th class="px-6 py-4 text-xs font-bold uppercase tracking-widest text-slate-500">Severity</th>
+                            <th class="px-6 py-4 text-xs font-bold uppercase tracking-widest text-slate-500">Action</th>
+                            <th class="px-6 py-4 text-xs font-bold uppercase tracking-widest text-slate-500">Reasoning</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-table-body">
+                        <!-- History rows will be injected here -->
+                    </tbody>
+                </table>
+                <div id="history-empty" class="p-12 text-center">
+                    <span class="material-symbols-outlined text-4xl text-slate-200 mb-2">history_toggle_off</span>
+                    <p class="text-slate-400">No alert history found for this child.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const navDashboard = document.getElementById('nav-dashboard');
+        const navReports = document.getElementById('nav-reports');
+        const navHistory = document.getElementById('nav-history');
+        const viewDashboard = document.getElementById('view-dashboard');
+        const viewReports = document.getElementById('view-reports');
+        const viewHistory = document.getElementById('view-history');
+        const historyTableBody = document.getElementById('history-table-body');
+        const historyEmpty = document.getElementById('history-empty');
+        const visionLog = document.getElementById('vision-log');
+        const chatMessages = document.getElementById('chat-messages');
+        const chatInput = document.getElementById('chat-input');
+        const btnChatSend = document.getElementById('btn-chat-send');
+        const btnChatRecord = document.getElementById('btn-chat-record');
+        const typingIndicator = document.getElementById('typing-indicator');
+
+        const addChatMessage = (role, text, audioUrl = null) => {
+            const div = document.createElement('div');
+            const isUser = role === 'user';
+            div.className = `p-3 rounded-xl max-w-[85%] ${isUser ? 'bg-primary text-white self-end ml-auto' : 'bg-secondary-container/10 border border-secondary/10 text-on-surface self-start mr-auto'}`;
+            div.innerHTML = `
+                <p class="font-bold text-[10px] mb-1 opacity-70 uppercase tracking-widest">${isUser ? 'You' : 'Assistant'}</p>
+                <p>${text}</p>
+                ${audioUrl ? `<button onclick="new Audio('${audioUrl}').play()" class="mt-2 flex items-center gap-1 text-[10px] font-bold bg-white/20 px-2 py-1 rounded-full hover:bg-white/30"><span class="material-symbols-outlined text-sm">play_circle</span> Listen</button>` : ''}
+            `;
+            chatMessages.appendChild(div);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        };
+
+        const sendChatMessage = async (text = null, audioData = null) => {
+            if (!text && !audioData) return;
+            
+            if (text) {
+                addChatMessage('user', text);
+                chatInput.value = '';
+            } else {
+                addChatMessage('user', '🎤 Voice Message');
+            }
+
+            typingIndicator.classList.remove('hidden');
+            
+            try {
+                const response = await fetch('/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        text_input: text,
+                        audio_data: audioData,
+                        child_id: "child_001"
+                    })
+                });
+                
+                const data = await response.json();
+                typingIndicator.classList.add('hidden');
+                
+                if (data.transcript && audioData) {
+                    // Update the last user message with transcript if it was a voice message
+                    const lastUserMsg = chatMessages.lastElementChild;
+                    if (lastUserMsg && lastUserMsg.innerText.includes('Voice Message')) {
+                        lastUserMsg.querySelector('p:nth-child(2)').innerText = `🎤 ${data.transcript}`;
+                    }
+                }
+
+                addChatMessage('assistant', data.analysis, data.voice_url);
+                if (data.voice_url) {
+                    new Audio(data.voice_url).play();
+                }
+            } catch (err) {
+                console.error('Chat error:', err);
+                typingIndicator.classList.add('hidden');
+                addChatMessage('assistant', 'Sorry, I encountered an error. Please try again.');
+            }
+        };
+
+        btnChatSend.addEventListener('click', () => sendChatMessage(chatInput.value));
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendChatMessage(chatInput.value);
+        });
+
+        // Update audio recording for chat
+        let chatMediaRecorder = null;
+        let chatAudioChunks = [];
+        let isChatRecording = false;
+
+        btnChatRecord.addEventListener('click', async () => {
+            if (isChatRecording) {
+                chatMediaRecorder.stop();
+                btnChatRecord.classList.remove('bg-error', 'animate-pulse');
+                btnChatRecord.innerHTML = '<span class="material-symbols-outlined">mic</span>';
+                isChatRecording = false;
+            } else {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    chatMediaRecorder = new MediaRecorder(stream);
+                    chatAudioChunks = [];
+                    
+                    chatMediaRecorder.ondataavailable = (e) => chatAudioChunks.push(e.data);
+                    chatMediaRecorder.onstop = async () => {
+                        const audioBlob = new Blob(chatAudioChunks, { type: 'audio/webm' });
+                        const reader = new FileReader();
+                        reader.readAsDataURL(audioBlob);
+                        reader.onloadend = () => {
+                            sendChatMessage(null, reader.result);
+                        };
+                    };
+
+                    chatMediaRecorder.start();
+                    btnChatRecord.classList.add('bg-error', 'animate-pulse');
+                    btnChatRecord.innerHTML = '<span class="material-symbols-outlined">stop_circle</span>';
+                    isChatRecording = true;
+                } catch (err) {
+                    console.error('Mic error:', err);
+                    alert('Could not access microphone.');
+                }
+            }
+        });
+
+        const switchView = (viewName) => {
+            const views = {
+                dashboard: viewDashboard,
+                reports: viewReports,
+                history: viewHistory
+            };
+            const navs = {
+                dashboard: navDashboard,
+                reports: navReports,
+                history: navHistory
+            };
+
+            Object.keys(views).forEach(v => {
+                if (v === viewName) {
+                    views[v].classList.remove('hidden');
+                    navs[v].classList.add('bg-blue-600', 'text-white', 'shadow-lg', 'shadow-blue-500/20');
+                    navs[v].classList.remove('text-slate-500');
+                } else {
+                    views[v].classList.add('hidden');
+                    navs[v].classList.remove('bg-blue-600', 'text-white', 'shadow-lg', 'shadow-blue-500/20');
+                    navs[v].classList.add('text-slate-500');
+                }
+            });
+
+            if (viewName === 'history') {
+                fetchHistory('child_001');
+            }
+        };
+
+        const fetchHistory = async (childId) => {
+            try {
+                const response = await fetch(`/history/${childId}`);
+                const data = await response.json();
+                
+                if (data && data.length > 0) {
+                    historyEmpty.classList.add('hidden');
+                    historyTableBody.innerHTML = data.map(alert => `
+                        <tr class="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
+                            <td class="px-6 py-4 text-xs font-medium text-slate-400">${new Date().toLocaleTimeString()}</td>
+                            <td class="px-6 py-4">
+                                <span class="px-2 py-1 rounded-full text-[10px] font-bold uppercase ${
+                                    alert.severity === 'HIGH' ? 'bg-error-container text-error' : 
+                                    alert.severity === 'MEDIUM' ? 'bg-tertiary-fixed text-on-tertiary-fixed-variant' : 'bg-secondary-container text-on-secondary-container'
+                                }">${alert.severity}</span>
+                            </td>
+                            <td class="px-6 py-4 text-xs font-bold text-on-surface">${alert.action}</td>
+                            <td class="px-6 py-4 text-xs text-on-surface-variant">${alert.reasoning}</td>
+                        </tr>
+                    `).join('');
+                } else {
+                    historyEmpty.classList.remove('hidden');
+                    historyTableBody.innerHTML = '';
+                }
+            } catch (err) {
+                console.error('Failed to fetch history:', err);
+            }
+        };
+
+        navDashboard.addEventListener('click', (e) => { e.preventDefault(); switchView('dashboard'); });
+        navReports.addEventListener('click', (e) => { e.preventDefault(); switchView('reports'); });
+        navHistory.addEventListener('click', (e) => { e.preventDefault(); switchView('history'); });
+
+        const connectionStatus = document.getElementById('connection-status');
+        const connectionText = document.getElementById('connection-text');
+        const topRiskScore = document.getElementById('top-risk-score');
+        const topAlertCount = document.getElementById('top-alert-count');
+        const topChildLevel = document.getElementById('top-child-level');
+        const statSafetyScore = document.getElementById('stat-safety-score');
+        const statSafetyLabel = document.getElementById('stat-safety-label');
+        const statSafetyBar = document.getElementById('stat-safety-bar');
+        const statAlertCount = document.getElementById('stat-alert-count');
+        const statLearningLevel = document.getElementById('stat-learning-level');
+        const statChildStatus = document.getElementById('stat-child-status');
+        const statChildDetail = document.getElementById('stat-child-detail');
+        const statusPulse = document.getElementById('status-pulse');
+        const statusPulsePing = document.getElementById('status-pulse-ping');
+        const activitySuggestion = document.getElementById('activity-suggestion');
+        const parentTip = document.getElementById('parent-tip');
+        const aiOverlays = document.getElementById('ai-overlays');
+        const btnSimulate = document.getElementById('btn-simulate');
+        const btnWebcam = document.getElementById('btn-webcam');
+        const btnAudio = document.getElementById('btn-audio');
+        const webcamVideo = document.getElementById('webcam-video');
+        const captureCanvas = document.getElementById('capture-canvas');
+        const cameraFeedImg = document.getElementById('camera-feed-img');
+
+        let totalAlerts = 0;
+        let webcamStream = null;
+        let isWebcamActive = false;
+        let mediaRecorder = null;
+        let audioChunks = [];
+        let isRecording = false;
+        let lastAudioBase64 = null;
+
+        const connect = () => {
+            const socket = new WebSocket('ws://' + window.location.host + '/ws');
+
+            socket.onopen = () => {
+                connectionStatus.classList.replace('bg-slate-300', 'bg-secondary');
+                connectionStatus.classList.add('animate-pulse');
+                connectionText.textContent = 'Live System: Active';
+                connectionText.classList.replace('text-slate-400', 'text-secondary');
+            };
+
+            socket.onclose = () => {
+                connectionStatus.classList.replace('bg-secondary', 'bg-slate-300');
+                connectionStatus.classList.remove('animate-pulse');
+                connectionText.textContent = 'Disconnected';
+                connectionText.classList.replace('text-secondary', 'text-slate-400');
+                setTimeout(connect, 3000);
+            };
+
+            socket.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                if (data.type === 'chat') {
+                    addChatMessage('assistant', data.data.analysis, data.data.voice_url);
+                } else {
+                    updateDashboard(data);
+                }
+            };
+        };
+
+        const updateDashboard = (data) => {
+            // Update Top Bar
+            const risk = data.risk;
+            topRiskScore.textContent = `Risk Score: ${risk.severity.toUpperCase()}`;
+            topRiskScore.className = `font-body font-semibold text-xs uppercase tracking-widest pb-1 border-b-2 ` + 
+                (risk.severity === 'high' ? 'text-error border-error' : 
+                 risk.severity === 'medium' ? 'text-tertiary border-tertiary' : 'text-secondary border-secondary');
+            
+            topChildLevel.textContent = `Skill: ${data.cognitive.level.toUpperCase()}`;
+            
+            // Update Stats
+            const safetyScore = Math.round((1 - risk.risk_score) * 100);
+            statSafetyScore.textContent = safetyScore;
+            statSafetyBar.style.width = `${safetyScore}%`;
+            statSafetyLabel.textContent = safetyScore > 75 ? 'Optimal' : (safetyScore > 45 ? 'Fair' : 'Critical');
+            statSafetyLabel.className = `text-sm font-bold ` + (safetyScore > 75 ? 'text-secondary' : (safetyScore > 45 ? 'text-tertiary' : 'text-error'));
+
+            totalAlerts++;
+            statAlertCount.textContent = totalAlerts.toString().padStart(2, '0');
+            topAlertCount.textContent = `Alerts: ${totalAlerts}`;
+            
+            // Update Alert Indicators
+            document.getElementById('alert-indicator-1').className = `h-2 w-1/3 rounded-full ` + (totalAlerts >= 1 ? 'bg-secondary' : 'bg-surface-container-low');
+            document.getElementById('alert-indicator-2').className = `h-2 w-1/3 rounded-full ` + (totalAlerts >= 5 ? 'bg-tertiary' : 'bg-surface-container-low');
+            document.getElementById('alert-indicator-3').className = `h-2 w-1/3 rounded-full ` + (totalAlerts >= 10 ? 'bg-error' : 'bg-surface-container-low');
+
+            statLearningLevel.textContent = data.cognitive.level === 'beginner' ? 'Lvl 1' : (data.cognitive.level === 'intermediate' ? 'Lvl 4' : 'Lvl 8');
+            
+            // Update Status
+            statChildStatus.textContent = risk.severity === 'high' ? 'At Risk' : (data.decision.action === 'RECOMMEND' ? 'Guided' : 'Safe');
+            statChildDetail.textContent = data.decision.reasoning.substring(0, 50) + '...';
+            statusPulse.className = `w-3 h-3 rounded-full ` + (risk.severity === 'high' ? 'bg-error' : (risk.severity === 'medium' ? 'bg-tertiary' : 'bg-secondary'));
+            statusPulsePing.className = `absolute inset-0 w-3 h-3 rounded-full animate-ping opacity-75 ` + (risk.severity === 'high' ? 'bg-error' : (risk.severity === 'medium' ? 'bg-tertiary' : 'bg-secondary'));
+            statusPulsePing.classList.remove('hidden');
+
+            // --- Separate Logs Update ---
+            
+            // Update Vision Log
+            if (visionLog.querySelector('p.italic')) visionLog.innerHTML = '';
+            const visionEntry = document.createElement('div');
+            visionEntry.className = 'p-3 bg-slate-50 rounded-lg border-l-2 border-primary animate-in fade-in slide-in-from-right-2';
+            visionEntry.innerHTML = `
+                <p class="font-bold text-primary mb-1">Observation</p>
+                <p class="text-on-surface-variant leading-tight">${data.vision.risk_hint}</p>
+                <p class="text-[10px] text-slate-400 mt-2 font-mono">${new Date().toLocaleTimeString()}</p>
+            `;
+            visionLog.prepend(visionEntry);
+
+            // Update Insights
+            if (data.recommendations && data.recommendations.length > 0) {
+                activitySuggestion.textContent = data.recommendations[0];
+                activitySuggestion.classList.remove('italic');
+                if (data.recommendations.length > 1) {
+                    parentTip.textContent = data.recommendations[1];
+                    parentTip.classList.remove('italic');
+                }
+            }
+
+            // Update Overlays
+            updateOverlays(data.vision.detections || []);
+        };
+
+        const addAlert = (data) => {
+            if (!alertFeed || alertFeed.querySelector('p.italic')) {
+                if (alertFeed) alertFeed.innerHTML = '';
+            }
+            if (!alertFeed) return;
+
+            const alertDiv = document.createElement('div');
+            const severity = data.risk.severity;
+            const config = {
+                high: { bg: 'bg-error-container/10', border: 'border-error', icon: 'error', iconColor: 'text-error' },
+                medium: { bg: 'bg-tertiary-container/10', border: 'border-tertiary', icon: 'warning', iconColor: 'text-tertiary' },
+                low: { bg: 'bg-secondary-container/20', border: 'border-secondary', icon: 'check_circle', iconColor: 'text-secondary' }
+            }[severity] || { bg: 'bg-slate-100', border: 'border-slate-300', icon: 'info', iconColor: 'text-slate-400' };
+
+            alertDiv.className = `p-4 ${config.bg} rounded-xl border-l-4 ${config.border} flex gap-4 transition-all duration-300 animate-in fade-in slide-in-from-right-4`;
+            alertDiv.innerHTML = `
+                <span class="material-symbols-outlined ${config.iconColor}">${config.icon}</span>
+                <div>
+                    <p class="text-sm font-bold text-on-surface">${data.decision.action}</p>
+                    <p class="text-xs text-on-surface-variant">${data.decision.reasoning}</p>
+                    <span class="text-[10px] font-bold ${config.iconColor} uppercase mt-2 block">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                </div>
+            `;
+            alertFeed.prepend(alertDiv);
+        };
+
+        const updateOverlays = (detections) => {
+            aiOverlays.innerHTML = '';
+            detections.forEach((det, i) => {
+                const xmin = det.box[0];
+                const ymin = det.box[1];
+                const xmax = det.box[2];
+                const ymax = det.box[3];
+                const obj = det.label;
+                
+                const color = obj.toLowerCase().includes('knife') || obj.toLowerCase().includes('stove') ? 'error' : 'secondary';
+                
+                const overlay = document.createElement('div');
+                overlay.className = `absolute border-2 border-${color} rounded-xl`;
+                overlay.style.top = `${ymin * 100}%`;
+                overlay.style.left = `${xmin * 100}%`;
+                overlay.style.width = `${(xmax - xmin) * 100}%`;
+                overlay.style.height = `${(ymax - ymin) * 100}%`;
+                
+                overlay.innerHTML = `
+                    <span class="absolute -top-6 left-0 bg-${color} text-white text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-widest whitespace-nowrap">${obj}</span>
+                `;
+                aiOverlays.appendChild(overlay);
+            });
+        };
+
+        const toggleWebcam = async () => {
+            if (isWebcamActive) {
+                // Stop webcam
+                if (webcamStream) {
+                    webcamStream.getTracks().forEach(track => track.stop());
+                }
+                webcamVideo.classList.add('hidden');
+                cameraFeedImg.classList.remove('hidden');
+                btnWebcam.querySelector('span').textContent = 'linked_camera';
+                btnWebcam.querySelector('span:last-child').textContent = 'Use My Camera';
+                isWebcamActive = false;
+            } else {
+                // Start webcam
+                try {
+                    webcamStream = await navigator.mediaDevices.getUserMedia({ video: { width: 1280, height: 720 } });
+                    webcamVideo.srcObject = webcamStream;
+                    webcamVideo.classList.remove('hidden');
+                    cameraFeedImg.classList.add('hidden');
+                    btnWebcam.querySelector('span').textContent = 'videocam_off';
+                    btnWebcam.querySelector('span:last-child').textContent = 'Stop Camera';
+                    isWebcamActive = true;
+                } catch (err) {
+                    console.error('Error accessing webcam:', err);
+                    alert('Could not access webcam. Please check permissions.');
+                }
+            }
+        };
+
+        const toggleAudio = async () => {
+            if (isRecording) {
+                mediaRecorder.stop();
+                btnAudio.querySelector('span').textContent = 'mic';
+                btnAudio.querySelector('span:last-child').textContent = 'Record Audio';
+                btnAudio.classList.remove('bg-red-500', 'text-white');
+                isRecording = false;
+            } else {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    mediaRecorder = new MediaRecorder(stream);
+                    audioChunks = [];
+                    
+                    mediaRecorder.ondataavailable = (e) => {
+                        audioChunks.push(e.data);
+                    };
+
+                    mediaRecorder.onstop = async () => {
+                        const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                        const reader = new FileReader();
+                        reader.readAsDataURL(audioBlob);
+                        reader.onloadend = () => {
+                            lastAudioBase64 = reader.result;
+                        };
+                    };
+
+                    mediaRecorder.start();
+                    btnAudio.querySelector('span').textContent = 'stop_circle';
+                    btnAudio.querySelector('span:last-child').textContent = 'Stop Recording';
+                    btnAudio.classList.add('bg-red-500', 'text-white');
+                    isRecording = true;
+                } catch (err) {
+                    console.error('Error accessing microphone:', err);
+                    alert('Could not access microphone.');
+                }
+            }
+        };
+
+        const captureAndAnalyze = async () => {
+            if (!isWebcamActive) {
+                alert('Please start the camera first.');
+                return;
+            }
+
+            btnWebcam.disabled = true;
+            btnWebcam.querySelector('span').classList.add('animate-spin');
+
+            // Capture frame from video to canvas
+            captureCanvas.width = webcamVideo.videoWidth;
+            captureCanvas.height = webcamVideo.videoHeight;
+            const ctx = captureCanvas.getContext('2d');
+            ctx.drawImage(webcamVideo, 0, 0);
+            
+            // Convert to base64
+            const imageData = captureCanvas.toDataURL('image/jpeg', 0.8);
+
+            try {
+                const response = await fetch('/analyze', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        image_data: imageData,
+                        audio_data: lastAudioBase64,
+                        child_id: "child_001"
+                    })
+                });
+                if (!response.ok) throw new Error('Analysis failed');
+                lastAudioBase64 = null; // Reset after sending
+            } catch (err) {
+                console.error('Analysis error:', err);
+                alert('Analysis failed. Make sure the server is running.');
+            } finally {
+                btnWebcam.disabled = false;
+                btnWebcam.querySelector('span').classList.remove('animate-spin');
+            }
+        };
+
+        const simulateCamera = async () => {
+            if (isWebcamActive) {
+                // If webcam is active, the simulate button acts as "Analyze Current Frame"
+                await captureAndAnalyze();
+                return;
+            }
+            
+            btnSimulate.disabled = true;
+            btnSimulate.querySelector('span').classList.add('animate-spin');
+            
+            const scenarios = [
+                { path: "kitchen_danger.jpg", id: "child_001" },
+                { path: "playroom_safe.jpg", id: "child_001" },
+                { path: "kitchen_curiosity.jpg", id: "child_002" }
+            ];
+            const randomScenario = scenarios[Math.floor(Math.random() * scenarios.length)];
+
+            try {
+                const response = await fetch('/analyze', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        image_path: randomScenario.path,
+                        child_id: randomScenario.id
+                    })
+                });
+                if (!response.ok) throw new Error('Simulation failed');
+            } catch (err) {
+                console.error('Simulation error:', err);
+                alert('Simulation failed. Make sure the server is running.');
+            } finally {
+                btnSimulate.disabled = false;
+                btnSimulate.querySelector('span').classList.remove('animate-spin');
+            }
+        };
+
+        btnSimulate.addEventListener('click', simulateCamera);
+        btnWebcam.addEventListener('click', toggleWebcam);
+        btnAudio.addEventListener('click', toggleAudio);
+
+        connect();
+    </script>
+</body>
+</html>

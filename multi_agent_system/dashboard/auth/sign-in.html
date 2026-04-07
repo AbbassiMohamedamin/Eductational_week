@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sign In - Guardian AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Manrope:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-error": "#ffffff",
+                    "on-tertiary-fixed-variant": "#584400",
+                    "surface": "#f9f9fe",
+                    "on-secondary": "#ffffff",
+                    "surface-variant": "#e2e2e7",
+                    "tertiary-container": "#d0a600",
+                    "on-error-container": "#93000a",
+                    "on-surface-variant": "#414755",
+                    "secondary-container": "#6ffb85",
+                    "on-surface": "#1a1c1f",
+                    "surface-container-low": "#f3f3f8",
+                    "on-background": "#1a1c1f",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-container": "#4f3d00",
+                    "error-container": "#ffdad6",
+                    "surface-tint": "#005bc1",
+                    "inverse-surface": "#2e3034",
+                    "primary-container": "#0070eb",
+                    "background": "#f9f9fe",
+                    "tertiary": "#745b00",
+                    "secondary-fixed-dim": "#53e16f",
+                    "surface-container": "#ededf2",
+                    "outline": "#717786",
+                    "on-tertiary-fixed": "#241a00",
+                    "on-tertiary": "#ffffff",
+                    "on-primary-fixed": "#001a41",
+                    "surface-dim": "#d9dade",
+                    "surface-container-highest": "#e2e2e7",
+                    "secondary-fixed": "#72fe88",
+                    "secondary": "#006e28",
+                    "on-secondary-fixed-variant": "#00531c",
+                    "surface-bright": "#f9f9fe",
+                    "primary-fixed": "#d8e2ff",
+                    "error": "#ba1a1a",
+                    "tertiary-fixed": "#ffe08b",
+                    "tertiary-fixed-dim": "#f1c100",
+                    "on-secondary-container": "#00732a",
+                    "on-primary": "#ffffff",
+                    "primary": "#0058bc",
+                    "inverse-primary": "#adc6ff",
+                    "on-secondary-fixed": "#002107",
+                    "surface-container-high": "#e8e8ed",
+                    "on-primary-container": "#fefcff",
+                    "outline-variant": "#c1c6d7",
+                    "inverse-on-surface": "#f0f0f5",
+                    "primary-fixed-dim": "#adc6ff",
+                    "on-primary-fixed-variant": "#004493"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Space Grotesk"],
+                    "body": ["Manrope"],
+                    "label": ["Manrope"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .tonal-layering {
+            background: radial-gradient(circle at top right, rgba(0, 88, 188, 0.05), transparent),
+                        radial-gradient(circle at bottom left, rgba(0, 110, 40, 0.03), transparent);
+        }
+        .glass-effect {
+            backdrop-filter: blur(24px);
+            background: rgba(255, 255, 255, 0.7);
+        }
+        .ambient-shadow {
+            box-shadow: 0 12px 40px rgba(0, 88, 188, 0.06);
+        }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface min-h-screen flex items-center justify-center p-6 tonal-layering">
+<!-- Hero Decorative Element (Guardian Themed) -->
+<div class="fixed inset-0 overflow-hidden pointer-events-none opacity-20">
+<div class="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-primary-container blur-[120px]"></div>
+<div class="absolute top-1/2 -right-48 w-[500px] h-[500px] rounded-full bg-secondary-container blur-[150px]"></div>
+</div>
+<!-- Main Sign In Container -->
+<div class="relative w-full max-w-md z-10">
+<!-- Brand/Logo Section -->
+<a href="/dashboard/index.html" class="flex flex-col items-center mb-10 group">
+<div class="w-16 h-16 mb-4 flex items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-primary-container shadow-lg shadow-primary/20 transition-transform group-hover:scale-105">
+<span class="material-symbols-outlined text-white text-3xl" style="font-variation-settings: 'FILL' 1;">security</span>
+</div>
+<h1 class="font-headline text-3xl font-bold tracking-tighter text-on-surface">Guardian AI</h1>
+<p class="font-label text-xs uppercase tracking-[0.2em] text-on-surface-variant mt-1 opacity-70">The Intelligent Guardian</p>
+</a>
+<!-- Glass Card -->
+<div class="surface-container-lowest glass-effect rounded-[2rem] p-10 ambient-shadow border border-white/40">
+<div class="mb-8">
+<h2 class="font-headline text-2xl font-semibold text-on-surface mb-2">Welcome Back</h2>
+<p class="text-on-surface-variant body-md leading-relaxed">Securely access your child's digital curator and learning environment.</p>
+</div>
+<form class="space-y-6" onsubmit="event.preventDefault(); window.location.href='/dashboard/index.html'">
+<!-- Email Field -->
+<div>
+<label class="block font-headline text-sm font-medium text-on-surface mb-2 ml-1" for="email">Parent Email</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline text-xl">mail</span>
+</div>
+<input class="w-full bg-surface-container-highest border-none rounded-xl py-4 pl-12 pr-4 text-on-surface placeholder:text-outline/50 focus:ring-2 focus:ring-primary/20 transition-all outline-none" id="email" name="email" placeholder="name@example.com" type="email"/>
+</div>
+</div>
+<!-- Password Field -->
+<div>
+<div class="flex justify-between items-center mb-2 ml-1">
+<label class="block font-headline text-sm font-medium text-on-surface" for="password">Security Key</label>
+<a class="text-xs font-semibold text-primary hover:text-primary-container transition-colors" href="#">Forgot Password?</a>
+</div>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline text-xl">lock</span>
+</div>
+<input class="w-full bg-surface-container-highest border-none rounded-xl py-4 pl-12 pr-4 text-on-surface placeholder:text-outline/50 focus:ring-2 focus:ring-primary/20 transition-all outline-none" id="password" name="password" placeholder="••••••••••••" type="password"/>
+<div class="absolute inset-y-0 right-0 pr-4 flex items-center cursor-pointer text-outline hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-xl">visibility</span>
+</div>
+</div>
+</div>
+<!-- Remember Me Toggle -->
+<div class="flex items-center space-x-3 ml-1">
+<input class="w-6 h-6 rounded-lg border-none bg-surface-container-highest text-secondary focus:ring-offset-0 focus:ring-2 focus:ring-secondary/20 transition-all cursor-pointer" id="remember" type="checkbox"/>
+<label class="text-sm font-medium text-on-surface-variant cursor-pointer" for="remember">Trust this device for 30 days</label>
+</div>
+<!-- Sign In Button -->
+<button class="w-full group relative overflow-hidden bg-gradient-to-br from-primary to-primary-container text-white py-4 rounded-xl font-headline font-bold text-lg shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all active:scale-[0.98]" type="submit">
+<span class="relative z-10 flex items-center justify-center gap-2">
+                        Initialize Session
+                        <span class="material-symbols-outlined text-xl transition-transform group-hover:translate-x-1">arrow_forward</span>
+</span>
+<div class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</button>
+</form>
+<!-- SSO / Alternatives -->
+<div class="mt-8">
+<div class="relative flex items-center justify-center mb-8">
+<div class="w-full border-t border-outline-variant/30"></div>
+<span class="absolute bg-surface-container-lowest px-4 text-xs font-headline font-bold text-outline uppercase tracking-widest">Or authenticate via</span>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<button class="flex items-center justify-center gap-2 py-3 rounded-xl border border-outline-variant/30 hover:bg-surface-container-low transition-all">
+<img alt="Google Logo" class="w-5 h-5" data-alt="Official Google G logo with clean vibrant colors on a white background for single sign on authentication" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA7r4i0nvqtB5qy16DbnEfIO3-3KNSNM6b9Zk9bJ7B8zUd7QPlqvC8dGtyHaBLK7pyyajFe5lzjoFFETav_yF0yTLqiIow3_S5tw3WsEibzfv6BVeuAnIIjEejHk1KT6qFV5jxqediz37w377s1zEbH1n-ipfJ_-uFg9LzNqCtR9NLusHCL-MlzhR1PaGnN9r6o9fpwW3NX3Unez0g0JIUCFFh_594-zEMci-fsZrHFJggAf8cbnx2MRNbYGOtJ1iSP9vEHQOp_6-g"/>
+<span class="text-sm font-semibold">Google</span>
+</button>
+<button class="flex items-center justify-center gap-2 py-3 rounded-xl border border-outline-variant/30 hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">ios</span>
+<span class="text-sm font-semibold">Apple</span>
+</button>
+</div>
+</div>
+<!-- Footer Toggle -->
+<div class="mt-10 pt-6 border-t border-outline-variant/20 text-center">
+<p class="text-on-surface-variant text-sm">
+                    New to the ecosystem? 
+                    <a class="font-bold text-primary ml-1 hover:underline underline-offset-4 decoration-primary/30" href="/dashboard/auth/sign-up.html">Create an Account</a>
+</p>
+</div>
+</div>
+<!-- Security Badge -->
+<div class="mt-8 flex items-center justify-center gap-4 text-outline/60">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm">verified_user</span>
+<span class="text-[10px] font-headline font-bold uppercase tracking-wider">AES-256 Encrypted</span>
+</div>
+<div class="w-1 h-1 rounded-full bg-outline/20"></div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm">gpp_good</span>
+<span class="text-[10px] font-headline font-bold uppercase tracking-wider">GDPR Compliant</span>
+</div>
+</div>
+</div>
+<!-- Background Decorative Graphics -->
+<div class="fixed bottom-12 right-12 opacity-5 pointer-events-none select-none">
+<span class="material-symbols-outlined text-[240px]" style="font-variation-settings: 'wght' 100;">shield_with_heart</span>
+</div>
+<div class="fixed top-12 left-12 opacity-5 pointer-events-none select-none rotate-12">
+<span class="material-symbols-outlined text-[180px]" style="font-variation-settings: 'wght' 100;">psychology_alt</span>
+</div>
+</body></html>
