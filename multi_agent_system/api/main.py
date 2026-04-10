@@ -51,6 +51,10 @@ app.mount("/temp_uploads", StaticFiles(directory="temp_uploads"), name="temp_upl
 async def root():
     return RedirectResponse(url="/dashboard/auth/sign-in.html")
 
+@app.get("/favicon.ico")
+async def favicon():
+    return RedirectResponse(url="/dashboard/favicon.svg")
+
 flow = AgentFlow()
 db_tool = DBTool()
 
