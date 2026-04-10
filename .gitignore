@@ -1,2 +1,16 @@
 
 .env
+
+# Python bytecode and cache
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+venv/
+.venv/
+
+# Test and tooling caches
+.pytest_cache/
+
+# Local generated assets
+multi_agent_system/temp_uploads/
