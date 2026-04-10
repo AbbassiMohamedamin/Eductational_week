@@ -138,7 +138,7 @@
     </aside>
 
     <!-- Main Canvas -->
-    <main class="ml-64 min-h-screen flex flex-col bg-surface overflow-y-auto">
+    <main class="ml-64 lg:mr-80 min-h-screen flex flex-col bg-surface overflow-y-auto">
         <!-- TopNavBar Shell -->
         <header class="flex justify-between items-center h-20 px-8 border-b border-slate-100 dark:border-slate-800 bg-white/70 backdrop-blur-xl sticky top-0 z-40">
             <div class="flex items-center gap-6">
@@ -258,9 +258,21 @@
                             <div class="w-2 h-2 rounded-full bg-error"></div>
                         </div>
                     </div>
+                    <div class="absolute top-6 right-6 w-80 max-w-[calc(100%-3rem)] glass-panel rounded-2xl border border-white/20 shadow-lg overflow-hidden">
+                        <div class="px-4 py-3 border-b border-white/20 flex items-center justify-between">
+                            <div>
+                                <p class="text-[10px] uppercase tracking-[0.2em] font-bold text-on-surface-variant">Voice Debug</p>
+                                <p class="text-sm font-semibold text-on-surface">Audio Flow</p>
+                            </div>
+                            <span id="voice-debug-badge" class="text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded-full bg-surface-container-low text-on-surface-variant">Idle</span>
+                        </div>
+                        <div id="voice-debug-log" class="max-h-40 overflow-y-auto custom-scrollbar p-4 space-y-2 text-[11px] text-on-surface">
+                            <p class="text-slate-500 italic">Waiting for microphone input...</p>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Chat & Alerts Panel -->
+                <!-- Alerts Panel -->
                 <div class="lg:col-span-4 flex flex-col gap-6">
                     <div class="bg-surface-container-lowest p-6 rounded-xxl border border-outline-variant/10 flex-1 shadow-sm overflow-hidden flex flex-col h-[240px]">
                         <h3 class="text-lg font-headline font-bold mb-4 flex items-center gap-2">
@@ -269,30 +281,6 @@
                         </h3>
                         <div id="vision-log" class="space-y-3 overflow-y-auto pr-2 custom-scrollbar text-xs">
                             <p class="text-slate-400 italic text-center py-4">Awaiting visual data...</p>
-                        </div>
-                    </div>
-                    <!-- Chat UI Section -->
-                    <div class="bg-surface-container-lowest p-6 rounded-xxl border border-outline-variant/10 flex-1 shadow-sm overflow-hidden flex flex-col h-[360px]">
-                        <h3 class="text-lg font-headline font-bold mb-4 flex items-center gap-2">
-                            <span class="material-symbols-outlined text-secondary">forum</span>
-                            Assistant Chat
-                        </h3>
-                        <div id="chat-messages" class="flex-1 overflow-y-auto pr-2 custom-scrollbar space-y-3 mb-4 text-xs">
-                            <div class="bg-secondary-container/10 p-3 rounded-xl border border-secondary/10 italic text-on-surface">
-                                Hello! I'm your safety assistant. How can I help you today?
-                            </div>
-                        </div>
-                        <div id="typing-indicator" class="hidden text-[10px] text-secondary font-bold animate-pulse mb-2 ml-2">Assistant is thinking...</div>
-                        <div class="flex gap-2">
-                            <div class="relative flex-1">
-                                <input type="text" id="chat-input" placeholder="Type a message..." class="w-full bg-surface-container-low border-none rounded-full px-4 py-2 text-xs focus:ring-2 focus:ring-primary/20 pr-10">
-                                <button id="btn-chat-send" class="absolute right-2 top-1/2 -translate-y-1/2 text-primary hover:scale-110 transition-transform">
-                                    <span class="material-symbols-outlined">send</span>
-                                </button>
-                            </div>
-                            <button id="btn-chat-record" class="w-10 h-10 rounded-full bg-secondary text-white flex items-center justify-center hover:bg-secondary-fixed transition-colors">
-                                <span class="material-symbols-outlined">mic</span>
-                            </button>
                         </div>
                     </div>
                 </div>
@@ -421,6 +409,44 @@
         </div>
     </main>
 
+    <!-- Assistant Chat Sidebar -->
+    <aside id="assistant-chat-shell" class="w-full lg:fixed lg:right-0 lg:top-0 lg:h-screen lg:w-80 bg-surface-container-lowest border-t lg:border-t-0 lg:border-l border-outline-variant/10 shadow-[0_-12px_40px_rgba(26,28,31,0.08)] lg:shadow-[-12px_0_40px_rgba(26,28,31,0.08)] z-40 flex flex-col">
+        <div class="p-5 border-b border-outline-variant/10 bg-white/80 backdrop-blur-xl">
+            <div class="flex items-center justify-between gap-3">
+                <div>
+                    <p class="text-[10px] uppercase tracking-[0.22em] text-on-surface-variant font-bold">Assistant Panel</p>
+                    <h3 class="text-xl font-headline font-bold text-on-surface">Safety Chat</h3>
+                </div>
+                <div class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-secondary">
+                    <span class="w-2.5 h-2.5 rounded-full bg-secondary animate-pulse"></span>
+                    Live
+                </div>
+            </div>
+            <p class="text-xs text-on-surface-variant mt-2 leading-relaxed">Ask about the current scene, risk level, or what action the assistant is taking.</p>
+        </div>
+        <div id="chat-messages" class="flex-1 overflow-y-auto custom-scrollbar space-y-3 p-4 text-xs bg-gradient-to-b from-white to-surface-container-low">
+            <div class="bg-secondary-container/10 p-3 rounded-xl border border-secondary/10 italic text-on-surface">
+                Hello! I'm your safety assistant. How can I help you today?
+            </div>
+        </div>
+        <div class="p-4 border-t border-outline-variant/10 bg-surface-container-lowest/95 backdrop-blur-xl space-y-3">
+            <div id="typing-indicator" class="hidden text-[10px] text-secondary font-bold animate-pulse ml-1">Assistant is thinking...</div>
+            <div class="flex gap-2 items-end">
+                <div class="relative flex-1">
+                    <input type="text" id="chat-input" placeholder="Type a message..." class="w-full bg-surface-container-low border-none rounded-full px-4 py-3 text-xs focus:ring-2 focus:ring-primary/20 pr-10">
+                    <button id="btn-chat-send" class="absolute right-2 top-1/2 -translate-y-1/2 text-primary hover:scale-110 transition-transform">
+                        <span class="material-symbols-outlined">send</span>
+                    </button>
+                </div>
+                <button id="btn-chat-record" class="w-11 h-11 rounded-full bg-secondary text-white flex items-center justify-center hover:bg-secondary-fixed transition-colors shrink-0">
+                    <span class="material-symbols-outlined">mic</span>
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <script src="/dashboard/assets/assistant-chat.js"></script>
+
     <script>
         const navDashboard = document.getElementById('nav-dashboard');
         const navReports = document.getElementById('nav-reports');
@@ -431,112 +457,6 @@
         const historyTableBody = document.getElementById('history-table-body');
         const historyEmpty = document.getElementById('history-empty');
         const visionLog = document.getElementById('vision-log');
-        const chatMessages = document.getElementById('chat-messages');
-        const chatInput = document.getElementById('chat-input');
-        const btnChatSend = document.getElementById('btn-chat-send');
-        const btnChatRecord = document.getElementById('btn-chat-record');
-        const typingIndicator = document.getElementById('typing-indicator');
-
-        const addChatMessage = (role, text, audioUrl = null) => {
-            const div = document.createElement('div');
-            const isUser = role === 'user';
-            div.className = `p-3 rounded-xl max-w-[85%] ${isUser ? 'bg-primary text-white self-end ml-auto' : 'bg-secondary-container/10 border border-secondary/10 text-on-surface self-start mr-auto'}`;
-            div.innerHTML = `
-                <p class="font-bold text-[10px] mb-1 opacity-70 uppercase tracking-widest">${isUser ? 'You' : 'Assistant'}</p>
-                <p>${text}</p>
-                ${audioUrl ? `<button onclick="new Audio('${audioUrl}').play()" class="mt-2 flex items-center gap-1 text-[10px] font-bold bg-white/20 px-2 py-1 rounded-full hover:bg-white/30"><span class="material-symbols-outlined text-sm">play_circle</span> Listen</button>` : ''}
-            `;
-            chatMessages.appendChild(div);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        };
-
-        const sendChatMessage = async (text = null, audioData = null) => {
-            if (!text && !audioData) return;
-            
-            if (text) {
-                addChatMessage('user', text);
-                chatInput.value = '';
-            } else {
-                addChatMessage('user', '🎤 Voice Message');
-            }
-
-            typingIndicator.classList.remove('hidden');
-            
-            try {
-                const response = await fetch('/chat', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        text_input: text,
-                        audio_data: audioData,
-                        child_id: "child_001"
-                    })
-                });
-                
-                const data = await response.json();
-                typingIndicator.classList.add('hidden');
-                
-                if (data.transcript && audioData) {
-                    // Update the last user message with transcript if it was a voice message
-                    const lastUserMsg = chatMessages.lastElementChild;
-                    if (lastUserMsg && lastUserMsg.innerText.includes('Voice Message')) {
-                        lastUserMsg.querySelector('p:nth-child(2)').innerText = `🎤 ${data.transcript}`;
-                    }
-                }
-
-                addChatMessage('assistant', data.analysis, data.voice_url);
-                if (data.voice_url) {
-                    new Audio(data.voice_url).play();
-                }
-            } catch (err) {
-                console.error('Chat error:', err);
-                typingIndicator.classList.add('hidden');
-                addChatMessage('assistant', 'Sorry, I encountered an error. Please try again.');
-            }
-        };
-
-        btnChatSend.addEventListener('click', () => sendChatMessage(chatInput.value));
-        chatInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') sendChatMessage(chatInput.value);
-        });
-
-        // Update audio recording for chat
-        let chatMediaRecorder = null;
-        let chatAudioChunks = [];
-        let isChatRecording = false;
-
-        btnChatRecord.addEventListener('click', async () => {
-            if (isChatRecording) {
-                chatMediaRecorder.stop();
-                btnChatRecord.classList.remove('bg-error', 'animate-pulse');
-                btnChatRecord.innerHTML = '<span class="material-symbols-outlined">mic</span>';
-                isChatRecording = false;
-            } else {
-                try {
-                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                    chatMediaRecorder = new MediaRecorder(stream);
-                    chatAudioChunks = [];
-                    
-                    chatMediaRecorder.ondataavailable = (e) => chatAudioChunks.push(e.data);
-                    chatMediaRecorder.onstop = async () => {
-                        const audioBlob = new Blob(chatAudioChunks, { type: 'audio/webm' });
-                        const reader = new FileReader();
-                        reader.readAsDataURL(audioBlob);
-                        reader.onloadend = () => {
-                            sendChatMessage(null, reader.result);
-                        };
-                    };
-
-                    chatMediaRecorder.start();
-                    btnChatRecord.classList.add('bg-error', 'animate-pulse');
-                    btnChatRecord.innerHTML = '<span class="material-symbols-outlined">stop_circle</span>';
-                    isChatRecording = true;
-                } catch (err) {
-                    console.error('Mic error:', err);
-                    alert('Could not access microphone.');
-                }
-            }
-        });
 
         const switchView = (viewName) => {
             const views = {
@@ -630,7 +550,6 @@
         let mediaRecorder = null;
         let audioChunks = [];
         let isRecording = false;
-        let lastAudioBase64 = null;
 
         const connect = () => {
             const socket = new WebSocket('ws://' + window.location.host + '/ws');
@@ -652,11 +571,7 @@
 
             socket.onmessage = (event) => {
                 const data = JSON.parse(event.data);
-                if (data.type === 'chat') {
-                    addChatMessage('assistant', data.data.analysis, data.data.voice_url);
-                } else {
-                    updateDashboard(data);
-                }
+                if (data.type !== 'chat') updateDashboard(data);
             };
         };
 
@@ -750,26 +665,53 @@
 
         const updateOverlays = (detections) => {
             aiOverlays.innerHTML = '';
-            detections.forEach((det, i) => {
-                const xmin = det.box[0];
-                const ymin = det.box[1];
-                const xmax = det.box[2];
-                const ymax = det.box[3];
-                const obj = det.label;
-                
-                const color = obj.toLowerCase().includes('knife') || obj.toLowerCase().includes('stove') ? 'error' : 'secondary';
-                
-                const overlay = document.createElement('div');
-                overlay.className = `absolute border-2 border-${color} rounded-xl`;
-                overlay.style.top = `${ymin * 100}%`;
-                overlay.style.left = `${xmin * 100}%`;
-                overlay.style.width = `${(xmax - xmin) * 100}%`;
-                overlay.style.height = `${(ymax - ymin) * 100}%`;
-                
-                overlay.innerHTML = `
-                    <span class="absolute -top-6 left-0 bg-${color} text-white text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-widest whitespace-nowrap">${obj}</span>
-                `;
-                aiOverlays.appendChild(overlay);
+            detections.forEach((det) => {
+                const obj = det.label || 'object';
+                const lower = obj.toLowerCase();
+                const color = lower.includes('knife') || lower.includes('stove') ? 'error' : 'secondary';
+
+                if (Array.isArray(det.box) && det.box.length === 4) {
+                    const xmin = det.box[0];
+                    const ymin = det.box[1];
+                    const xmax = det.box[2];
+                    const ymax = det.box[3];
+
+                    const overlay = document.createElement('div');
+                    overlay.className = `absolute border-2 border-${color} rounded-xl`;
+                    overlay.style.top = `${ymin * 100}%`;
+                    overlay.style.left = `${xmin * 100}%`;
+                    overlay.style.width = `${(xmax - xmin) * 100}%`;
+                    overlay.style.height = `${(ymax - ymin) * 100}%`;
+
+                    overlay.innerHTML = `
+                        <span class="absolute -top-6 left-0 bg-${color} text-white text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-widest whitespace-nowrap">${obj}</span>
+                    `;
+                    aiOverlays.appendChild(overlay);
+                    return;
+                }
+
+                const locationChip = document.createElement('div');
+                locationChip.className = `absolute bg-${color}/90 text-white text-[10px] px-2 py-1 rounded-full font-bold uppercase tracking-widest`;
+                locationChip.textContent = `${obj} ${det.location ? `(${det.location})` : ''}`;
+
+                const location = (det.location || '').toLowerCase();
+                if (location.includes('top')) {
+                    locationChip.style.top = '8%';
+                } else if (location.includes('bottom')) {
+                    locationChip.style.top = '85%';
+                } else {
+                    locationChip.style.top = '48%';
+                }
+
+                if (location.includes('left')) {
+                    locationChip.style.left = '8%';
+                } else if (location.includes('right')) {
+                    locationChip.style.left = '72%';
+                } else {
+                    locationChip.style.left = '40%';
+                }
+
+                aiOverlays.appendChild(locationChip);
             });
         };
 
@@ -807,12 +749,20 @@
                 btnAudio.querySelector('span').textContent = 'mic';
                 btnAudio.querySelector('span:last-child').textContent = 'Record Audio';
                 btnAudio.classList.remove('bg-red-500', 'text-white');
+                if (window.GuardianAssistantChat && typeof window.GuardianAssistantChat.pushDebug === 'function') {
+                    window.GuardianAssistantChat.pushDebug('Black-box record button stopped recording.');
+                    window.GuardianAssistantChat.setDebugBadge('Processing', 'active');
+                }
                 isRecording = false;
             } else {
                 try {
                     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
                     mediaRecorder = new MediaRecorder(stream);
                     audioChunks = [];
+                    if (window.GuardianAssistantChat && typeof window.GuardianAssistantChat.pushDebug === 'function') {
+                        window.GuardianAssistantChat.pushDebug('Black-box record button started microphone capture.');
+                        window.GuardianAssistantChat.setDebugBadge('Recording', 'active');
+                    }
                     
                     mediaRecorder.ondataavailable = (e) => {
                         audioChunks.push(e.data);
@@ -823,7 +773,12 @@
                         const reader = new FileReader();
                         reader.readAsDataURL(audioBlob);
                         reader.onloadend = () => {
-                            lastAudioBase64 = reader.result;
+                            if (window.GuardianAssistantChat && typeof window.GuardianAssistantChat.pushDebug === 'function') {
+                                window.GuardianAssistantChat.pushDebug(`Black-box audio converted to data URL (${audioBlob.size} bytes).`);
+                            }
+                            if (window.GuardianAssistantChat && typeof window.GuardianAssistantChat.sendChatMessage === 'function') {
+                                window.GuardianAssistantChat.sendChatMessage(null, reader.result);
+                            }
                         };
                     };
 
@@ -834,6 +789,10 @@
                     isRecording = true;
                 } catch (err) {
                     console.error('Error accessing microphone:', err);
+                    if (window.GuardianAssistantChat && typeof window.GuardianAssistantChat.pushDebug === 'function') {
+                        window.GuardianAssistantChat.pushDebug(`Black-box microphone access failed: ${err?.message || err}`);
+                        window.GuardianAssistantChat.setDebugBadge('Mic error', 'error');
+                    }
                     alert('Could not access microphone.');
                 }
             }
@@ -863,12 +822,10 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         image_data: imageData,
-                        audio_data: lastAudioBase64,
                         child_id: "child_001"
                     })
                 });
                 if (!response.ok) throw new Error('Analysis failed');
-                lastAudioBase64 = null; // Reset after sending
             } catch (err) {
                 console.error('Analysis error:', err);
                 alert('Analysis failed. Make sure the server is running.');

@@ -1,22 +1,19 @@
 import json
 import os
-import httpx
 import base64
 from typing import Any
-from openai import OpenAI
-from ultralytics import YOLO
+from groq import Groq
 from tools.base import BaseAgentTool, AgentToolResult
-from config import VLM_API_KEY, VLM_BASE_URL, VLM_MODEL
+from config import GROQ_API_KEY
+
+GROQ_VISION_MODEL = os.getenv("GROQ_VISION_MODEL", "meta-llama/llama-4-scout-17b-16e-instruct")
 
 class VisionTool(BaseAgentTool):
     name: str = "vision_tool"
-    description: str = "Analyzes images using YOLO for object detection and a VLM for safety context. Input: image_path (str)."
-    _yolo_model: Any = None
-
-    def _get_yolo(self):
-        if self._yolo_model is None:
-            self._yolo_model = YOLO("yolov8n.pt")
-        return self._yolo_model
+    description: str = (
+        "Analyzes an image of a student's electrical circuit board to detect "
+        "faults, wrong connections, or unsafe actions. Returns structured feedback in Arabic."
+    )
 
     def _encode_image(self, image_path: str) -> str:
         with open(image_path, "rb") as image_file:
@@ -28,60 +25,43 @@ class VisionTool(BaseAgentTool):
             return AgentToolResult(success=False, error="image_path is required")
 
         if not os.path.exists(image_path):
-            # If path doesn't exist, we fallback to mock
             return self._mock_vision(image_path)
 
         try:
-            # 1. Precise Object Detection with YOLO
-            yolo_model = self._get_yolo()
-            yolo_results = yolo_model(image_path, verbose=False)
-            detected_objects = []
-            
-            for r in yolo_results:
-                boxes = r.boxes
-                for box in boxes:
-                    # Get coordinates and class info
-                    cls = int(box.cls[0])
-                    label = yolo_model.names[cls]
-                    conf = float(box.conf[0])
-                    
-                    if conf > 0.3: # Confidence threshold
-                        # Normalized coordinates [x1, y1, x2, y2]
-                        # r.orig_shape is (h, w)
-                        h, w = r.orig_shape
-                        coords = box.xyxy[0].tolist()
-                        
-                        detected_objects.append({
-                            "label": label,
-                            "confidence": conf,
-                            "box": [
-                                coords[0] / w, # xmin
-                                coords[1] / h, # ymin
-                                coords[2] / w, # xmax
-                                coords[3] / h  # ymax
-                            ]
-                        })
+            if not GROQ_API_KEY:
+                return AgentToolResult(success=False, error="GROQ_API_KEY is missing")
 
-            # 2. Safety Analysis with VLM
-            http_client = httpx.Client(verify=False)
-            client = OpenAI(
-                api_key=VLM_API_KEY,
-                base_url=VLM_BASE_URL,
-                http_client=http_client
-            )
+            client = Groq(api_key=GROQ_API_KEY)
 
             base64_image = self._encode_image(image_path)
-            
-            # Use detected objects to inform the VLM prompt
-            obj_list_str = ", ".join([obj["label"] for obj in detected_objects])
-            
+
             response = client.chat.completions.create(
-                model=VLM_MODEL,
+                model=GROQ_VISION_MODEL,
                 messages=[
                     {
                         "role": "user",
                         "content": [
-                            {"type": "text", "text": f"Analyze this image for child safety. Detected objects: {obj_list_str}. Provide a brief safety description. Return JSON with 'description' (string)."},
+                            {
+                                "type": "text",
+                                "text": (
+                                    "You are an educational assistant helping primary school students "
+                                    "learn how to build basic electrical circuits (الدّارة الكهربائيّة).\n\n"
+                                    "Look carefully at this image of a student's circuit board and analyze it.\n\n"
+                                    "Your tasks:\n"
+                                    "1. Identify all visible components (e.g. battery, wires, bulb, switch, resistor).\n"
+                                    "2. Detect any mistakes, wrong connections, missing components, or unsafe actions.\n"
+                                    "3. If a mistake is found, explain what is wrong and how to fix it in simple Arabic suitable for a primary school student.\n"
+                                    "4. If everything looks correct, say so in Arabic.\n\n"
+                                    "Respond ONLY with a JSON object in this exact format (no extra text):\n"
+                                    "{\n"
+                                    '  "components_detected": ["component1", "component2", ...],\n'
+                                    '  "has_fault": true or false,\n'
+                                    '  "fault_description": "Technical description of what is wrong in English (or null if no fault)",\n'
+                                    '  "arabic_explanation": "ما الخطأ الذي ارتكبه الطالب — بالعربية وبأسلوب بسيط",\n'
+                                    '  "arabic_correction": "كيف يمكن تصحيح الخطأ خطوة بخطوة — بالعربية وبأسلوب بسيط"\n'
+                                    "}"
+                                )
+                            },
                             {
                                 "type": "image_url",
                                 "image_url": {
@@ -91,38 +71,66 @@ class VisionTool(BaseAgentTool):
                         ],
                     }
                 ],
-                max_tokens=300,
+                temperature=0.2,
+                max_completion_tokens=700,
+                top_p=1,
+                stream=False,
             )
 
-            content = response.choices[0].message.content
-            risk_hint = content
-            
-            # Try to parse JSON from content
+            content = response.choices[0].message.content or ""
+
             try:
                 if "{" in content and "}" in content:
-                    json_str = content[content.find("{"):content.rfind("}")+1]
+                    json_str = content[content.find("{"):content.rfind("}") + 1]
                     data = json.loads(json_str)
-                    risk_hint = data.get("description", content)
-            except:
-                pass
+                else:
+                    raise ValueError("No JSON found in response")
 
-            return AgentToolResult(success=True, data={
-                "objects": [obj["label"] for obj in detected_objects],
-                "detections": detected_objects,
-                "risk_hint": risk_hint
-            })
+                components = data.get("components_detected", [])
+                fault_description = data.get("fault_description")
+                arabic_explanation = data.get("arabic_explanation")
+                arabic_correction = data.get("arabic_correction")
+
+                # Keep backward-compatible keys for current downstream pipeline.
+                risk_hint = fault_description or arabic_explanation or "No fault detected"
+
+                return AgentToolResult(success=True, data={
+                    "components_detected": components,
+                    "has_fault": data.get("has_fault", False),
+                    "fault_description": fault_description,
+                    "arabic_explanation": arabic_explanation,
+                    "arabic_correction": arabic_correction,
+                    "objects": components,
+                    "detections": [],
+                    "risk_hint": risk_hint,
+                })
+
+            except Exception:
+                return AgentToolResult(success=True, data={
+                    "components_detected": [],
+                    "has_fault": None,
+                    "fault_description": None,
+                    "arabic_explanation": content,
+                    "arabic_correction": None,
+                    "objects": [],
+                    "detections": [],
+                    "risk_hint": content,
+                })
 
         except Exception as e:
             print(f"Vision Error: {e}")
             return self._mock_vision(image_path)
 
     def _mock_vision(self, image_path: str) -> AgentToolResult:
-        # Mock logic: detect objects based on filename keywords
-        objects = ["person"]
-        if "kitchen" in image_path.lower():
-            objects.extend(["knife", "stove"])
-        if "playground" in image_path.lower():
-            objects.extend(["slide", "swing"])
-        
-        risk_hint = "Mock analysis completed"
-        return AgentToolResult(success=True, data={"objects": objects, "risk_hint": risk_hint})
+        """Fallback mock when image path doesn't exist — useful for testing."""
+        components = ["بطارية", "مصباح", "أسلاك"]
+        return AgentToolResult(success=True, data={
+            "components_detected": components,
+            "has_fault": True,
+            "fault_description": "Mock: bulb connected without completing the circuit loop.",
+            "arabic_explanation": "المصباح غير موصول بشكل صحيح، الدّارة مفتوحة ولن يضيء المصباح.",
+            "arabic_correction": "تأكد من توصيل الطرف الآخر من السلك بالقطب السالب للبطارية لإغلاق الدّارة.",
+            "objects": components,
+            "detections": [],
+            "risk_hint": "Mock: bulb connected without completing the circuit loop.",
+        })

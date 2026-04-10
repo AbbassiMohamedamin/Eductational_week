@@ -121,6 +121,17 @@ async def chat(request: ChatRequest):
     # Run only the voice agent for speed
     voice_agent = flow.voice_agent
     result = voice_agent.run(audio_path, request.child_id, request.text_input)
+
+    print(
+        "[CHAT] child_id=%s transcript=%s voice_url=%s tts_model=%s tts_error=%s"
+        % (
+            request.child_id,
+            "yes" if result.get("transcript") else "no",
+            result.get("voice_url"),
+            result.get("tts_model"),
+            result.get("tts_error"),
+        )
+    )
     
     # Broadcast to all connected clients
     for client in _CLIENTS:

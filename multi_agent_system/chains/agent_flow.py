@@ -1,11 +1,12 @@
-import json
 from agents.vision_agent import VisionAgent
 from agents.cognitive_agent import CognitiveAgent
 from agents.risk_agent import RiskAgent
 from agents.decision_agent import DecisionAgent
 from agents.recommendation_agent import RecommendationAgent
 from agents.voice_agent import VoiceAgent
-from memory.vector_store import VectorStore
+
+# How many past events to include in the decision agent's context
+MEMORY_WINDOW = 5
 
 class AgentFlow:
     def __init__(self):
@@ -15,7 +16,35 @@ class AgentFlow:
         self.decision_agent = DecisionAgent()
         self.recommendation_agent = RecommendationAgent()
         self.voice_agent = VoiceAgent()
-        self.vector_store = VectorStore()
+
+        # Simple in-memory event log — no local embedding model needed.
+        self._event_log: list[dict] = []
+
+    def _get_recent_events(self, k: int = MEMORY_WINDOW) -> list[dict]:
+        """Return the last k events as plain dicts for prompt injection."""
+        return self._event_log[-k:]
+
+    def _store_event(
+        self,
+        decision_output: dict,
+        vision_output: dict,
+        risk_output: dict,
+        voice_output: dict | None,
+        child_id: str,
+    ):
+        """Append a summary of the current run to the in-memory log."""
+        event = {
+            "child_id": child_id,
+            "action": decision_output.get("action"),
+            "severity": risk_output.get("severity"),
+            "risk_score": risk_output.get("risk_score"),
+            "objects": vision_output.get("objects", []),
+            "reasoning": decision_output.get("reasoning"),
+        }
+        if voice_output:
+            event["transcript"] = voice_output.get("transcript")
+
+        self._event_log.append(event)
 
     def run(self, image_path: str, child_id: str, audio_path: str | None = None) -> dict:
         # 1. Vision Analysis
@@ -31,12 +60,9 @@ class AgentFlow:
         
         # 4. Risk Assessment
         risk_output = self.risk_agent.run(vision_output, child_context)
-        
-        # 5. Memory Retrieval
-        query_text = f"Objects: {', '.join(vision_output.get('objects', []))}. Risk: {risk_output.get('severity')}"
-        if voice_output:
-            query_text += f". Audio: {voice_output.get('transcript')}"
-        memory_context = self.vector_store.query(query_text)
+
+        # 5. Memory — last N events passed directly as context
+        memory_context = self._get_recent_events()
         
         # 6. Decision Making
         decision_output = self.decision_agent.run(
@@ -48,17 +74,9 @@ class AgentFlow:
         
         # 7. Recommendation Generation
         recommendations = self.recommendation_agent.run(child_context, vision_output, decision_output)
-        
-        # 8. Store in Memory
-        event_summary = f"Action: {decision_output.get('action')}. Objects: {vision_output.get('objects')}. Reasoning: {decision_output.get('reasoning')}"
-        if voice_output:
-            event_summary += f". Voice Transcript: {voice_output.get('transcript')}"
-            
-        self.vector_store.add(event_summary, {
-            "child_id": child_id,
-            "risk_score": risk_output.get("risk_score"),
-            "severity": risk_output.get("severity")
-        })
+
+        # 8. Store current event in memory
+        self._store_event(decision_output, vision_output, risk_output, voice_output, child_id)
         
         return {
             "vision": vision_output,
