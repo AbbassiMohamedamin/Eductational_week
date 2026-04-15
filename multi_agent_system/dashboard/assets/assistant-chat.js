@@ -95,8 +95,8 @@
     const isUser = role === 'user';
     const message = document.createElement('div');
     message.className = `p-3 rounded-xl max-w-[85%] ${isUser
-      ? 'bg-primary text-white self-end ml-auto'
-      : 'bg-secondary-container/10 border border-secondary/10 text-on-surface self-start mr-auto'}`;
+      ? 'bg-secondary text-white self-end ml-auto'
+      : 'bg-primary-container/10 border border-primary/10 text-on-surface self-start mr-auto'}`;
 
     const safeText = escapeHtml(text ?? '');
     message.innerHTML = `
@@ -136,6 +136,7 @@
   const sendChatMessage = async (text = null, audioData = null) => {
     if (!text && !audioData) return;
 
+    window.chatStartTime = Date.now();
     const outgoingText = text ? text.trim() : '';
     if (!outgoingText && !audioData) return;
 
@@ -185,7 +186,15 @@
         }
       }
 
-      appendMessage('assistant', payload.analysis || 'I could not generate a reply.', payload.voice_url || null);
+      const responseText = payload.analysis || 'I could not generate a reply.';
+      appendMessage('assistant', responseText, payload.voice_url || null);
+
+      // Record to Communication History
+      if (typeof window.recordChatMessage === 'function') {
+        const inputText = outgoingText || (audioData ? '🎤 Voice Message' : '');
+        const latency = Date.now() - (window.chatStartTime || Date.now());
+        window.recordChatMessage(inputText, responseText, 'Jais LLM', latency);
+      }
 
       if (payload.voice_url && autoPlayVoice) {
         setDebugBadge('Playing', 'success');

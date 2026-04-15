@@ -1,883 +1,4023 @@
 <!DOCTYPE html>
+
 <html class="light" lang="en">
+
 <head>
+
     <meta charset="utf-8"/>
+
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+
     <title>Guardian AI - Dashboard</title>
+
     <link rel="icon" type="image/svg+xml" href="/dashboard/favicon.svg"/>
+
     <link rel="shortcut icon" href="/dashboard/favicon.svg"/>
+
     <!-- Google Fonts -->
+
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+
     <!-- Material Symbols -->
+
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
     <script id="tailwind-config">
+
           tailwind.config = {
+
             darkMode: "class",
+
             theme: {
+
               extend: {
+
                 "colors": {
+
                         "surface-bright": "#f9f9fe",
+
                         "secondary-fixed": "#72fe88",
+
                         "secondary": "#006e28",
+
                         "on-primary-fixed-variant": "#004493",
+
                         "on-tertiary-container": "#4f3d00",
+
                         "on-secondary-fixed-variant": "#00531c",
+
                         "surface-container": "#ededf2",
+
                         "primary": "#0058bc",
+
                         "on-primary": "#ffffff",
+
                         "outline": "#717786",
+
                         "surface-dim": "#d9dade",
+
                         "background": "#f9f9fe",
+
                         "surface-variant": "#e2e2e7",
+
                         "on-error": "#ffffff",
+
                         "on-surface-variant": "#414755",
+
                         "outline-variant": "#c1c6d7",
+
                         "on-secondary-container": "#00732a",
+
                         "primary-fixed": "#d8e2ff",
+
                         "inverse-surface": "#2e3034",
+
                         "surface": "#f9f9fe",
+
                         "error-container": "#ffdad6",
+
                         "on-error-container": "#93000a",
+
                         "tertiary-container": "#d0a600",
+
                         "on-tertiary-fixed": "#241a00",
+
                         "secondary-container": "#6ffb85",
+
                         "secondary-fixed-dim": "#53e16f",
+
                         "primary-fixed-dim": "#adc6ff",
+
                         "surface-container-high": "#e8e8ed",
+
                         "on-primary-container": "#fefcff",
+
                         "surface-container-highest": "#e2e2e7",
+
                         "on-secondary": "#ffffff",
+
                         "on-tertiary": "#ffffff",
+
                         "tertiary-fixed": "#ffe08b",
+
                         "on-tertiary-fixed-variant": "#584400",
+
                         "error": "#ba1a1a",
+
                         "tertiary-fixed-dim": "#f1c100",
+
                         "inverse-primary": "#adc6ff",
+
                         "inverse-on-surface": "#f0f0f5",
+
                         "primary-container": "#0070eb",
+
                         "surface-tint": "#005bc1",
+
                         "surface-container-low": "#f3f3f8",
+
                         "surface-container-lowest": "#ffffff",
+
                         "on-secondary-fixed": "#002107",
+
                         "on-surface": "#1a1c1f",
+
                         "tertiary": "#745b00",
+
                         "on-primary-fixed": "#001a41",
+
                         "on-background": "#1a1c1f"
+
                 },
+
                 "borderRadius": {
+
                         "DEFAULT": "0.25rem",
+
                         "lg": "0.5rem",
+
                         "xl": "0.75rem",
+
                         "xxl": "1.5rem",
+
                         "full": "9999px"
+
                 },
+
                 "fontFamily": {
+
                         "headline": ["Space Grotesk"],
+
                         "body": ["Manrope"],
+
                         "label": ["Manrope"]
+
                 }
+
               },
+
             },
+
           }
+
         </script>
+
     <style>
+
             .material-symbols-outlined {
+
                 font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+
             }
+
             body {
+
                 background-color: #f9f9fe;
+
                 color: #1a1c1f;
+
             }
+
             .glass-panel {
+
                 background: rgba(255, 255, 255, 0.7);
+
                 backdrop-filter: blur(20px);
+
             }
+
             .custom-scrollbar::-webkit-scrollbar {
+
                 width: 4px;
+
             }
+
             .custom-scrollbar::-webkit-scrollbar-track {
+
                 background: transparent;
+
             }
+
             .custom-scrollbar::-webkit-scrollbar-thumb {
+
                 background: #e2e2e7;
+
                 border-radius: 10px;
+
             }
+
         </style>
+
+    <!-- Recharts (using React 17 for UMD compatibility) -->
+
+    <script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
+
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
+
+    <script src="https://unpkg.com/recharts@2.1.9/umd/Recharts.min.js" crossorigin
+        onload="console.log('Recharts script loaded successfully')"
+        onerror="console.error('Failed to load Recharts script from CDN')"></script>
+
+    
+
+    <!-- Verify Recharts loaded -->
+
+    <script>
+
+        window.addEventListener('load', function() {
+
+            setTimeout(function() {
+
+                console.log('=== Script Load Check ===');
+
+                console.log('React:', typeof React !== 'undefined' ? React.version : 'NOT LOADED');
+
+                console.log('ReactDOM:', typeof ReactDOM !== 'undefined' ? 'LOADED' : 'NOT LOADED');
+
+                console.log('Recharts:', typeof Recharts !== 'undefined' ? 'LOADED' : 'NOT LOADED');
+
+                
+
+                // Try to manually expose Recharts if it exists in window
+
+                if (typeof window.Recharts === 'undefined' && typeof Recharts !== 'undefined') {
+
+                    window.Recharts = Recharts;
+
+                    console.log('Exposed Recharts to window');
+
+                }
+
+            }, 2000);
+
+        });
+
+    </script>
+
+    <!-- Chart.js as fallback for charts -->
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" crossorigin></script>
+
+    <!-- Firebase -->
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+
 </head>
+
 <body class="font-body selection:bg-primary-fixed selection:text-on-primary-fixed">
+
     <!-- SideNavBar Shell -->
+
     <aside class="fixed left-0 top-0 h-full flex flex-col p-6 bg-slate-50 dark:bg-slate-900 h-screen w-64 border-r border-slate-200/20 dark:border-slate-800/20 z-50">
+
         <div class="mb-10">
+
             <h1 class="text-2xl font-bold tracking-tighter text-slate-900 dark:text-white font-headline">Guardian AI</h1>
+
             <p class="font-body font-semibold text-xs uppercase tracking-widest text-slate-400 mt-1">Digital Curator</p>
+
         </div>
+
         <nav class="flex-1 space-y-2">
+
             <a id="nav-dashboard" class="bg-blue-600 text-white rounded-xl shadow-lg shadow-blue-500/20 flex items-center gap-3 p-3 transition-transform active:scale-95" href="#">
+
                 <span class="material-symbols-outlined">dashboard</span>
+
                 <span class="font-headline font-medium text-sm tracking-tight">Dashboard</span>
+
             </a>
+
             <a id="nav-reports" class="text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-all duration-300 flex items-center gap-3 p-3 rounded-xl" href="#">
+
                 <span class="material-symbols-outlined">assessment</span>
+
                 <span class="font-headline font-medium text-sm tracking-tight">Reports</span>
+
             </a>
+
             <a id="nav-history" class="text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-all duration-300 flex items-center gap-3 p-3 rounded-xl" href="#">
+
                 <span class="material-symbols-outlined">history</span>
+
                 <span class="font-headline font-medium text-sm tracking-tight">History</span>
+
             </a>
+
+            <a id="nav-breadboard" class="text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-all duration-300 flex items-center gap-3 p-3 rounded-xl" href="#">
+
+                <span class="material-symbols-outlined">memory</span>
+
+                <span class="font-headline font-medium text-sm tracking-tight">Breadboard Readings</span>
+
+            </a>
+
             <a class="text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-all duration-300 flex items-center gap-3 p-3 rounded-xl" href="#">
+
                 <span class="material-symbols-outlined">settings</span>
+
                 <span class="font-headline font-medium text-sm tracking-tight">Settings</span>
+
             </a>
+
         </nav>
+
         <div class="mt-auto">
+
             <div class="bg-surface-container-lowest rounded-xxl p-4 mb-4 border border-outline-variant/10">
+
                 <img alt="Parent Profile Avatar" class="w-10 h-10 rounded-full mb-3 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwla96umUepJM1wKHWAGlYWBPblNaWJmyq060cfKyuqO8HkTs90_uMoJ60l7FledYkx2VKNw6qrwzZtNDke7x7POH4qweHmdheAjXmVixDpsrxUYs8RUTsnXtuEgiXy6VGu9_svQ09J6MtdaFCsd1uWEeqwmtNr83Y-UxHjWSe2Xu7uSrPMKq97CvuzS508ieca0PFN-6AxaQAteVw6VfArWF5Tj5316U_qGUcmFyRSCJTutrodrIgPY9P20ukEKUtvRXJmKlq5i8"/>
+
                 <p class="text-xs font-bold font-headline mb-3 text-on-surface">Premium Access</p>
+
                 <button class="w-full py-2 bg-gradient-to-br from-primary to-primary-container text-white text-xs font-bold rounded-lg uppercase tracking-wider transition-all hover:opacity-90">Upgrade Plan</button>
+
             </div>
+
         </div>
+
     </aside>
+
+
 
     <!-- Main Canvas -->
+
     <main class="ml-64 lg:mr-80 min-h-screen flex flex-col bg-surface overflow-y-auto">
+
         <!-- TopNavBar Shell -->
+
         <header class="flex justify-between items-center h-20 px-8 border-b border-slate-100 dark:border-slate-800 bg-white/70 backdrop-blur-xl sticky top-0 z-40">
+
             <div class="flex items-center gap-6">
+
                 <div class="flex items-center gap-2">
+
                     <span id="connection-status" class="w-2 h-2 rounded-full bg-slate-300"></span>
+
                     <span id="connection-text" class="font-body font-semibold text-xs uppercase tracking-widest text-slate-400">Disconnected</span>
+
                 </div>
+
                 <div class="hidden lg:flex items-center gap-8">
+
                     <span id="top-risk-score" class="text-slate-400 font-body font-semibold text-xs uppercase tracking-widest pb-1 border-b-2 border-transparent">Risk Score: --</span>
+
                     <span id="top-alert-count" class="text-slate-400 font-body font-semibold text-xs uppercase tracking-widest hover:opacity-80 transition-opacity cursor-pointer">Alerts: 0</span>
+
                     <span id="top-child-level" class="text-slate-400 font-body font-semibold text-xs uppercase tracking-widest hover:opacity-80 transition-opacity cursor-pointer">Skill: --</span>
+
                 </div>
+
             </div>
+
             <div class="flex items-center gap-4">
+
                 <button class="p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors">
+
                     <span class="material-symbols-outlined">notifications</span>
+
                 </button>
+
                 <button class="p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors">
+
                     <span class="material-symbols-outlined">settings_suggest</span>
+
                 </button>
+
                 <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-fixed cursor-pointer" onclick="window.location.href='/dashboard/auth/sign-in.html'">
+
                     <img alt="User profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOpeWm5MtDWQzsNPTVMZPIv7XJcuDl094IqIlOKMbVfbA6H3KucxNSluZRO1SWgkLONBda9fy9vR7YyghZRm9ZagI--ltOLGWP2JoZTXy81BqYpvC7haSlt_5FkHKVaPcrBaFA3pNPv9NcL2L9PqTPZv9a1EA3AJK_Fob-Ax0YEMooFZM1TWv762dLOs7UuzkE14imOeB17BNMKWcbjG_2ePwLdPk0RQ2D1EYuaPWCjDTHNPwtsXwEVIQsbpBovMeQnrpz5cFn2kc"/>
+
                 </div>
+
             </div>
+
         </header>
 
+
+
         <!-- Dashboard Content -->
+
         <div id="view-dashboard" class="p-8 max-w-7xl mx-auto w-full space-y-8">
+
             <!-- Quick Stats Section: Bento Cards -->
+
             <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
                 <div class="bg-surface-container-lowest p-6 rounded-xxl shadow-sm border border-outline-variant/10 flex flex-col justify-between h-40">
+
                     <span class="font-body text-[10px] uppercase tracking-[0.15em] text-on-surface-variant">Global Safety Score</span>
+
                     <div class="flex items-baseline gap-2">
+
                         <span id="stat-safety-score" class="text-4xl font-headline font-bold text-primary">--</span>
+
                         <span id="stat-safety-label" class="text-sm font-bold text-slate-400">Awaiting Data</span>
+
                     </div>
+
                     <div class="h-1 w-full bg-surface-container-low rounded-full overflow-hidden">
+
                         <div id="stat-safety-bar" class="h-full w-0 bg-primary transition-all duration-500"></div>
+
                     </div>
+
                 </div>
+
                 <div class="bg-surface-container-lowest p-6 rounded-xxl shadow-sm border border-outline-variant/10 flex flex-col justify-between h-40">
+
                     <span class="font-body text-[10px] uppercase tracking-[0.15em] text-on-surface-variant">Active Alerts</span>
+
                     <div class="flex items-baseline gap-2">
+
                         <span id="stat-alert-count" class="text-4xl font-headline font-bold text-on-surface">00</span>
+
                         <span class="text-xs font-semibold text-on-surface-variant">Past 24h</span>
+
                     </div>
+
                     <div class="flex gap-1">
+
                         <div id="alert-indicator-1" class="h-2 w-1/3 bg-surface-container-low rounded-full"></div>
+
                         <div id="alert-indicator-2" class="h-2 w-1/3 bg-surface-container-low rounded-full"></div>
+
                         <div id="alert-indicator-3" class="h-2 w-1/3 bg-surface-container-low rounded-full"></div>
+
                     </div>
+
                 </div>
+
                 <div class="bg-surface-container-lowest p-6 rounded-xxl shadow-sm border border-outline-variant/10 flex flex-col justify-between h-40">
+
                     <span class="font-body text-[10px] uppercase tracking-[0.15em] text-on-surface-variant">Learning Level</span>
+
                     <div class="flex items-baseline gap-2">
+
                         <span id="stat-learning-level" class="text-4xl font-headline font-bold text-tertiary">--</span>
+
                     </div>
+
                     <div class="flex -space-x-2">
+
                         <div class="w-6 h-6 rounded-full bg-tertiary-fixed border-2 border-white flex items-center justify-center">
+
                             <span class="material-symbols-outlined text-[12px]">auto_awesome</span>
+
                         </div>
+
                         <div class="w-6 h-6 rounded-full bg-primary-fixed border-2 border-white flex items-center justify-center">
+
                             <span class="material-symbols-outlined text-[12px]">school</span>
+
                         </div>
+
                     </div>
+
                 </div>
+
                 <div class="bg-surface-container-lowest p-6 rounded-xxl shadow-sm border border-outline-variant/10 flex flex-col justify-between h-40">
+
                     <span class="font-body text-[10px] uppercase tracking-[0.15em] text-on-surface-variant">Child Status</span>
+
                     <div class="flex items-center gap-3">
+
                         <div class="relative">
+
                             <div id="status-pulse" class="w-3 h-3 bg-slate-300 rounded-full"></div>
+
                             <div id="status-pulse-ping" class="absolute inset-0 w-3 h-3 bg-slate-300 rounded-full animate-ping opacity-75 hidden"></div>
+
                         </div>
+
                         <span id="stat-child-status" class="text-2xl font-headline font-bold text-on-surface">Idle</span>
+
                     </div>
+
                     <span id="stat-child-detail" class="text-xs font-medium text-on-surface-variant">Awaiting system trigger</span>
+
                 </div>
+
             </section>
+
+
 
             <!-- Main Monitoring Row -->
+
             <section class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
                 <!-- Live Camera Feed (Large) -->
+
                 <div class="lg:col-span-8 bg-surface-container-low rounded-xxl overflow-hidden relative group h-[500px]">
+
                     <div class="absolute inset-0 bg-slate-900">
+
                         <img id="camera-feed-img" alt="Camera Feed" class="w-full h-full object-cover opacity-80" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAW9FOxQJmTObmhd1CMHyXiD1_pdjIB1L4PT7JOA_gvfOdLYr4cAsAHo499iAASU4YMlzxHGNb7IfV0LhwxkLeuaqwh1NeT2JErU568jHiZB7tlmvqO6PIXBbdywvh_dXGpK4fZ1412ZEM8ZSnKcUrt1acVsmKNdtAxbFCOrJKzX0UYAnDG9e0DvhgI_GQuBxZtvzNZYbr5GBXf8SFQya_IK6XWz3EPByMJl6gPk0WQiSljydVyHSZhrSSaa17K4ZB-RnM2VLJ8mPk"/>
+
                         <video id="webcam-video" class="absolute inset-0 w-full h-full object-cover hidden" autoplay playsinline></video>
+
                         <canvas id="capture-canvas" class="hidden"></canvas>
+
                     </div>
+
                     <!-- AI Overlays Container -->
+
                     <div id="ai-overlays" class="absolute inset-0 pointer-events-none">
+
                         <!-- Overlays will be injected here dynamically -->
+
                     </div>
+
                     <!-- Overlay Controls -->
+
                     <div class="absolute bottom-6 left-6 right-6 flex items-center justify-between">
+
                         <div class="flex gap-2">
+
                             <button id="btn-webcam" class="px-4 h-10 rounded-full glass-panel flex items-center gap-2 text-on-surface hover:bg-white transition-all active:scale-95 group">
+
                                 <span class="material-symbols-outlined">linked_camera</span>
+
                                 <span class="text-[10px] font-bold uppercase tracking-widest">Use My Camera</span>
+
                             </button>
+
                             <button id="btn-audio" class="px-4 h-10 rounded-full glass-panel flex items-center gap-2 text-on-surface hover:bg-white transition-all active:scale-95 group">
+
                                 <span class="material-symbols-outlined">mic</span>
+
                                 <span class="text-[10px] font-bold uppercase tracking-widest">Record Audio</span>
+
                             </button>
+
                             <button id="btn-simulate" class="px-4 h-10 rounded-full glass-panel flex items-center gap-2 text-on-surface hover:bg-white transition-all active:scale-95 group">
+
                                 <span class="material-symbols-outlined group-hover:rotate-180 transition-transform duration-500">autorenew</span>
+
                                 <span class="text-[10px] font-bold uppercase tracking-widest">Simulate Camera</span>
+
                             </button>
+
                             <button class="w-10 h-10 rounded-full glass-panel flex items-center justify-center text-on-surface hover:bg-white transition-colors">
+
                                 <span class="material-symbols-outlined">videocam</span>
+
                             </button>
+
                             <button class="w-10 h-10 rounded-full glass-panel flex items-center justify-center text-on-surface hover:bg-white transition-colors">
+
                                 <span class="material-symbols-outlined">mic</span>
+
                             </button>
+
                         </div>
+
                         <div class="glass-panel px-4 py-2 rounded-full flex items-center gap-3">
+
                             <span class="text-[10px] font-bold text-on-surface uppercase tracking-widest">4K Live • Playroom</span>
+
                             <div class="w-2 h-2 rounded-full bg-error"></div>
+
                         </div>
+
                     </div>
+
                     <div class="absolute top-6 right-6 w-80 max-w-[calc(100%-3rem)] glass-panel rounded-2xl border border-white/20 shadow-lg overflow-hidden">
+
                         <div class="px-4 py-3 border-b border-white/20 flex items-center justify-between">
+
                             <div>
+
                                 <p class="text-[10px] uppercase tracking-[0.2em] font-bold text-on-surface-variant">Voice Debug</p>
+
                                 <p class="text-sm font-semibold text-on-surface">Audio Flow</p>
+
                             </div>
+
                             <span id="voice-debug-badge" class="text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded-full bg-surface-container-low text-on-surface-variant">Idle</span>
+
                         </div>
+
                         <div id="voice-debug-log" class="max-h-40 overflow-y-auto custom-scrollbar p-4 space-y-2 text-[11px] text-on-surface">
+
                             <p class="text-slate-500 italic">Waiting for microphone input...</p>
+
                         </div>
+
                     </div>
+
                 </div>
+
+
 
                 <!-- Alerts Panel -->
+
                 <div class="lg:col-span-4 flex flex-col gap-6">
+
                     <div class="bg-surface-container-lowest p-6 rounded-xxl border border-outline-variant/10 flex-1 shadow-sm overflow-hidden flex flex-col h-[240px]">
+
                         <h3 class="text-lg font-headline font-bold mb-4 flex items-center gap-2">
+
                             <span class="material-symbols-outlined text-primary">visibility</span>
+
                             Vision Intelligence
+
                         </h3>
+
                         <div id="vision-log" class="space-y-3 overflow-y-auto pr-2 custom-scrollbar text-xs">
+
                             <p class="text-slate-400 italic text-center py-4">Awaiting visual data...</p>
+
                         </div>
+
                     </div>
+
                 </div>
+
             </section>
+
+
 
             <!-- Lower Analytics & Insights Row -->
+
             <section class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
                 <!-- Learning Progress charts -->
+
                 <div class="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+
                     <!-- Daily Progress Bar Chart -->
+
                     <div class="bg-surface-container-lowest p-6 rounded-xxl border border-outline-variant/10 shadow-sm">
+
                         <div class="flex justify-between items-center mb-6">
+
                             <h3 class="text-sm font-headline font-bold uppercase tracking-wider">Daily Focus</h3>
+
                             <span class="text-[10px] font-bold text-primary">Hours/Activity</span>
+
                         </div>
+
                         <div class="flex items-end justify-between h-40 gap-2">
+
                             <div class="flex flex-col items-center gap-2 flex-1">
+
                                 <div class="w-full bg-primary/20 rounded-t-lg h-[40%]"></div>
+
                                 <span class="text-[10px] font-bold">Math</span>
+
                             </div>
+
                             <div class="flex flex-col items-center gap-2 flex-1">
+
                                 <div class="w-full bg-primary rounded-t-lg h-[80%]"></div>
+
                                 <span class="text-[10px] font-bold">Logic</span>
+
                             </div>
+
                             <div class="flex flex-col items-center gap-2 flex-1">
+
                                 <div class="w-full bg-primary/40 rounded-t-lg h-[60%]"></div>
+
                                 <span class="text-[10px] font-bold">Arts</span>
+
                             </div>
+
                             <div class="flex flex-col items-center gap-2 flex-1">
+
                                 <div class="w-full bg-primary/10 rounded-t-lg h-[20%]"></div>
+
                                 <span class="text-[10px] font-bold">Read</span>
+
                             </div>
+
                             <div class="flex flex-col items-center gap-2 flex-1">
+
                                 <div class="w-full bg-primary/60 rounded-t-lg h-[70%]"></div>
+
                                 <span class="text-[10px] font-bold">Music</span>
+
                             </div>
+
                         </div>
+
                     </div>
+
                     <!-- Weekly Trend Line Chart -->
+
                     <div class="bg-surface-container-lowest p-6 rounded-xxl border border-outline-variant/10 shadow-sm">
+
                         <div class="flex justify-between items-center mb-6">
+
                             <h3 class="text-sm font-headline font-bold uppercase tracking-wider">Weekly Growth</h3>
+
                             <span class="text-[10px] font-bold text-secondary">+12% vs LW</span>
+
                         </div>
+
                         <div class="h-40 flex items-center justify-center relative">
+
                             <svg class="w-full h-full" viewbox="0 0 200 100">
+
                                 <path d="M0,80 Q20,70 40,85 T80,50 T120,60 T160,20 T200,30" fill="none" stroke="#0058bc" stroke-width="3"></path>
+
                                 <circle cx="160" cy="20" fill="#0058bc" r="4"></circle>
+
                             </svg>
+
                             <div class="absolute inset-0 flex justify-between items-end px-2 pointer-events-none">
+
                                 <span class="text-[9px] font-bold opacity-30 uppercase">Mon</span>
+
                                 <span class="text-[9px] font-bold opacity-30 uppercase">Wed</span>
+
                                 <span class="text-[9px] font-bold opacity-30 uppercase">Fri</span>
+
                                 <span class="text-[9px] font-bold opacity-30 uppercase">Sun</span>
+
                             </div>
+
                         </div>
+
                     </div>
+
                 </div>
+
+
 
                 <!-- Recommendations & Insights -->
+
                 <div class="lg:col-span-4">
+
                     <div class="bg-gradient-to-br from-primary to-primary-container p-8 rounded-xxl shadow-xl shadow-primary/20 text-white h-full">
+
                         <div class="flex items-center gap-3 mb-6">
+
                             <span class="material-symbols-outlined text-secondary-fixed">lightbulb</span>
+
                             <h3 class="text-lg font-headline font-bold">Curator Insights</h3>
+
                         </div>
+
                         <div id="insights-container" class="space-y-6">
+
                             <div class="space-y-2">
+
                                 <p class="text-xs font-bold uppercase tracking-widest text-primary-fixed">Activity Suggestion</p>
+
                                 <p id="activity-suggestion" class="text-sm font-medium leading-relaxed italic">Awaiting analysis...</p>
+
                             </div>
+
                             <div class="h-px bg-white/20"></div>
+
                             <div class="space-y-2">
+
                                 <p class="text-xs font-bold uppercase tracking-widest text-primary-fixed">Parent Tip</p>
+
                                 <p id="parent-tip" class="text-sm font-medium leading-relaxed italic">Recommendations will appear here.</p>
+
                             </div>
+
                             <button class="w-full py-3 bg-white text-primary font-bold rounded-xl text-sm transition-transform active:scale-95">Explore Activity Library</button>
+
                         </div>
+
                     </div>
+
                 </div>
+
             </section>
+
         </div>
+
+
 
         <!-- Reports Content -->
+
         <div id="view-reports" class="hidden p-8 max-w-7xl mx-auto w-full space-y-8">
-            <h2 class="text-3xl font-headline font-bold text-slate-900">Safety Reports</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="bg-white p-6 rounded-xxl shadow-sm border border-outline-variant/10">
-                    <h3 class="text-xl font-headline font-bold mb-4">Risk Distribution</h3>
-                    <div class="h-64 flex items-center justify-center bg-slate-50 rounded-xl">
-                        <p class="text-slate-400">Loading risk metrics...</p>
-                    </div>
-                </div>
-                <div class="bg-white p-6 rounded-xxl shadow-sm border border-outline-variant/10">
-                    <h3 class="text-xl font-headline font-bold mb-4">Activity Summary</h3>
-                    <div id="reports-summary" class="space-y-4">
-                        <p class="text-slate-600">Total sessions today: 0</p>
-                        <p class="text-slate-600">Average safety score: 0%</p>
-                    </div>
-                </div>
+
+            <div class="flex items-center justify-between">
+
+                <h2 class="text-3xl font-headline font-bold text-slate-900">Safety Reports</h2>
+
+                <button onclick="generateReport()" class="px-4 py-2 bg-primary text-white rounded-xl text-sm font-bold uppercase tracking-wider hover:opacity-90 transition-opacity">
+
+                    <span class="material-symbols-outlined text-sm align-middle mr-1">download</span>
+
+                    Export Report
+
+                </button>
+
             </div>
+
+
+
+            <!-- Summary Cards -->
+
+            <section class="grid grid-cols-1 md:grid-cols-4 gap-6">
+
+                <div class="bg-surface-container-lowest p-6 rounded-xxl shadow-sm border border-outline-variant/10">
+
+                    <span class="font-body text-[10px] uppercase tracking-[0.15em] text-on-surface-variant">Total Alerts</span>
+
+                    <div class="flex items-baseline gap-2 mt-2">
+
+                        <span id="report-total-alerts" class="text-4xl font-headline font-bold text-primary">0</span>
+
+                    </div>
+
+                    <div class="mt-2 text-xs text-slate-400">Last 7 days</div>
+
+                </div>
+
+                <div class="bg-surface-container-lowest p-6 rounded-xxl shadow-sm border border-outline-variant/10">
+
+                    <span class="font-body text-[10px] uppercase tracking-[0.15em] text-on-surface-variant">High Risk Events</span>
+
+                    <div class="flex items-baseline gap-2 mt-2">
+
+                        <span id="report-high-risk" class="text-4xl font-headline font-bold text-error">0</span>
+
+                    </div>
+
+                    <div class="mt-2 text-xs text-slate-400">Requires attention</div>
+
+                </div>
+
+                <div class="bg-surface-container-lowest p-6 rounded-xxl shadow-sm border border-outline-variant/10">
+
+                    <span class="font-body text-[10px] uppercase tracking-[0.15em] text-on-surface-variant">Avg Safety Score</span>
+
+                    <div class="flex items-baseline gap-2 mt-2">
+
+                        <span id="report-avg-score" class="text-4xl font-headline font-bold text-secondary">0%</span>
+
+                    </div>
+
+                    <div class="mt-2 text-xs text-slate-400">Based on all sessions</div>
+
+                </div>
+
+                <div class="bg-surface-container-lowest p-6 rounded-xxl shadow-sm border border-outline-variant/10">
+
+                    <span class="font-body text-[10px] uppercase tracking-[0.15em] text-on-surface-variant">Active Monitoring</span>
+
+                    <div class="flex items-baseline gap-2 mt-2">
+
+                        <span id="report-monitoring-hours" class="text-4xl font-headline font-bold text-tertiary">0h</span>
+
+                    </div>
+
+                    <div class="mt-2 text-xs text-slate-400">Total duration</div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- Charts Grid -->
+
+            <section class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+                <!-- Risk Distribution Pie Chart -->
+
+                <div class="bg-surface-container-lowest p-6 rounded-xxl shadow-sm border border-outline-variant/10">
+
+                    <h3 class="text-lg font-headline font-bold mb-4 flex items-center gap-2">
+
+                        <span class="material-symbols-outlined text-primary">donut_large</span>
+
+                        Risk Distribution
+
+                    </h3>
+
+                    <div id="report-chart-risk" class="h-64"></div>
+
+                </div>
+
+
+
+                <!-- Alert Timeline -->
+
+                <div class="bg-surface-container-lowest p-6 rounded-xxl shadow-sm border border-outline-variant/10">
+
+                    <h3 class="text-lg font-headline font-bold mb-4 flex items-center gap-2">
+
+                        <span class="material-symbols-outlined text-secondary">timeline</span>
+
+                        Alert Timeline
+
+                    </h3>
+
+                    <div id="report-chart-timeline" class="h-64"></div>
+
+                </div>
+
+
+
+                <!-- Activity by Hour Heatmap -->
+
+                <div class="bg-surface-container-lowest p-6 rounded-xxl shadow-sm border border-outline-variant/10">
+
+                    <h3 class="text-lg font-headline font-bold mb-4 flex items-center gap-2">
+
+                        <span class="material-symbols-outlined text-tertiary">schedule</span>
+
+                        Activity by Hour
+
+                    </h3>
+
+                    <div id="report-chart-heatmap" class="h-64"></div>
+
+                </div>
+
+
+
+                <!-- Safety Score Trend -->
+
+                <div class="bg-surface-container-lowest p-6 rounded-xxl shadow-sm border border-outline-variant/10">
+
+                    <h3 class="text-lg font-headline font-bold mb-4 flex items-center gap-2">
+
+                        <span class="material-symbols-outlined text-primary">trending_up</span>
+
+                        Safety Score Trend
+
+                    </h3>
+
+                    <div id="report-chart-trend" class="h-64"></div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- Communication History Section -->
+
+            <section class="bg-surface-container-lowest rounded-xxl shadow-sm border border-outline-variant/10 overflow-hidden">
+
+                <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+
+                    <h3 class="text-lg font-headline font-bold flex items-center gap-2">
+
+                        <span class="material-symbols-outlined text-primary">chat</span>
+
+                        LLM/VLM Communication History
+
+                    </h3>
+
+                    <div class="flex gap-2">
+
+                        <button onclick="filterComms('all')" class="px-3 py-1 text-xs font-bold uppercase rounded-full bg-primary text-white">All</button>
+
+                        <button onclick="filterComms('vision')" class="px-3 py-1 text-xs font-bold uppercase rounded-full bg-surface-container-high text-slate-600 hover:bg-surface-container-high">Vision</button>
+
+                        <button onclick="filterComms('chat')" class="px-3 py-1 text-xs font-bold uppercase rounded-full bg-surface-container-high text-slate-600 hover:bg-surface-container-high">Chat</button>
+
+                    </div>
+
+                </div>
+
+                <div class="overflow-x-auto max-h-96 overflow-y-auto">
+
+                    <table class="w-full text-left">
+
+                        <thead class="bg-slate-50 border-b border-slate-100 sticky top-0">
+
+                            <tr>
+
+                                <th class="px-4 py-3 text-xs font-bold uppercase tracking-widest text-slate-500">Time</th>
+
+                                <th class="px-4 py-3 text-xs font-bold uppercase tracking-widest text-slate-500">Type</th>
+
+                                <th class="px-4 py-3 text-xs font-bold uppercase tracking-widest text-slate-500">Agent</th>
+
+                                <th class="px-4 py-3 text-xs font-bold uppercase tracking-widest text-slate-500">Input/Query</th>
+
+                                <th class="px-4 py-3 text-xs font-bold uppercase tracking-widest text-slate-500">Response</th>
+
+                                <th class="px-4 py-3 text-xs font-bold uppercase tracking-widest text-slate-500">Latency</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="comm-history-table-body">
+
+                            <tr>
+
+                                <td colspan="6" class="px-6 py-12 text-center text-slate-400">
+
+                                    <span class="material-symbols-outlined text-4xl text-slate-200 mb-2">chat_bubble_outline</span>
+
+                                    <p>No communication history yet</p>
+
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
         </div>
+
+
 
         <!-- History Content -->
+
         <div id="view-history" class="hidden p-8 max-w-7xl mx-auto w-full space-y-8">
+
             <h2 class="text-3xl font-headline font-bold text-slate-900">Alert History</h2>
+
             <div class="bg-white rounded-xxl shadow-sm border border-outline-variant/10 overflow-hidden">
+
                 <table class="w-full text-left">
+
                     <thead class="bg-slate-50 border-b border-slate-100">
+
                         <tr>
+
                             <th class="px-6 py-4 text-xs font-bold uppercase tracking-widest text-slate-500">Time</th>
+
                             <th class="px-6 py-4 text-xs font-bold uppercase tracking-widest text-slate-500">Severity</th>
+
                             <th class="px-6 py-4 text-xs font-bold uppercase tracking-widest text-slate-500">Action</th>
+
                             <th class="px-6 py-4 text-xs font-bold uppercase tracking-widest text-slate-500">Reasoning</th>
+
                         </tr>
+
                     </thead>
+
                     <tbody id="history-table-body">
+
                         <!-- History rows will be injected here -->
+
                     </tbody>
+
                 </table>
+
                 <div id="history-empty" class="p-12 text-center">
+
                     <span class="material-symbols-outlined text-4xl text-slate-200 mb-2">history_toggle_off</span>
+
                     <p class="text-slate-400">No alert history found for this child.</p>
+
                 </div>
+
             </div>
+
         </div>
+
+        <!-- Breadboard Readings Content -->
+
+        <div id="view-breadboard" class="hidden p-8 max-w-7xl mx-auto w-full space-y-8">
+
+            <div class="flex items-center justify-between">
+
+                <div>
+
+                    <h2 class="text-3xl font-headline font-bold text-slate-900">Breadboard Readings</h2>
+
+                    <p class="text-slate-500 mt-1 font-body">Real-time experiment monitoring from Firebase</p>
+
+                </div>
+
+                <div id="breadboard-connection" class="flex items-center gap-2 px-4 py-2 bg-surface-container-low rounded-full">
+
+                    <span class="w-2 h-2 rounded-full bg-slate-300" id="bb-status-dot"></span>
+
+                    <span class="text-xs font-bold uppercase tracking-widest text-slate-400" id="bb-status-text">Disconnected</span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Summary Metrics -->
+
+            <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                <div class="bg-surface-container-lowest p-6 rounded-xxl shadow-sm border border-outline-variant/10">
+
+                    <span class="font-body text-[10px] uppercase tracking-[0.15em] text-on-surface-variant">Average Stability</span>
+
+                    <div class="flex items-baseline gap-2 mt-2">
+
+                        <span id="bb-avg-stability" class="text-4xl font-headline font-bold text-primary">--</span>
+
+                        <span class="text-sm font-bold text-slate-400">/ 1.0</span>
+
+                    </div>
+
+                    <div class="mt-3 flex items-center gap-2">
+
+                        <span id="bb-stability-badge" class="px-2 py-1 rounded-full text-[10px] font-bold uppercase bg-slate-100 text-slate-400">Waiting</span>
+
+                    </div>
+
+                </div>
+
+                <div class="bg-surface-container-lowest p-6 rounded-xxl shadow-sm border border-outline-variant/10">
+
+                    <span class="font-body text-[10px] uppercase tracking-[0.15em] text-on-surface-variant">Peak Power (W)</span>
+
+                    <div class="flex items-baseline gap-2 mt-2">
+
+                        <span id="bb-peak-power" class="text-4xl font-headline font-bold text-secondary">--</span>
+
+                        <span class="text-sm font-bold text-slate-400">Watts</span>
+
+                    </div>
+
+                    <div class="mt-3 h-1 w-full bg-surface-container-low rounded-full overflow-hidden">
+
+                        <div id="bb-power-bar" class="h-full w-0 bg-secondary transition-all duration-500"></div>
+
+                    </div>
+
+                </div>
+
+                <div class="bg-surface-container-lowest p-6 rounded-xxl shadow-sm border border-outline-variant/10">
+
+                    <span class="font-body text-[10px] uppercase tracking-[0.15em] text-on-surface-variant">Average Voltage (V)</span>
+
+                    <div class="flex items-baseline gap-2 mt-2">
+
+                        <span id="bb-avg-voltage" class="text-4xl font-headline font-bold text-tertiary">--</span>
+
+                        <span class="text-sm font-bold text-slate-400">Volts</span>
+
+                    </div>
+
+                    <div class="mt-3 flex items-center gap-1">
+
+                        <span class="material-symbols-outlined text-[16px] text-tertiary">bolt</span>
+
+                        <span class="text-xs text-on-surface-variant">Live monitoring</span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- Experiment Records Table -->
+
+            <section class="bg-surface-container-lowest rounded-xxl shadow-sm border border-outline-variant/10 overflow-hidden">
+
+                <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+
+                    <h3 class="text-lg font-headline font-bold flex items-center gap-2">
+
+                        <span class="material-symbols-outlined text-primary">table_chart</span>
+
+                        Experiment Records
+
+                    </h3>
+
+                    <span id="bb-record-count" class="text-xs font-bold uppercase tracking-widest text-slate-400">0 records</span>
+
+                </div>
+
+                <div class="overflow-x-auto">
+
+                    <table class="w-full text-left" id="bb-table">
+
+                        <thead class="bg-slate-50 border-b border-slate-100">
+
+                            <tr>
+
+                                <th class="px-4 py-3 text-xs font-bold uppercase tracking-widest text-slate-500 cursor-pointer hover:bg-slate-100 transition-colors" onclick="sortTable('id')">ID <span class="material-symbols-outlined text-[12px] align-middle">unfold_more</span></th>
+
+                                <th class="px-4 py-3 text-xs font-bold uppercase tracking-widest text-slate-500 cursor-pointer hover:bg-slate-100 transition-colors" onclick="sortTable('voltage')">Voltage (V) <span class="material-symbols-outlined text-[12px] align-middle">unfold_more</span></th>
+
+                                <th class="px-4 py-3 text-xs font-bold uppercase tracking-widest text-slate-500 cursor-pointer hover:bg-slate-100 transition-colors" onclick="sortTable('current')">Current (A) <span class="material-symbols-outlined text-[12px] align-middle">unfold_more</span></th>
+
+                                <th class="px-4 py-3 text-xs font-bold uppercase tracking-widest text-slate-500 cursor-pointer hover:bg-slate-100 transition-colors" onclick="sortTable('power')">Power (W) <span class="material-symbols-outlined text-[12px] align-middle">unfold_more</span></th>
+
+                                <th class="px-4 py-3 text-xs font-bold uppercase tracking-widest text-slate-500 cursor-pointer hover:bg-slate-100 transition-colors" onclick="sortTable('didt')">dI/dt <span class="material-symbols-outlined text-[12px] align-middle">unfold_more</span></th>
+
+                                <th class="px-4 py-3 text-xs font-bold uppercase tracking-widest text-slate-500 cursor-pointer hover:bg-slate-100 transition-colors" onclick="sortTable('dvdt')">dV/dt <span class="material-symbols-outlined text-[12px] align-middle">unfold_more</span></th>
+
+                                <th class="px-4 py-3 text-xs font-bold uppercase tracking-widest text-slate-500 cursor-pointer hover:bg-slate-100 transition-colors" onclick="sortTable('stability')">Stability <span class="material-symbols-outlined text-[12px] align-middle">unfold_more</span></th>
+
+                                <th class="px-4 py-3 text-xs font-bold uppercase tracking-widest text-slate-500 cursor-pointer hover:bg-slate-100 transition-colors" onclick="sortTable('timestamp')">Timestamp <span class="material-symbols-outlined text-[12px] align-middle">unfold_more</span></th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="bb-table-body">
+
+                            <tr>
+
+                                <td colspan="8" class="px-6 py-12 text-center text-slate-400">
+
+                                    <span class="material-symbols-outlined text-4xl text-slate-200 mb-2">memory</span>
+
+                                    <p>Connecting to Firebase...</p>
+
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- Comparison Charts -->
+
+            <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+                <!-- Line Chart - Voltage & Current -->
+
+                <div class="bg-surface-container-lowest p-6 rounded-xxl shadow-sm border border-outline-variant/10">
+
+                    <h3 class="text-sm font-headline font-bold uppercase tracking-wider mb-4 flex items-center gap-2">
+
+                        <span class="material-symbols-outlined text-primary">show_chart</span>
+
+                        Voltage & Current per Experiment
+
+                    </h3>
+
+                    <div id="bb-chart-line" class="h-64"></div>
+
+                </div>
+
+
+
+                <!-- Bar Chart - Power -->
+
+                <div class="bg-surface-container-lowest p-6 rounded-xxl shadow-sm border border-outline-variant/10">
+
+                    <h3 class="text-sm font-headline font-bold uppercase tracking-wider mb-4 flex items-center gap-2">
+
+                        <span class="material-symbols-outlined text-secondary">bar_chart</span>
+
+                        Power (W) per Experiment
+
+                    </h3>
+
+                    <div id="bb-chart-bar" class="h-64"></div>
+
+                </div>
+
+
+
+                <!-- Grouped Bar Chart - dI/dt vs dV/dt -->
+
+                <div class="bg-surface-container-lowest p-6 rounded-xxl shadow-sm border border-outline-variant/10">
+
+                    <h3 class="text-sm font-headline font-bold uppercase tracking-wider mb-4 flex items-center gap-2">
+
+                        <span class="material-symbols-outlined text-tertiary">stacked_bar_chart</span>
+
+                        dI/dt vs dV/dt Comparison
+
+                    </h3>
+
+                    <div id="bb-chart-grouped" class="h-64"></div>
+
+                </div>
+
+
+
+                <!-- Radar Chart - Stability -->
+
+                <div class="bg-surface-container-lowest p-6 rounded-xxl shadow-sm border border-outline-variant/10">
+
+                    <h3 class="text-sm font-headline font-bold uppercase tracking-wider mb-4 flex items-center gap-2">
+
+                        <span class="material-symbols-outlined text-primary">radar</span>
+
+                        Stability Score per Experiment
+
+                    </h3>
+
+                    <div id="bb-chart-radar" class="h-64"></div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- Full Width Multi-Line Chart -->
+
+            <section class="bg-surface-container-lowest p-6 rounded-xxl shadow-sm border border-outline-variant/10">
+
+                <h3 class="text-sm font-headline font-bold uppercase tracking-wider mb-4 flex items-center gap-2">
+
+                    <span class="material-symbols-outlined text-primary">multiline_chart</span>
+
+                    Normalized Overview - All Key Metrics
+
+                </h3>
+
+                <div id="bb-chart-multi" class="h-80"></div>
+
+            </section>
+
+        </div>
+
     </main>
 
+
+
     <!-- Assistant Chat Sidebar -->
+
     <aside id="assistant-chat-shell" class="w-full lg:fixed lg:right-0 lg:top-0 lg:h-screen lg:w-80 bg-surface-container-lowest border-t lg:border-t-0 lg:border-l border-outline-variant/10 shadow-[0_-12px_40px_rgba(26,28,31,0.08)] lg:shadow-[-12px_0_40px_rgba(26,28,31,0.08)] z-40 flex flex-col">
+
         <div class="p-5 border-b border-outline-variant/10 bg-white/80 backdrop-blur-xl">
+
             <div class="flex items-center justify-between gap-3">
+
                 <div>
+
                     <p class="text-[10px] uppercase tracking-[0.22em] text-on-surface-variant font-bold">Assistant Panel</p>
+
                     <h3 class="text-xl font-headline font-bold text-on-surface">Safety Chat</h3>
+
                 </div>
-                <div class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-secondary">
-                    <span class="w-2.5 h-2.5 rounded-full bg-secondary animate-pulse"></span>
+
+                <div class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-primary">
+
+                    <span class="w-2.5 h-2.5 rounded-full bg-primary animate-pulse"></span>
+
                     Live
+
                 </div>
+
             </div>
+
             <p class="text-xs text-on-surface-variant mt-2 leading-relaxed">Ask about the current scene, risk level, or what action the assistant is taking.</p>
+
         </div>
+
         <div id="chat-messages" class="flex-1 overflow-y-auto custom-scrollbar space-y-3 p-4 text-xs bg-gradient-to-b from-white to-surface-container-low">
-            <div class="bg-secondary-container/10 p-3 rounded-xl border border-secondary/10 italic text-on-surface">
+
+            <div class="bg-primary-container/10 p-3 rounded-xl border border-primary/10 italic text-on-surface">
+
                 Hello! I'm your safety assistant. How can I help you today?
+
             </div>
+
         </div>
+
         <div class="p-4 border-t border-outline-variant/10 bg-surface-container-lowest/95 backdrop-blur-xl space-y-3">
-            <div id="typing-indicator" class="hidden text-[10px] text-secondary font-bold animate-pulse ml-1">Assistant is thinking...</div>
+
+            <div id="typing-indicator" class="hidden text-[10px] text-primary font-bold animate-pulse ml-1">Assistant is thinking...</div>
+
             <div class="flex gap-2 items-end">
+
                 <div class="relative flex-1">
+
                     <input type="text" id="chat-input" placeholder="Type a message..." class="w-full bg-surface-container-low border-none rounded-full px-4 py-3 text-xs focus:ring-2 focus:ring-primary/20 pr-10">
+
                     <button id="btn-chat-send" class="absolute right-2 top-1/2 -translate-y-1/2 text-primary hover:scale-110 transition-transform">
+
                         <span class="material-symbols-outlined">send</span>
+
                     </button>
+
                 </div>
+
                 <button id="btn-chat-record" class="w-11 h-11 rounded-full bg-secondary text-white flex items-center justify-center hover:bg-secondary-fixed transition-colors shrink-0">
+
                     <span class="material-symbols-outlined">mic</span>
+
                 </button>
+
             </div>
+
         </div>
+
     </aside>
+
+
 
     <script src="/dashboard/assets/assistant-chat.js"></script>
 
+
+
     <script>
+
         const navDashboard = document.getElementById('nav-dashboard');
+
         const navReports = document.getElementById('nav-reports');
+
         const navHistory = document.getElementById('nav-history');
+
+        const navBreadboard = document.getElementById('nav-breadboard');
+
         const viewDashboard = document.getElementById('view-dashboard');
+
         const viewReports = document.getElementById('view-reports');
+
         const viewHistory = document.getElementById('view-history');
+
+        const viewBreadboard = document.getElementById('view-breadboard');
+
         const historyTableBody = document.getElementById('history-table-body');
+
         const historyEmpty = document.getElementById('history-empty');
+
         const visionLog = document.getElementById('vision-log');
 
+
+
         const switchView = (viewName) => {
+
             const views = {
+
                 dashboard: viewDashboard,
+
                 reports: viewReports,
-                history: viewHistory
+
+                history: viewHistory,
+
+                breadboard: viewBreadboard
+
             };
+
             const navs = {
+
                 dashboard: navDashboard,
+
                 reports: navReports,
-                history: navHistory
+
+                history: navHistory,
+
+                breadboard: navBreadboard
+
             };
+
+
 
             Object.keys(views).forEach(v => {
+
                 if (v === viewName) {
+
                     views[v].classList.remove('hidden');
+
                     navs[v].classList.add('bg-blue-600', 'text-white', 'shadow-lg', 'shadow-blue-500/20');
+
                     navs[v].classList.remove('text-slate-500');
+
                 } else {
+
                     views[v].classList.add('hidden');
+
                     navs[v].classList.remove('bg-blue-600', 'text-white', 'shadow-lg', 'shadow-blue-500/20');
+
                     navs[v].classList.add('text-slate-500');
+
                 }
+
             });
 
+
+
             if (viewName === 'history') {
+
                 fetchHistory('child_001');
+
             }
+
+            if (viewName === 'breadboard') {
+
+                initBreadboard();
+
+            }
+
+            if (viewName === 'reports') {
+
+                initReports();
+
+            }
+
         };
+
+
+
+        // ========== LOCAL STORAGE FUNCTIONS ==========
+
+        const STORAGE_KEYS = {
+
+            ALERTS: 'guardian_alerts',
+
+            COMM_HISTORY: 'guardian_comm_history',
+
+            REPORT_METRICS: 'guardian_metrics'
+
+        };
+
+
+
+        // Load alerts from localStorage
+
+        const loadAlertsFromStorage = () => {
+
+            try {
+
+                const stored = localStorage.getItem(STORAGE_KEYS.ALERTS);
+
+                return stored ? JSON.parse(stored) : [];
+
+            } catch (e) {
+
+                console.error('Failed to load alerts from storage:', e);
+
+                return [];
+
+            }
+
+        };
+
+
+
+        // Save alerts to localStorage
+
+        const saveAlertsToStorage = (alerts) => {
+
+            try {
+
+                localStorage.setItem(STORAGE_KEYS.ALERTS, JSON.stringify(alerts));
+
+            } catch (e) {
+
+                console.error('Failed to save alerts to storage:', e);
+
+            }
+
+        };
+
+
+
+        // Add new alert and save to storage
+
+        const addAlert = (alert) => {
+
+            const alerts = loadAlertsFromStorage();
+
+            alerts.unshift({
+
+                ...alert,
+
+                id: Date.now(),
+
+                timestamp: new Date().toISOString()
+
+            });
+
+            // Keep only last 100 alerts
+
+            if (alerts.length > 100) alerts.pop();
+
+            saveAlertsToStorage(alerts);
+
+            renderAlerts();
+
+            updateReportMetricsFromStorage();
+
+        };
+
+
+
+        // Render alerts in history table
+
+        const renderAlerts = () => {
+
+            const alerts = loadAlertsFromStorage();
+
+            
+
+            if (alerts.length === 0) {
+
+                historyEmpty.classList.remove('hidden');
+
+                historyTableBody.innerHTML = '';
+
+                return;
+
+            }
+
+            
+
+            historyEmpty.classList.add('hidden');
+
+            historyTableBody.innerHTML = alerts.map(alert => {
+
+                const time = new Date(alert.timestamp || alert.time || Date.now());
+
+                return `
+
+                    <tr class="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
+
+                        <td class="px-6 py-4 text-xs font-medium text-slate-400">${time.toLocaleString()}</td>
+
+                        <td class="px-6 py-4">
+
+                            <span class="px-2 py-1 rounded-full text-[10px] font-bold uppercase ${
+
+                                alert.severity === 'HIGH' ? 'bg-error-container text-error' : 
+
+                                alert.severity === 'MEDIUM' ? 'bg-tertiary-fixed text-on-tertiary-fixed-variant' : 'bg-secondary-container text-on-secondary-container'
+
+                            }">${alert.severity || 'LOW'}</span>
+
+                        </td>
+
+                        <td class="px-6 py-4 text-xs font-bold text-on-surface">${alert.action || 'Monitor'}</td>
+
+                        <td class="px-6 py-4 text-xs text-on-surface-variant">${alert.reasoning || 'No details'}</td>
+
+                    </tr>
+
+                `;
+
+            }).join('');
+
+        };
+
+
+
+        // Fetch history (now uses localStorage)
 
         const fetchHistory = async (childId) => {
-            try {
-                const response = await fetch(`/history/${childId}`);
-                const data = await response.json();
-                
-                if (data && data.length > 0) {
-                    historyEmpty.classList.add('hidden');
-                    historyTableBody.innerHTML = data.map(alert => `
-                        <tr class="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
-                            <td class="px-6 py-4 text-xs font-medium text-slate-400">${new Date().toLocaleTimeString()}</td>
-                            <td class="px-6 py-4">
-                                <span class="px-2 py-1 rounded-full text-[10px] font-bold uppercase ${
-                                    alert.severity === 'HIGH' ? 'bg-error-container text-error' : 
-                                    alert.severity === 'MEDIUM' ? 'bg-tertiary-fixed text-on-tertiary-fixed-variant' : 'bg-secondary-container text-on-secondary-container'
-                                }">${alert.severity}</span>
-                            </td>
-                            <td class="px-6 py-4 text-xs font-bold text-on-surface">${alert.action}</td>
-                            <td class="px-6 py-4 text-xs text-on-surface-variant">${alert.reasoning}</td>
-                        </tr>
-                    `).join('');
-                } else {
-                    historyEmpty.classList.remove('hidden');
-                    historyTableBody.innerHTML = '';
-                }
-            } catch (err) {
-                console.error('Failed to fetch history:', err);
-            }
+
+            renderAlerts();
+
         };
+
+
+
+        // Update report metrics from stored alerts
+
+        const updateReportMetricsFromStorage = () => {
+
+            const alerts = loadAlertsFromStorage();
+
+            const totalAlerts = alerts.length;
+
+            const highRisk = alerts.filter(a => a.severity === 'HIGH').length;
+
+            const avgScore = totalAlerts > 0 ? Math.round(((totalAlerts - highRisk) / totalAlerts) * 100) : 100;
+
+            
+
+            reportMetrics = {
+
+                totalAlerts,
+
+                highRisk,
+
+                avgScore,
+
+                monitoringHours: Math.max(1, Math.floor(totalAlerts / 2))
+
+            };
+
+            
+
+            updateReportMetrics();
+
+        };
+
+
 
         navDashboard.addEventListener('click', (e) => { e.preventDefault(); switchView('dashboard'); });
+
         navReports.addEventListener('click', (e) => { e.preventDefault(); switchView('reports'); });
+
         navHistory.addEventListener('click', (e) => { e.preventDefault(); switchView('history'); });
 
+        navBreadboard.addEventListener('click', (e) => { e.preventDefault(); switchView('breadboard'); });
+
+
+
         const connectionStatus = document.getElementById('connection-status');
+
         const connectionText = document.getElementById('connection-text');
+
         const topRiskScore = document.getElementById('top-risk-score');
+
         const topAlertCount = document.getElementById('top-alert-count');
+
         const topChildLevel = document.getElementById('top-child-level');
+
         const statSafetyScore = document.getElementById('stat-safety-score');
+
         const statSafetyLabel = document.getElementById('stat-safety-label');
+
         const statSafetyBar = document.getElementById('stat-safety-bar');
+
         const statAlertCount = document.getElementById('stat-alert-count');
+
         const statLearningLevel = document.getElementById('stat-learning-level');
+
         const statChildStatus = document.getElementById('stat-child-status');
+
         const statChildDetail = document.getElementById('stat-child-detail');
+
         const statusPulse = document.getElementById('status-pulse');
+
         const statusPulsePing = document.getElementById('status-pulse-ping');
+
         const activitySuggestion = document.getElementById('activity-suggestion');
+
         const parentTip = document.getElementById('parent-tip');
+
         const aiOverlays = document.getElementById('ai-overlays');
+
         const btnSimulate = document.getElementById('btn-simulate');
+
         const btnWebcam = document.getElementById('btn-webcam');
+
         const btnAudio = document.getElementById('btn-audio');
+
         const webcamVideo = document.getElementById('webcam-video');
+
         const captureCanvas = document.getElementById('capture-canvas');
+
         const cameraFeedImg = document.getElementById('camera-feed-img');
 
+
+
         let totalAlerts = 0;
+
         let webcamStream = null;
+
         let isWebcamActive = false;
+
         let mediaRecorder = null;
+
         let audioChunks = [];
+
         let isRecording = false;
 
+
+
         const connect = () => {
+
             const socket = new WebSocket('ws://' + window.location.host + '/ws');
 
+
+
             socket.onopen = () => {
+
                 connectionStatus.classList.replace('bg-slate-300', 'bg-secondary');
+
                 connectionStatus.classList.add('animate-pulse');
+
                 connectionText.textContent = 'Live System: Active';
+
                 connectionText.classList.replace('text-slate-400', 'text-secondary');
+
             };
+
+
 
             socket.onclose = () => {
+
                 connectionStatus.classList.replace('bg-secondary', 'bg-slate-300');
+
                 connectionStatus.classList.remove('animate-pulse');
+
                 connectionText.textContent = 'Disconnected';
+
                 connectionText.classList.replace('text-secondary', 'text-slate-400');
+
                 setTimeout(connect, 3000);
+
             };
+
+
 
             socket.onmessage = (event) => {
+
                 const data = JSON.parse(event.data);
-                if (data.type !== 'chat') updateDashboard(data);
-            };
-        };
 
-        const updateDashboard = (data) => {
-            // Update Top Bar
-            const risk = data.risk;
-            topRiskScore.textContent = `Risk Score: ${risk.severity.toUpperCase()}`;
-            topRiskScore.className = `font-body font-semibold text-xs uppercase tracking-widest pb-1 border-b-2 ` + 
-                (risk.severity === 'high' ? 'text-error border-error' : 
-                 risk.severity === 'medium' ? 'text-tertiary border-tertiary' : 'text-secondary border-secondary');
-            
-            topChildLevel.textContent = `Skill: ${data.cognitive.level.toUpperCase()}`;
-            
-            // Update Stats
-            const safetyScore = Math.round((1 - risk.risk_score) * 100);
-            statSafetyScore.textContent = safetyScore;
-            statSafetyBar.style.width = `${safetyScore}%`;
-            statSafetyLabel.textContent = safetyScore > 75 ? 'Optimal' : (safetyScore > 45 ? 'Fair' : 'Critical');
-            statSafetyLabel.className = `text-sm font-bold ` + (safetyScore > 75 ? 'text-secondary' : (safetyScore > 45 ? 'text-tertiary' : 'text-error'));
-
-            totalAlerts++;
-            statAlertCount.textContent = totalAlerts.toString().padStart(2, '0');
-            topAlertCount.textContent = `Alerts: ${totalAlerts}`;
-            
-            // Update Alert Indicators
-            document.getElementById('alert-indicator-1').className = `h-2 w-1/3 rounded-full ` + (totalAlerts >= 1 ? 'bg-secondary' : 'bg-surface-container-low');
-            document.getElementById('alert-indicator-2').className = `h-2 w-1/3 rounded-full ` + (totalAlerts >= 5 ? 'bg-tertiary' : 'bg-surface-container-low');
-            document.getElementById('alert-indicator-3').className = `h-2 w-1/3 rounded-full ` + (totalAlerts >= 10 ? 'bg-error' : 'bg-surface-container-low');
-
-            statLearningLevel.textContent = data.cognitive.level === 'beginner' ? 'Lvl 1' : (data.cognitive.level === 'intermediate' ? 'Lvl 4' : 'Lvl 8');
-            
-            // Update Status
-            statChildStatus.textContent = risk.severity === 'high' ? 'At Risk' : (data.decision.action === 'RECOMMEND' ? 'Guided' : 'Safe');
-            statChildDetail.textContent = data.decision.reasoning.substring(0, 50) + '...';
-            statusPulse.className = `w-3 h-3 rounded-full ` + (risk.severity === 'high' ? 'bg-error' : (risk.severity === 'medium' ? 'bg-tertiary' : 'bg-secondary'));
-            statusPulsePing.className = `absolute inset-0 w-3 h-3 rounded-full animate-ping opacity-75 ` + (risk.severity === 'high' ? 'bg-error' : (risk.severity === 'medium' ? 'bg-tertiary' : 'bg-secondary'));
-            statusPulsePing.classList.remove('hidden');
-
-            // --- Separate Logs Update ---
-            
-            // Update Vision Log
-            if (visionLog.querySelector('p.italic')) visionLog.innerHTML = '';
-            const visionEntry = document.createElement('div');
-            visionEntry.className = 'p-3 bg-slate-50 rounded-lg border-l-2 border-primary animate-in fade-in slide-in-from-right-2';
-            visionEntry.innerHTML = `
-                <p class="font-bold text-primary mb-1">Observation</p>
-                <p class="text-on-surface-variant leading-tight">${data.vision.risk_hint}</p>
-                <p class="text-[10px] text-slate-400 mt-2 font-mono">${new Date().toLocaleTimeString()}</p>
-            `;
-            visionLog.prepend(visionEntry);
-
-            // Update Insights
-            if (data.recommendations && data.recommendations.length > 0) {
-                activitySuggestion.textContent = data.recommendations[0];
-                activitySuggestion.classList.remove('italic');
-                if (data.recommendations.length > 1) {
-                    parentTip.textContent = data.recommendations[1];
-                    parentTip.classList.remove('italic');
-                }
-            }
-
-            // Update Overlays
-            updateOverlays(data.vision.detections || []);
-        };
-
-        const addAlert = (data) => {
-            if (!alertFeed || alertFeed.querySelector('p.italic')) {
-                if (alertFeed) alertFeed.innerHTML = '';
-            }
-            if (!alertFeed) return;
-
-            const alertDiv = document.createElement('div');
-            const severity = data.risk.severity;
-            const config = {
-                high: { bg: 'bg-error-container/10', border: 'border-error', icon: 'error', iconColor: 'text-error' },
-                medium: { bg: 'bg-tertiary-container/10', border: 'border-tertiary', icon: 'warning', iconColor: 'text-tertiary' },
-                low: { bg: 'bg-secondary-container/20', border: 'border-secondary', icon: 'check_circle', iconColor: 'text-secondary' }
-            }[severity] || { bg: 'bg-slate-100', border: 'border-slate-300', icon: 'info', iconColor: 'text-slate-400' };
-
-            alertDiv.className = `p-4 ${config.bg} rounded-xl border-l-4 ${config.border} flex gap-4 transition-all duration-300 animate-in fade-in slide-in-from-right-4`;
-            alertDiv.innerHTML = `
-                <span class="material-symbols-outlined ${config.iconColor}">${config.icon}</span>
-                <div>
-                    <p class="text-sm font-bold text-on-surface">${data.decision.action}</p>
-                    <p class="text-xs text-on-surface-variant">${data.decision.reasoning}</p>
-                    <span class="text-[10px] font-bold ${config.iconColor} uppercase mt-2 block">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
-                </div>
-            `;
-            alertFeed.prepend(alertDiv);
-        };
-
-        const updateOverlays = (detections) => {
-            aiOverlays.innerHTML = '';
-            detections.forEach((det) => {
-                const obj = det.label || 'object';
-                const lower = obj.toLowerCase();
-                const color = lower.includes('knife') || lower.includes('stove') ? 'error' : 'secondary';
-
-                if (Array.isArray(det.box) && det.box.length === 4) {
-                    const xmin = det.box[0];
-                    const ymin = det.box[1];
-                    const xmax = det.box[2];
-                    const ymax = det.box[3];
-
-                    const overlay = document.createElement('div');
-                    overlay.className = `absolute border-2 border-${color} rounded-xl`;
-                    overlay.style.top = `${ymin * 100}%`;
-                    overlay.style.left = `${xmin * 100}%`;
-                    overlay.style.width = `${(xmax - xmin) * 100}%`;
-                    overlay.style.height = `${(ymax - ymin) * 100}%`;
-
-                    overlay.innerHTML = `
-                        <span class="absolute -top-6 left-0 bg-${color} text-white text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-widest whitespace-nowrap">${obj}</span>
-                    `;
-                    aiOverlays.appendChild(overlay);
+                if (data.type === 'chat') {
+                    // Chat messages are recorded by assistant-chat.js
                     return;
                 }
 
+                // Record vision analysis to communication history
+                if (data.vision && typeof window.recordVisionAnalysis === 'function') {
+                    const visionInput = data.vision.objects ? `Objects: ${data.vision.objects.join(', ')}` : 'Image analysis';
+                    const visionResponse = data.vision.risk_hint || 'No risk detected';
+                    window.recordVisionAnalysis(visionInput, visionResponse, 300);
+                }
+
+                // Record decision/analysis to communication history
+                if (data.decision && typeof window.recordChatMessage === 'function') {
+                    const decisionInput = `Risk: ${data.risk?.risk_score?.toFixed(2) || 'N/A'}, Action: ${data.decision?.action || 'N/A'}`;
+                    const decisionResponse = data.decision?.reasoning || 'Decision analysis completed';
+                    window.recordChatMessage(decisionInput, decisionResponse, 'Risk Analyzer', 150);
+                }
+
+                updateDashboard(data);
+
+            };
+
+        };
+
+
+
+        const updateDashboard = (data) => {
+
+            // Update Top Bar
+
+            const risk = data.risk;
+
+            topRiskScore.textContent = `Risk Score: ${risk.severity.toUpperCase()}`;
+
+            topRiskScore.className = `font-body font-semibold text-xs uppercase tracking-widest pb-1 border-b-2 ` + 
+
+                (risk.severity === 'high' ? 'text-error border-error' : 
+
+                 risk.severity === 'medium' ? 'text-tertiary border-tertiary' : 'text-secondary border-secondary');
+
+            
+
+            topChildLevel.textContent = `Skill: ${data.cognitive.level.toUpperCase()}`;
+
+            
+
+            // Update Stats
+
+            const safetyScore = Math.round((1 - risk.risk_score) * 100);
+
+            statSafetyScore.textContent = safetyScore;
+
+            statSafetyBar.style.width = `${safetyScore}%`;
+
+            statSafetyLabel.textContent = safetyScore > 75 ? 'Optimal' : (safetyScore > 45 ? 'Fair' : 'Critical');
+
+            statSafetyLabel.className = `text-sm font-bold ` + (safetyScore > 75 ? 'text-secondary' : (safetyScore > 45 ? 'text-tertiary' : 'text-error'));
+
+
+
+            totalAlerts++;
+
+            statAlertCount.textContent = totalAlerts.toString().padStart(2, '0');
+
+            topAlertCount.textContent = `Alerts: ${totalAlerts}`;
+
+            
+
+            // Update Alert Indicators
+
+            document.getElementById('alert-indicator-1').className = `h-2 w-1/3 rounded-full ` + (totalAlerts >= 1 ? 'bg-secondary' : 'bg-surface-container-low');
+
+            document.getElementById('alert-indicator-2').className = `h-2 w-1/3 rounded-full ` + (totalAlerts >= 5 ? 'bg-tertiary' : 'bg-surface-container-low');
+
+            document.getElementById('alert-indicator-3').className = `h-2 w-1/3 rounded-full ` + (totalAlerts >= 10 ? 'bg-error' : 'bg-surface-container-low');
+
+
+
+            statLearningLevel.textContent = data.cognitive.level === 'beginner' ? 'Lvl 1' : (data.cognitive.level === 'intermediate' ? 'Lvl 4' : 'Lvl 8');
+
+            
+
+            // Update Status
+
+            statChildStatus.textContent = risk.severity === 'high' ? 'At Risk' : (data.decision.action === 'RECOMMEND' ? 'Guided' : 'Safe');
+
+            statChildDetail.textContent = data.decision.reasoning.substring(0, 50) + '...';
+
+            statusPulse.className = `w-3 h-3 rounded-full ` + (risk.severity === 'high' ? 'bg-error' : (risk.severity === 'medium' ? 'bg-tertiary' : 'bg-secondary'));
+
+            statusPulsePing.className = `absolute inset-0 w-3 h-3 rounded-full animate-ping opacity-75 ` + (risk.severity === 'high' ? 'bg-error' : (risk.severity === 'medium' ? 'bg-tertiary' : 'bg-secondary'));
+
+            statusPulsePing.classList.remove('hidden');
+
+
+
+            // --- Separate Logs Update ---
+
+            
+
+            // Update Vision Log
+
+            if (visionLog.querySelector('p.italic')) visionLog.innerHTML = '';
+
+            const visionEntry = document.createElement('div');
+
+            visionEntry.className = 'p-3 bg-slate-50 rounded-lg border-l-2 border-primary animate-in fade-in slide-in-from-right-2';
+
+            visionEntry.innerHTML = `
+
+                <p class="font-bold text-primary mb-1">Observation</p>
+
+                <p class="text-on-surface-variant leading-tight">${data.vision.risk_hint}</p>
+
+                <p class="text-[10px] text-slate-400 mt-2 font-mono">${new Date().toLocaleTimeString()}</p>
+
+            `;
+
+            visionLog.prepend(visionEntry);
+
+
+
+            // Add alert for all risk levels (for complete history tracking)
+            if (data.risk && data.risk.severity) {
+                addAlert({
+                    time: new Date().toLocaleString(),
+                    severity: data.risk.severity.toUpperCase(),
+                    action: data.decision?.action || 'Monitor',
+                    reasoning: data.decision?.reasoning || data.vision?.risk_hint || 'Risk analysis completed'
+                });
+            }
+
+            // Update Insights
+
+            if (data.recommendations && data.recommendations.length > 0) {
+
+                activitySuggestion.textContent = data.recommendations[0];
+
+                activitySuggestion.classList.remove('italic');
+
+                if (data.recommendations.length > 1) {
+
+                    parentTip.textContent = data.recommendations[1];
+
+                    parentTip.classList.remove('italic');
+
+                }
+
+            }
+
+
+
+            // Update Overlays
+
+            updateOverlays(data.vision.detections || []);
+
+        };
+
+
+
+        const updateOverlays = (detections) => {
+
+            aiOverlays.innerHTML = '';
+
+            detections.forEach((det) => {
+
+                const obj = det.label || 'object';
+
+                const lower = obj.toLowerCase();
+
+                const color = lower.includes('knife') || lower.includes('stove') ? 'error' : 'secondary';
+
+
+
+                if (Array.isArray(det.box) && det.box.length === 4) {
+
+                    const xmin = det.box[0];
+
+                    const ymin = det.box[1];
+
+                    const xmax = det.box[2];
+
+                    const ymax = det.box[3];
+
+
+
+                    const overlay = document.createElement('div');
+
+                    overlay.className = `absolute border-2 border-${color} rounded-xl`;
+
+                    overlay.style.top = `${ymin * 100}%`;
+
+                    overlay.style.left = `${xmin * 100}%`;
+
+                    overlay.style.width = `${(xmax - xmin) * 100}%`;
+
+                    overlay.style.height = `${(ymax - ymin) * 100}%`;
+
+
+
+                    overlay.innerHTML = `
+
+                        <span class="absolute -top-6 left-0 bg-${color} text-white text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-widest whitespace-nowrap">${obj}</span>
+
+                    `;
+
+                    aiOverlays.appendChild(overlay);
+
+                    return;
+
+                }
+
+
+
                 const locationChip = document.createElement('div');
+
                 locationChip.className = `absolute bg-${color}/90 text-white text-[10px] px-2 py-1 rounded-full font-bold uppercase tracking-widest`;
+
                 locationChip.textContent = `${obj} ${det.location ? `(${det.location})` : ''}`;
 
+
+
                 const location = (det.location || '').toLowerCase();
+
                 if (location.includes('top')) {
+
                     locationChip.style.top = '8%';
+
                 } else if (location.includes('bottom')) {
+
                     locationChip.style.top = '85%';
+
                 } else {
+
                     locationChip.style.top = '48%';
+
                 }
+
+
 
                 if (location.includes('left')) {
+
                     locationChip.style.left = '8%';
+
                 } else if (location.includes('right')) {
+
                     locationChip.style.left = '72%';
+
                 } else {
+
                     locationChip.style.left = '40%';
+
                 }
+
+
 
                 aiOverlays.appendChild(locationChip);
+
             });
+
         };
+
+
 
         const toggleWebcam = async () => {
+
             if (isWebcamActive) {
+
                 // Stop webcam
+
                 if (webcamStream) {
+
                     webcamStream.getTracks().forEach(track => track.stop());
+
                 }
+
                 webcamVideo.classList.add('hidden');
+
                 cameraFeedImg.classList.remove('hidden');
+
                 btnWebcam.querySelector('span').textContent = 'linked_camera';
+
                 btnWebcam.querySelector('span:last-child').textContent = 'Use My Camera';
+
                 isWebcamActive = false;
+
             } else {
+
                 // Start webcam
+
                 try {
+
                     webcamStream = await navigator.mediaDevices.getUserMedia({ video: { width: 1280, height: 720 } });
+
                     webcamVideo.srcObject = webcamStream;
+
                     webcamVideo.classList.remove('hidden');
+
                     cameraFeedImg.classList.add('hidden');
+
                     btnWebcam.querySelector('span').textContent = 'videocam_off';
+
                     btnWebcam.querySelector('span:last-child').textContent = 'Stop Camera';
+
                     isWebcamActive = true;
+
                 } catch (err) {
+
                     console.error('Error accessing webcam:', err);
+
                     alert('Could not access webcam. Please check permissions.');
+
                 }
+
             }
+
         };
+
+
 
         const toggleAudio = async () => {
+
             if (isRecording) {
+
                 mediaRecorder.stop();
+
                 btnAudio.querySelector('span').textContent = 'mic';
+
                 btnAudio.querySelector('span:last-child').textContent = 'Record Audio';
+
                 btnAudio.classList.remove('bg-red-500', 'text-white');
+
                 if (window.GuardianAssistantChat && typeof window.GuardianAssistantChat.pushDebug === 'function') {
+
                     window.GuardianAssistantChat.pushDebug('Black-box record button stopped recording.');
+
                     window.GuardianAssistantChat.setDebugBadge('Processing', 'active');
+
                 }
+
                 isRecording = false;
+
             } else {
+
                 try {
+
                     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
                     mediaRecorder = new MediaRecorder(stream);
+
                     audioChunks = [];
+
                     if (window.GuardianAssistantChat && typeof window.GuardianAssistantChat.pushDebug === 'function') {
+
                         window.GuardianAssistantChat.pushDebug('Black-box record button started microphone capture.');
+
                         window.GuardianAssistantChat.setDebugBadge('Recording', 'active');
+
                     }
+
                     
+
                     mediaRecorder.ondataavailable = (e) => {
+
                         audioChunks.push(e.data);
+
                     };
+
+
 
                     mediaRecorder.onstop = async () => {
+
                         const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+
                         const reader = new FileReader();
+
                         reader.readAsDataURL(audioBlob);
+
                         reader.onloadend = () => {
+
                             if (window.GuardianAssistantChat && typeof window.GuardianAssistantChat.pushDebug === 'function') {
+
                                 window.GuardianAssistantChat.pushDebug(`Black-box audio converted to data URL (${audioBlob.size} bytes).`);
+
                             }
+
                             if (window.GuardianAssistantChat && typeof window.GuardianAssistantChat.sendChatMessage === 'function') {
+
                                 window.GuardianAssistantChat.sendChatMessage(null, reader.result);
+
                             }
+
                         };
+
                     };
 
+
+
                     mediaRecorder.start();
+
                     btnAudio.querySelector('span').textContent = 'stop_circle';
+
                     btnAudio.querySelector('span:last-child').textContent = 'Stop Recording';
+
                     btnAudio.classList.add('bg-red-500', 'text-white');
+
                     isRecording = true;
+
                 } catch (err) {
+
                     console.error('Error accessing microphone:', err);
+
                     if (window.GuardianAssistantChat && typeof window.GuardianAssistantChat.pushDebug === 'function') {
+
                         window.GuardianAssistantChat.pushDebug(`Black-box microphone access failed: ${err?.message || err}`);
+
                         window.GuardianAssistantChat.setDebugBadge('Mic error', 'error');
+
                     }
+
                     alert('Could not access microphone.');
+
                 }
+
             }
+
         };
+
+
 
         const captureAndAnalyze = async () => {
+
             if (!isWebcamActive) {
+
                 alert('Please start the camera first.');
+
                 return;
+
             }
+
+
 
             btnWebcam.disabled = true;
+
             btnWebcam.querySelector('span').classList.add('animate-spin');
 
+
+
             // Capture frame from video to canvas
+
             captureCanvas.width = webcamVideo.videoWidth;
+
             captureCanvas.height = webcamVideo.videoHeight;
+
             const ctx = captureCanvas.getContext('2d');
+
             ctx.drawImage(webcamVideo, 0, 0);
+
             
+
             // Convert to base64
+
             const imageData = captureCanvas.toDataURL('image/jpeg', 0.8);
 
+
+
             try {
+
                 const response = await fetch('/analyze', {
+
                     method: 'POST',
+
                     headers: { 'Content-Type': 'application/json' },
+
                     body: JSON.stringify({
+
                         image_data: imageData,
+
                         child_id: "child_001"
+
                     })
+
                 });
+
                 if (!response.ok) throw new Error('Analysis failed');
+
             } catch (err) {
+
                 console.error('Analysis error:', err);
+
                 alert('Analysis failed. Make sure the server is running.');
+
             } finally {
+
                 btnWebcam.disabled = false;
+
                 btnWebcam.querySelector('span').classList.remove('animate-spin');
+
             }
+
         };
+
+
 
         const simulateCamera = async () => {
+
             if (isWebcamActive) {
+
                 // If webcam is active, the simulate button acts as "Analyze Current Frame"
+
                 await captureAndAnalyze();
+
                 return;
+
             }
+
             
+
             btnSimulate.disabled = true;
+
             btnSimulate.querySelector('span').classList.add('animate-spin');
+
             
+
             const scenarios = [
+
                 { path: "kitchen_danger.jpg", id: "child_001" },
+
                 { path: "playroom_safe.jpg", id: "child_001" },
+
                 { path: "kitchen_curiosity.jpg", id: "child_002" }
+
             ];
+
             const randomScenario = scenarios[Math.floor(Math.random() * scenarios.length)];
 
+
+
             try {
+
                 const response = await fetch('/analyze', {
+
                     method: 'POST',
+
                     headers: { 'Content-Type': 'application/json' },
+
                     body: JSON.stringify({
+
                         image_path: randomScenario.path,
+
                         child_id: randomScenario.id
+
                     })
+
                 });
+
                 if (!response.ok) throw new Error('Simulation failed');
+
             } catch (err) {
+
                 console.error('Simulation error:', err);
+
                 alert('Simulation failed. Make sure the server is running.');
+
             } finally {
+
                 btnSimulate.disabled = false;
+
                 btnSimulate.querySelector('span').classList.remove('animate-spin');
+
+            }
+
+        };
+
+
+
+        btnSimulate.addEventListener('click', simulateCamera);
+
+        btnWebcam.addEventListener('click', toggleWebcam);
+
+        btnAudio.addEventListener('click', toggleAudio);
+
+
+
+        // ========== BREADBOARD READINGS FUNCTIONALITY ==========
+
+        let bbData = [];
+
+        let bbSortCol = 'timestamp';
+
+        let bbSortDesc = true;
+
+        let bbSelectedId = null;
+
+        let bbInitialized = false;
+
+        let firebaseApp = null;
+
+        let firebaseDbRef = null;
+
+
+
+        // Firebase configuration
+
+        const FIREBASE_CONFIG = {
+
+            databaseURL: 'https://ieee-86516-default-rtdb.firebaseio.com'
+
+        };
+
+
+
+        // Initialize Firebase with SDK and real-time onValue listener
+
+        const initBreadboard = () => {
+
+            if (bbInitialized) return;
+
+            bbInitialized = true;
+
+
+
+            document.getElementById('bb-status-dot').className = 'w-2 h-2 rounded-full bg-tertiary animate-pulse';
+
+            document.getElementById('bb-status-text').textContent = 'Connecting...';
+
+            document.getElementById('bb-status-text').className = 'text-xs font-bold uppercase tracking-widest text-tertiary';
+
+
+
+            try {
+
+                // Initialize Firebase app if not already initialized
+
+                if (!firebase.apps.length) {
+
+                    firebaseApp = firebase.initializeApp(FIREBASE_CONFIG);
+
+                } else {
+
+                    firebaseApp = firebase.apps[0];
+
+                }
+
+
+
+                // Set up real-time listener with onValue
+
+                const db = firebase.database();
+
+                firebaseDbRef = db.ref('breadboard_readings');
+
+
+
+                // Use onValue for real-time updates
+
+                firebaseDbRef.on('value', (snapshot) => {
+
+                    const data = snapshot.val();
+
+                    handleFirebaseData(data);
+
+                }, (error) => {
+
+                    console.error('Firebase onValue error:', error);
+
+                    document.getElementById('bb-status-dot').className = 'w-2 h-2 rounded-full bg-error';
+
+                    document.getElementById('bb-status-text').textContent = 'Error';
+
+                    document.getElementById('bb-status-text').className = 'text-xs font-bold uppercase tracking-widest text-error';
+
+                    // Fallback to REST API polling
+
+                    setupRestApiFallback();
+
+                });
+
+
+
+                document.getElementById('bb-status-dot').className = 'w-2 h-2 rounded-full bg-secondary animate-pulse';
+
+                document.getElementById('bb-status-text').textContent = 'Live';
+
+                document.getElementById('bb-status-text').className = 'text-xs font-bold uppercase tracking-widest text-secondary';
+
+
+
+            } catch (err) {
+
+                console.error('Firebase SDK init error:', err);
+
+                setupRestApiFallback();
+
+            }
+
+        };
+
+
+
+        const setupRestApiFallback = () => {
+
+            const dbUrl = `${FIREBASE_CONFIG.databaseURL}/breadboard_readings.json`;
+
+            fetchWithAuth(dbUrl);
+
+            setInterval(() => fetchWithAuth(dbUrl), 5000);
+
+        };
+
+
+
+        const fetchWithAuth = async (url) => {
+
+            try {
+
+                const response = await fetch(url);
+
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+                const data = await response.json();
+
+                handleFirebaseData(data);
+
+            } catch (err) {
+
+                console.error('REST API fetch error:', err);
+
+                document.getElementById('bb-status-dot').className = 'w-2 h-2 rounded-full bg-error';
+
+                document.getElementById('bb-status-text').textContent = 'Error';
+
+                document.getElementById('bb-status-text').className = 'text-xs font-bold uppercase tracking-widest text-error';
+
+            }
+
+        };
+
+
+
+        const handleFirebaseData = (data) => {
+
+            if (data) {
+
+                bbData = Object.entries(data).map(([id, record]) => ({
+
+                    id,
+
+                    // Map Firebase snake_case fields to camelCase expected by the UI
+
+                    voltage: record.voltage_V || record.voltage || 0,
+
+                    current: record.current_A || record.current || 0,
+
+                    power: record.power_W || record.power || 0,
+
+                    dIdt: record.dI_dt || record.dIdt || 0,
+
+                    dVdt: record.dV_dt || record.dVdt || 0,
+
+                    stability: record.stability || record.stability_score || 0,
+
+                    timestamp: record.timestamp || Date.now()
+
+                }));
+
+
+
+                document.getElementById('bb-status-dot').className = 'w-2 h-2 rounded-full bg-secondary animate-pulse';
+
+                document.getElementById('bb-status-text').textContent = 'Live';
+
+                document.getElementById('bb-status-text').className = 'text-xs font-bold uppercase tracking-widest text-secondary';
+
+
+
+                renderTable();
+
+                updateMetrics();
+
+                // Delay chart rendering to ensure React is ready
+
+                setTimeout(() => {
+
+                    try {
+
+                        renderCharts();
+
+                    } catch (e) {
+
+                        console.error('Chart rendering failed:', e);
+
+                    }
+
+                }, 500);
+
+            } else {
+
+                bbData = [];
+
+                renderTable();
+
+            }
+
+        };
+
+
+
+        const getStabilityBadge = (stability) => {
+
+            if (stability >= 0.7) {
+
+                return { text: 'Stable', class: 'bg-secondary-container text-on-secondary-container' };
+
+            } else if (stability >= 0.45) {
+
+                return { text: 'Warning', class: 'bg-tertiary-fixed text-on-tertiary-fixed-variant' };
+
+            } else {
+
+                return { text: 'Critical', class: 'bg-error-container text-error' };
+
+            }
+
+        };
+
+
+
+        const formatTimestamp = (ts) => {
+
+            const date = new Date(ts);
+
+            return date.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+
+        };
+
+
+
+        const sortTable = (col) => {
+
+            if (bbSortCol === col) {
+
+                bbSortDesc = !bbSortDesc;
+
+            } else {
+
+                bbSortCol = col;
+
+                bbSortDesc = true;
+
+            }
+
+            renderTable();
+
+        };
+
+        window.sortTable = sortTable;
+
+
+
+        const selectRow = (id) => {
+
+            bbSelectedId = bbSelectedId === id ? null : id;
+
+            renderTable();
+
+            renderCharts();
+
+        };
+
+        window.selectRow = selectRow;
+
+
+
+        const renderTable = () => {
+
+            const tbody = document.getElementById('bb-table-body');
+
+            const recordCount = document.getElementById('bb-record-count');
+
+
+
+            if (bbData.length === 0) {
+
+                tbody.innerHTML = `
+
+                    <tr>
+
+                        <td colspan="8" class="px-6 py-12 text-center text-slate-400">
+
+                            <span class="material-symbols-outlined text-4xl text-slate-200 mb-2">memory</span>
+
+                            <p>No data available</p>
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+                recordCount.textContent = '0 records';
+
+                return;
+
+            }
+
+
+
+            recordCount.textContent = `${bbData.length} records`;
+
+
+
+            const sorted = [...bbData].sort((a, b) => {
+
+                let aVal = a[bbSortCol] || 0;
+
+                let bVal = b[bbSortCol] || 0;
+
+                if (typeof aVal === 'string') aVal = aVal.toLowerCase();
+
+                if (typeof bVal === 'string') bVal = bVal.toLowerCase();
+
+                if (bbSortDesc) return aVal > bVal ? -1 : 1;
+
+                return aVal > bVal ? 1 : -1;
+
+            });
+
+
+
+            tbody.innerHTML = sorted.map((row) => {
+
+                const badge = getStabilityBadge(row.stability || 0);
+
+                const isSelected = row.id === bbSelectedId;
+
+                return `
+
+                    <tr class="border-b border-slate-50 hover:bg-slate-50/50 transition-colors cursor-pointer ${isSelected ? 'bg-primary-fixed/30' : ''}" 
+
+                        onclick="selectRow('${row.id}')">
+
+                        <td class="px-4 py-3 text-xs font-medium text-on-surface">${row.id.substring(0, 8)}...</td>
+
+                        <td class="px-4 py-3 text-xs text-on-surface-variant">${(row.voltage || 0).toFixed(2)}</td>
+
+                        <td class="px-4 py-3 text-xs text-on-surface-variant">${(row.current || 0).toFixed(3)}</td>
+
+                        <td class="px-4 py-3 text-xs font-bold text-on-surface">${(row.power || 0).toFixed(2)}</td>
+
+                        <td class="px-4 py-3 text-xs text-on-surface-variant">${(row.dIdt || 0).toFixed(4)}</td>
+
+                        <td class="px-4 py-3 text-xs text-on-surface-variant">${(row.dVdt || 0).toFixed(4)}</td>
+
+                        <td class="px-4 py-3">
+
+                            <span class="px-2 py-1 rounded-full text-[10px] font-bold uppercase ${badge.class}">${badge.text}</span>
+
+                        </td>
+
+                        <td class="px-4 py-3 text-xs text-slate-400">${formatTimestamp(row.timestamp)}</td>
+
+                    </tr>
+
+                `;
+
+            }).join('');
+
+        };
+
+
+
+        const updateMetrics = () => {
+
+            if (bbData.length === 0) return;
+
+
+
+            const avgStability = bbData.reduce((sum, r) => sum + (r.stability || 0), 0) / bbData.length;
+
+            const peakPower = Math.max(...bbData.map(r => r.power || 0));
+
+            const avgVoltage = bbData.reduce((sum, r) => sum + (r.voltage || 0), 0) / bbData.length;
+
+
+
+            document.getElementById('bb-avg-stability').textContent = avgStability.toFixed(2);
+
+            document.getElementById('bb-peak-power').textContent = peakPower.toFixed(2);
+
+            document.getElementById('bb-avg-voltage').textContent = avgVoltage.toFixed(2);
+
+
+
+            const badge = getStabilityBadge(avgStability);
+
+            const badgeEl = document.getElementById('bb-stability-badge');
+
+            badgeEl.textContent = badge.text;
+
+            badgeEl.className = `px-2 py-1 rounded-full text-[10px] font-bold uppercase ${badge.class}`;
+
+
+
+            const maxPower = 100;
+
+            const powerPct = Math.min((peakPower / maxPower) * 100, 100);
+
+            document.getElementById('bb-power-bar').style.width = `${powerPct}%`;
+
+        };
+
+
+
+        // Chart.js fallback for breadboard charts
+        const renderChartsChartJs = () => {
+            if (bbData.length === 0 || typeof Chart === 'undefined') return;
+
+            const data = bbData.slice(-20).map((r, i) => ({
+                name: `Exp${i + 1}`,
+                voltage: r.voltage || 0,
+                current: r.current || 0,
+                power: r.power || 0,
+                dIdt: r.dIdt || 0,
+                dVdt: r.dVdt || 0,
+                stability: ((r.stability || 0) * 100).toFixed(1)
+            }));
+
+            const commonOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { labels: { font: { size: 10 } } }
+                },
+                scales: {
+                    x: { ticks: { font: { size: 10 } } },
+                    y: { ticks: { font: { size: 10 } } }
+                }
+            };
+
+            // Helper to create canvas in a container
+            const createCanvas = (containerId) => {
+                const container = document.getElementById(containerId);
+                if (!container) return null;
+                // Clear existing content
+                container.innerHTML = '';
+                // Create canvas
+                const canvas = document.createElement('canvas');
+                canvas.style.width = '100%';
+                canvas.style.height = '100%';
+                container.appendChild(canvas);
+                return canvas.getContext('2d');
+            };
+
+            // Line Chart - Voltage & Current
+            const lineCtx = createCanvas('bb-chart-line');
+            if (lineCtx) {
+                new Chart(lineCtx, {
+                    type: 'line',
+                    data: {
+                        labels: data.map(d => d.name),
+                        datasets: [
+                            { label: 'Voltage', data: data.map(d => d.voltage), borderColor: '#0058bc', tension: 0.4 },
+                            { label: 'Current', data: data.map(d => d.current), borderColor: '#006e28', tension: 0.4 }
+                        ]
+                    },
+                    options: commonOptions
+                });
+            }
+
+            // Bar Chart - Power
+            const barCtx = createCanvas('bb-chart-bar');
+            if (barCtx) {
+                new Chart(barCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: data.map(d => d.name),
+                        datasets: [{ label: 'Power', data: data.map(d => d.power), backgroundColor: '#006e28' }]
+                    },
+                    options: commonOptions
+                });
+            }
+
+            // Grouped Bar Chart - dI/dt vs dV/dt
+            const groupedCtx = createCanvas('bb-chart-grouped');
+            if (groupedCtx) {
+                new Chart(groupedCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: data.map(d => d.name),
+                        datasets: [
+                            { label: 'dI/dt', data: data.map(d => d.dIdt), backgroundColor: '#0058bc' },
+                            { label: 'dV/dt', data: data.map(d => d.dVdt), backgroundColor: '#745b00' }
+                        ]
+                    },
+                    options: {
+                        ...commonOptions,
+                        scales: {
+                            x: { stacked: false },
+                            y: { stacked: false }
+                        }
+                    }
+                });
+            }
+
+            // Radar Chart - Stability
+            const radarCtx = createCanvas('bb-chart-radar');
+            if (radarCtx) {
+                new Chart(radarCtx, {
+                    type: 'radar',
+                    data: {
+                        labels: data.slice(0, 8).map(d => d.name),
+                        datasets: [{
+                            label: 'Stability %',
+                            data: data.slice(0, 8).map(d => d.stability),
+                            backgroundColor: 'rgba(0, 88, 188, 0.3)',
+                            borderColor: '#0058bc'
+                        }]
+                    },
+                    options: { ...commonOptions, scales: { r: { beginAtZero: true, max: 100 } } }
+                });
+            }
+
+            // Multi-line chart - normalized
+            const multiCtx = createCanvas('bb-chart-multi');
+            if (multiCtx) {
+                const maxVals = {
+                    voltage: Math.max(...data.map(d => d.voltage), 1),
+                    current: Math.max(...data.map(d => d.current), 1),
+                    power: Math.max(...data.map(d => d.power), 1)
+                };
+                new Chart(multiCtx, {
+                    type: 'line',
+                    data: {
+                        labels: data.map(d => d.name),
+                        datasets: [
+                            { label: 'Voltage %', data: data.map(d => (d.voltage / maxVals.voltage * 100).toFixed(1)), borderColor: '#0058bc', tension: 0.4 },
+                            { label: 'Current %', data: data.map(d => (d.current / maxVals.current * 100).toFixed(1)), borderColor: '#006e28', tension: 0.4 },
+                            { label: 'Power %', data: data.map(d => (d.power / maxVals.power * 100).toFixed(1)), borderColor: '#745b00', tension: 0.4 },
+                            { label: 'Stability %', data: data.map(d => d.stability), borderColor: '#d0a600', tension: 0.4 }
+                        ]
+                    },
+                    options: { ...commonOptions, scales: { ...commonOptions.scales, y: { ...commonOptions.scales.y, min: 0, max: 100 } } }
+                });
             }
         };
 
-        btnSimulate.addEventListener('click', simulateCamera);
-        btnWebcam.addEventListener('click', toggleWebcam);
-        btnAudio.addEventListener('click', toggleAudio);
+        const renderCharts = () => {
+
+            if (bbData.length === 0) {
+
+                console.log('No data to render charts');
+
+                return;
+
+            }
+
+            
+            // Use Chart.js fallback if Recharts not available
+            if (typeof Recharts === 'undefined' && typeof Chart !== 'undefined') {
+                console.log('Using Chart.js fallback for breadboard charts');
+                renderChartsChartJs();
+                return;
+            }
+
+            if (typeof Recharts === 'undefined') {
+
+                console.log('Recharts not loaded yet, retrying...');
+
+                setTimeout(renderCharts, 1000);
+
+                return;
+
+            }
+
+
+
+            const { LineChart, Line, BarChart, Bar, RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis, 
+
+                    XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } = Recharts;
+
+            
+
+            // Check if containers exist
+
+            const containers = ['bb-chart-line', 'bb-chart-bar', 'bb-chart-grouped', 'bb-chart-radar', 'bb-chart-multi'];
+
+            const missing = containers.filter(id => !document.getElementById(id));
+
+            if (missing.length > 0) {
+
+                console.log('Chart containers not found:', missing);
+
+                return;
+
+            }
+
+
+
+            const data = bbData.slice(-20).map((r, i) => ({
+
+                name: `Exp${i + 1}`,
+
+                voltage: r.voltage || 0,
+
+                current: r.current || 0,
+
+                power: r.power || 0,
+
+                dIdt: r.dIdt || 0,
+
+                dVdt: r.dVdt || 0,
+
+                stability: ((r.stability || 0) * 100).toFixed(1),
+
+                id: r.id,
+
+                isSelected: r.id === bbSelectedId
+
+            }));
+
+
+
+            // Line Chart - Voltage & Current
+
+            const lineChart = React.createElement(ResponsiveContainer, { width: '100%', height: '100%' },
+
+                React.createElement(LineChart, { data }, [
+
+                    React.createElement(CartesianGrid, { strokeDasharray: '3 3', stroke: '#e2e2e7' }),
+
+                    React.createElement(XAxis, { dataKey: 'name', tick: { fontSize: 10 } }),
+
+                    React.createElement(YAxis, { tick: { fontSize: 10 } }),
+
+                    React.createElement(Tooltip, { contentStyle: { borderRadius: 8, border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' } }),
+
+                    React.createElement(Legend, { wrapperStyle: { fontSize: 10 } }),
+
+                    React.createElement(Line, { type: 'monotone', dataKey: 'voltage', stroke: '#0058bc', strokeWidth: 2, dot: { r: 3 } }),
+
+                    React.createElement(Line, { type: 'monotone', dataKey: 'current', stroke: '#006e28', strokeWidth: 2, dot: { r: 3 } })
+
+                ])
+
+            );
+
+
+
+            // Bar Chart - Power
+
+            const barChart = React.createElement(ResponsiveContainer, { width: '100%', height: '100%' },
+
+                React.createElement(BarChart, { data }, [
+
+                    React.createElement(CartesianGrid, { strokeDasharray: '3 3', stroke: '#e2e2e7' }),
+
+                    React.createElement(XAxis, { dataKey: 'name', tick: { fontSize: 10 } }),
+
+                    React.createElement(YAxis, { tick: { fontSize: 10 } }),
+
+                    React.createElement(Tooltip, { contentStyle: { borderRadius: 8, border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' } }),
+
+                    React.createElement(Bar, { dataKey: 'power', fill: '#006e28', radius: [4, 4, 0, 0] })
+
+                ])
+
+            );
+
+
+
+            // Grouped Bar Chart - dI/dt vs dV/dt
+
+            const groupedChart = React.createElement(ResponsiveContainer, { width: '100%', height: '100%' },
+
+                React.createElement(BarChart, { data }, [
+
+                    React.createElement(CartesianGrid, { strokeDasharray: '3 3', stroke: '#e2e2e7' }),
+
+                    React.createElement(XAxis, { dataKey: 'name', tick: { fontSize: 10 } }),
+
+                    React.createElement(YAxis, { tick: { fontSize: 10 } }),
+
+                    React.createElement(Tooltip, { contentStyle: { borderRadius: 8, border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' } }),
+
+                    React.createElement(Legend, { wrapperStyle: { fontSize: 10 } }),
+
+                    React.createElement(Bar, { dataKey: 'dIdt', fill: '#0058bc', radius: [2, 2, 0, 0] }),
+
+                    React.createElement(Bar, { dataKey: 'dVdt', fill: '#745b00', radius: [2, 2, 0, 0] })
+
+                ])
+
+            );
+
+
+
+            // Radar Chart - Stability
+
+            const radarData = data.map(d => ({
+
+                subject: d.name,
+
+                stability: parseFloat(d.stability),
+
+                fullMark: 100
+
+            }));
+
+            const radarChart = React.createElement(ResponsiveContainer, { width: '100%', height: '100%' },
+
+                React.createElement(RadarChart, { data: radarData }, [
+
+                    React.createElement(PolarGrid, { stroke: '#e2e2e7' }),
+
+                    React.createElement(PolarAngleAxis, { dataKey: 'subject', tick: { fontSize: 8 } }),
+
+                    React.createElement(PolarRadiusAxis, { angle: 90, domain: [0, 100], tick: { fontSize: 8 } }),
+
+                    React.createElement(Radar, { name: 'Stability %', dataKey: 'stability', stroke: '#0058bc', fill: '#0058bc', fillOpacity: 0.3 }),
+
+                    React.createElement(Tooltip, { contentStyle: { borderRadius: 8, border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' } })
+
+                ])
+
+            );
+
+
+
+            // Multi-line chart - normalized overview
+
+            const maxVals = {
+
+                voltage: Math.max(...data.map(d => d.voltage), 1),
+
+                current: Math.max(...data.map(d => d.current), 1),
+
+                power: Math.max(...data.map(d => d.power), 1),
+
+                stability: 100
+
+            };
+
+            const normalizedData = data.map(d => ({
+
+                name: d.name,
+
+                voltage: (d.voltage / maxVals.voltage * 100).toFixed(1),
+
+                current: (d.current / maxVals.current * 100).toFixed(1),
+
+                power: (d.power / maxVals.power * 100).toFixed(1),
+
+                stability: d.stability
+
+            }));
+
+
+
+            const multiChart = React.createElement(ResponsiveContainer, { width: '100%', height: '100%' },
+
+                React.createElement(LineChart, { data: normalizedData }, [
+
+                    React.createElement(CartesianGrid, { strokeDasharray: '3 3', stroke: '#e2e2e7' }),
+
+                    React.createElement(XAxis, { dataKey: 'name', tick: { fontSize: 10 } }),
+
+                    React.createElement(YAxis, { domain: [0, 100], tick: { fontSize: 10 } }),
+
+                    React.createElement(Tooltip, { contentStyle: { borderRadius: 8, border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' } }),
+
+                    React.createElement(Legend, { wrapperStyle: { fontSize: 10 } }),
+
+                    React.createElement(Line, { type: 'monotone', dataKey: 'voltage', stroke: '#0058bc', strokeWidth: 2, dot: { r: 2 } }),
+
+                    React.createElement(Line, { type: 'monotone', dataKey: 'current', stroke: '#006e28', strokeWidth: 2, dot: { r: 2 } }),
+
+                    React.createElement(Line, { type: 'monotone', dataKey: 'power', stroke: '#745b00', strokeWidth: 2, dot: { r: 2 } }),
+
+                    React.createElement(Line, { type: 'monotone', dataKey: 'stability', stroke: '#d0a600', strokeWidth: 2, dot: { r: 2 } })
+
+                ])
+
+            );
+
+
+
+            // Render charts using legacy ReactDOM.render for Recharts compatibility
+
+            ReactDOM.render(lineChart, document.getElementById('bb-chart-line'));
+
+            ReactDOM.render(barChart, document.getElementById('bb-chart-bar'));
+
+            ReactDOM.render(groupedChart, document.getElementById('bb-chart-grouped'));
+
+            ReactDOM.render(radarChart, document.getElementById('bb-chart-radar'));
+
+            ReactDOM.render(multiChart, document.getElementById('bb-chart-multi'))
+
+        };
+
+
+
+        // ========== REPORTING & COMMUNICATION HISTORY FUNCTIONALITY ==========
+
+        // Load communication history from localStorage
+
+        const loadCommHistoryFromStorage = () => {
+
+            try {
+
+                const stored = localStorage.getItem(STORAGE_KEYS.COMM_HISTORY);
+
+                if (stored) {
+
+                    const parsed = JSON.parse(stored);
+
+                    // Convert timestamp strings back to Date objects
+
+                    return parsed.map(r => ({ ...r, timestamp: new Date(r.timestamp) }));
+
+                }
+
+            } catch (e) {
+
+                console.error('Failed to load comm history from storage:', e);
+
+            }
+
+            // Default sample data
+
+            return [
+
+                { id: 1, timestamp: new Date(Date.now() - 300000), type: 'chat', agent: 'Jais LLM', input: 'Is the child safe?', response: 'Yes, the child appears to be in a safe environment.', latency: 245 },
+
+                { id: 2, timestamp: new Date(Date.now() - 600000), type: 'vision', agent: 'VLM', input: 'Image analysis request', response: 'No hazardous objects detected in the scene.', latency: 389 },
+
+                { id: 3, timestamp: new Date(Date.now() - 900000), type: 'voice', agent: 'Whisper STT', input: 'Voice input detected', response: 'Transcription successful: "Hello"', latency: 156 },
+
+                { id: 4, timestamp: new Date(Date.now() - 1200000), type: 'analysis', agent: 'Risk Analyzer', input: 'Scene context evaluation', response: 'Risk level: LOW (0.23)', latency: 98 },
+
+                { id: 5, timestamp: new Date(Date.now() - 1500000), type: 'chat', agent: 'Orpheus TTS', input: 'Generate audio response', response: 'Audio file generated successfully', latency: 432 }
+
+            ];
+
+        };
+
+
+
+        // Save communication history to localStorage
+
+        const saveCommHistoryToStorage = (history) => {
+
+            try {
+
+                localStorage.setItem(STORAGE_KEYS.COMM_HISTORY, JSON.stringify(history));
+
+            } catch (e) {
+
+                console.error('Failed to save comm history to storage:', e);
+
+            }
+
+        };
+
+
+
+        // Main addCommRecord function with localStorage
+
+        const addCommRecord = (type, agent, input, response, latencyMs) => {
+
+            const record = {
+
+                id: Date.now(),
+
+                timestamp: new Date(),
+
+                type: type || 'chat',
+
+                agent: agent || 'LLM',
+
+                input: input ? (input.length > 50 ? input.substring(0, 50) + '...' : input) : '',
+
+                response: response ? (response.length > 100 ? response.substring(0, 100) + '...' : response) : '',
+
+                latency: latencyMs || Math.floor(Math.random() * 400) + 100
+
+            };
+
+            commHistoryData.unshift(record);
+
+            if (commHistoryData.length > 100) commHistoryData.pop();
+
+            saveCommHistoryToStorage(commHistoryData);
+
+            renderCommHistory();
+
+        };
+
+
+
+        let commHistoryData = loadCommHistoryFromStorage();
+
+        let commFilter = 'all';
+
+        
+
+        // Load metrics from storage or use defaults
+
+        const loadMetricsFromStorage = () => {
+
+            try {
+
+                const stored = localStorage.getItem(STORAGE_KEYS.REPORT_METRICS);
+
+                if (stored) return JSON.parse(stored);
+
+            } catch (e) {
+
+                console.error('Failed to load metrics from storage:', e);
+
+            }
+
+            return { totalAlerts: 0, highRisk: 0, avgScore: 100, monitoringHours: 0 };
+
+        };
+
+        
+
+        let reportMetrics = loadMetricsFromStorage();
+
+
+
+        // Communication History Functions
+
+        window.filterComms = (filter) => {
+
+            commFilter = filter;
+
+            renderCommHistory();
+
+        };
+
+
+
+
+
+
+        const renderCommHistory = () => {
+
+            const tbody = document.getElementById('comm-history-table-body');
+
+            if (!tbody) return;
+
+
+
+            let filtered = commHistoryData;
+
+            if (commFilter !== 'all') {
+
+                filtered = commHistoryData.filter(r => r.type === commFilter);
+
+            }
+
+
+
+            if (filtered.length === 0) {
+
+                tbody.innerHTML = `
+
+                    <tr>
+
+                        <td colspan="6" class="px-6 py-12 text-center text-slate-400">
+
+                            <span class="material-symbols-outlined text-4xl text-slate-200 mb-2">chat_bubble_outline</span>
+
+                            <p>No communication history</p>
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+                return;
+
+            }
+
+
+
+            tbody.innerHTML = filtered.map(r => {
+
+                const typeColors = {
+
+                    vision: 'bg-primary text-white',
+
+                    chat: 'bg-secondary-container text-on-secondary-container',
+
+                    voice: 'bg-tertiary-fixed text-on-tertiary-fixed-variant',
+
+                    analysis: 'bg-surface-container-high text-slate-600'
+
+                };
+
+                const typeClass = typeColors[r.type] || 'bg-slate-100 text-slate-600';
+
+                return `
+
+                    <tr class="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
+
+                        <td class="px-4 py-3 text-xs text-slate-400">${r.timestamp.toLocaleTimeString()}</td>
+
+                        <td class="px-4 py-3"><span class="px-2 py-1 rounded-full text-[10px] font-bold uppercase ${typeClass}">${r.type}</span></td>
+
+                        <td class="px-4 py-3 text-xs font-medium">${r.agent}</td>
+
+                        <td class="px-4 py-3 text-xs text-slate-500 max-w-xs truncate">${r.input}</td>
+
+                        <td class="px-4 py-3 text-xs text-slate-500 max-w-xs truncate">${r.response}</td>
+
+                        <td class="px-4 py-3 text-xs text-slate-400">${r.latency}ms</td>
+
+                    </tr>
+
+                `;
+
+            }).join('');
+
+        };
+
+
+
+        // Report Functions
+
+        window.generateReport = () => {
+
+            const report = {
+
+                timestamp: new Date().toISOString(),
+
+                metrics: reportMetrics,
+
+                commHistory: commHistoryData.slice(0, 20)
+
+            };
+
+            const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
+
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+
+            a.href = url;
+
+            a.download = `guardian-report-${new Date().toISOString().split('T')[0]}.json`;
+
+            a.click();
+
+            URL.revokeObjectURL(url);
+
+        };
+
+
+
+        const updateReportMetrics = () => {
+
+            document.getElementById('report-total-alerts').textContent = reportMetrics.totalAlerts;
+
+            document.getElementById('report-high-risk').textContent = reportMetrics.highRisk;
+
+            document.getElementById('report-avg-score').textContent = reportMetrics.avgScore + '%';
+
+            document.getElementById('report-monitoring-hours').textContent = reportMetrics.monitoringHours + 'h';
+
+        };
+
+
+
+        // Chart.js fallback for report charts
+        const renderReportChartsChartJs = () => {
+            if (typeof Chart === 'undefined') return;
+
+            // Helper to create canvas in a container
+            const createCanvas = (containerId) => {
+                const container = document.getElementById(containerId);
+                if (!container) return null;
+                // Clear existing content
+                container.innerHTML = '';
+                // Create canvas
+                const canvas = document.createElement('canvas');
+                canvas.style.width = '100%';
+                canvas.style.height = '100%';
+                container.appendChild(canvas);
+                return canvas.getContext('2d');
+            };
+
+            const alerts = loadAlertsFromStorage();
+            const highAlerts = alerts.filter(a => a.severity === 'HIGH').length;
+            const mediumAlerts = alerts.filter(a => a.severity === 'MEDIUM').length;
+            const lowAlerts = Math.max(0, alerts.length - highAlerts - mediumAlerts);
+
+            const commonOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { labels: { font: { size: 10 } } }
+                }
+            };
+
+            // Risk Distribution Pie Chart
+            const pieCtx = createCanvas('report-chart-risk');
+            if (pieCtx) {
+                new Chart(pieCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Low', 'Medium', 'High'],
+                        datasets: [{
+                            data: [lowAlerts, mediumAlerts, highAlerts],
+                            backgroundColor: ['#006e28', '#745b00', '#ba1a1a']
+                        }]
+                    },
+                    options: commonOptions
+                });
+            }
+
+            // Alert Timeline by Day
+            const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            const alertsByDay = {};
+            dayNames.forEach(d => alertsByDay[d] = 0);
+            alerts.forEach(alert => {
+                const date = new Date(alert.timestamp || Date.now());
+                const day = dayNames[date.getDay()];
+                alertsByDay[day]++;
+            });
+
+            const timelineCtx = createCanvas('report-chart-timeline');
+            if (timelineCtx) {
+                new Chart(timelineCtx, {
+                    type: 'line',
+                    data: {
+                        labels: dayNames,
+                        datasets: [{
+                            label: 'Alerts',
+                            data: dayNames.map(d => alertsByDay[d]),
+                            borderColor: '#0058bc',
+                            tension: 0.4
+                        }]
+                    },
+                    options: commonOptions
+                });
+            }
+
+            // Activity by Hour
+            const hourData = Array.from({ length: 12 }, (_, i) => ({
+                hour: `${i * 2}:00`,
+                activity: 0
+            }));
+            commHistoryData.forEach(record => {
+                const date = new Date(record.timestamp);
+                const hour = date.getHours();
+                const bucket = Math.floor(hour / 2);
+                if (bucket >= 0 && bucket < 12) {
+                    hourData[bucket].activity++;
+                }
+            });
+
+            const heatmapCtx = createCanvas('report-chart-heatmap');
+            if (heatmapCtx) {
+                new Chart(heatmapCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: hourData.map(h => h.hour),
+                        datasets: [{
+                            label: 'Activity',
+                            data: hourData.map(h => h.activity),
+                            backgroundColor: '#d0a600'
+                        }]
+                    },
+                    options: commonOptions
+                });
+            }
+
+            // Safety Score Trend
+            const recentAlerts = alerts.slice(0, 20).reverse();
+            const trendData = recentAlerts.length > 0 ? recentAlerts.map((alert, i) => {
+                const score = alert.severity === 'HIGH' ? 30 : (alert.severity === 'MEDIUM' ? 60 : 90);
+                return { session: `A${i + 1}`, score };
+            }) : [{ session: 'Start', score: 100 }];
+
+            const trendCtx = createCanvas('report-chart-trend');
+            if (trendCtx) {
+                new Chart(trendCtx, {
+                    type: 'line',
+                    data: {
+                        labels: trendData.map(t => t.session),
+                        datasets: [{
+                            label: 'Safety Score',
+                            data: trendData.map(t => t.score),
+                            borderColor: '#006e28',
+                            tension: 0.4
+                        }]
+                    },
+                    options: { ...commonOptions, scales: { y: { min: 0, max: 100 } } }
+                });
+            }
+        };
+
+        const renderReportCharts = () => {
+
+            // Use Chart.js fallback if Recharts not available
+            if (typeof Recharts === 'undefined' && typeof Chart !== 'undefined') {
+                console.log('Using Chart.js fallback for report charts');
+                renderReportChartsChartJs();
+                return;
+            }
+
+            if (typeof Recharts === 'undefined') return;
+
+            const { PieChart, Pie, Cell, LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } = Recharts;
+
+            // Get real data from storage
+            const alerts = loadAlertsFromStorage();
+            const highAlerts = alerts.filter(a => a.severity === 'HIGH').length;
+            const mediumAlerts = alerts.filter(a => a.severity === 'MEDIUM').length;
+            const lowAlerts = Math.max(0, alerts.length - highAlerts - mediumAlerts) || 1; // At least 1 for chart display
+
+            // Risk Distribution Pie Chart
+
+            const riskData = [
+
+                { name: 'Low', value: lowAlerts, color: '#006e28' },
+
+                { name: 'Medium', value: mediumAlerts, color: '#745b00' },
+
+                { name: 'High', value: highAlerts, color: '#ba1a1a' }
+
+            ];
+
+            const pieChart = React.createElement(ResponsiveContainer, { width: '100%', height: '100%' },
+
+                React.createElement(PieChart, null, [
+
+                    React.createElement(Pie, {
+
+                        data: riskData,
+
+                        cx: '50%',
+
+                        cy: '50%',
+
+                        innerRadius: 60,
+
+                        outerRadius: 80,
+
+                        paddingAngle: 5,
+
+                        dataKey: 'value'
+
+                    }, riskData.map((entry, index) => React.createElement(Cell, { key: `cell-${index}`, fill: entry.color }))),
+
+                    React.createElement(Tooltip, null),
+
+                    React.createElement(Legend, { wrapperStyle: { fontSize: 10 } })
+
+                ])
+
+            );
+
+
+
+            // Alert Timeline - Group alerts by day
+
+            const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            const alertsByDay = {};
+            dayNames.forEach(d => alertsByDay[d] = 0);
+
+            alerts.forEach(alert => {
+                const date = new Date(alert.timestamp || Date.now());
+                const day = dayNames[date.getDay()];
+                alertsByDay[day]++;
+            });
+
+            const timelineData = dayNames.map(day => ({
+                day,
+                alerts: alertsByDay[day]
+            }));
+
+            const timelineChart = React.createElement(ResponsiveContainer, { width: '100%', height: '100%' },
+
+                React.createElement(LineChart, { data: timelineData }, [
+
+                    React.createElement(CartesianGrid, { strokeDasharray: '3 3', stroke: '#e2e2e7' }),
+
+                    React.createElement(XAxis, { dataKey: 'day', tick: { fontSize: 10 } }),
+
+                    React.createElement(YAxis, { tick: { fontSize: 10 } }),
+
+                    React.createElement(Tooltip, { contentStyle: { borderRadius: 8 } }),
+
+                    React.createElement(Line, { type: 'monotone', dataKey: 'alerts', stroke: '#0058bc', strokeWidth: 2, dot: { r: 4 } })
+
+                ])
+
+            );
+
+
+
+            // Activity by Hour - Group communication history by hour
+
+            const hourData = Array.from({ length: 12 }, (_, i) => ({
+                hour: `${i * 2}:00`,
+                activity: 0
+            }));
+
+            // Count communication history by hour bucket
+            commHistoryData.forEach(record => {
+                const date = new Date(record.timestamp);
+                const hour = date.getHours();
+                const bucket = Math.floor(hour / 2);
+                if (bucket >= 0 && bucket < 12) {
+                    hourData[bucket].activity++;
+                }
+            });
+
+            const heatmapChart = React.createElement(ResponsiveContainer, { width: '100%', height: '100%' },
+
+                React.createElement(BarChart, { data: hourData }, [
+
+                    React.createElement(CartesianGrid, { strokeDasharray: '3 3', stroke: '#e2e2e7' }),
+
+                    React.createElement(XAxis, { dataKey: 'hour', tick: { fontSize: 10 } }),
+
+                    React.createElement(YAxis, { tick: { fontSize: 10 } }),
+
+                    React.createElement(Tooltip, { contentStyle: { borderRadius: 8 } }),
+
+                    React.createElement(Bar, { dataKey: 'activity', fill: '#d0a600', radius: [4, 4, 0, 0] })
+
+                ])
+
+            );
+
+
+
+            // Safety Score Trend - Calculate score from recent alerts
+
+            const recentAlerts = alerts.slice(0, 20).reverse(); // Last 20 alerts in chronological order
+            const trendData = recentAlerts.length > 0 ? recentAlerts.map((alert, i) => {
+                const score = alert.severity === 'HIGH' ? 30 : (alert.severity === 'MEDIUM' ? 60 : 90);
+                return {
+                    session: `A${i + 1}`,
+                    score
+                };
+            }) : [{ session: 'Start', score: 100 }]; // Default if no alerts
+
+            const trendChart = React.createElement(ResponsiveContainer, { width: '100%', height: '100%' },
+
+                React.createElement(LineChart, { data: trendData }, [
+
+                    React.createElement(CartesianGrid, { strokeDasharray: '3 3', stroke: '#e2e2e7' }),
+
+                    React.createElement(XAxis, { dataKey: 'session', tick: { fontSize: 10 } }),
+
+                    React.createElement(YAxis, { domain: [0, 100], tick: { fontSize: 10 } }),
+
+                    React.createElement(Tooltip, { contentStyle: { borderRadius: 8 } }),
+
+                    React.createElement(Line, { type: 'monotone', dataKey: 'score', stroke: '#006e28', strokeWidth: 2, dot: { r: 3 } })
+
+                ])
+
+            );
+
+
+
+            // Render report charts
+
+            const pieContainer = document.getElementById('report-chart-risk');
+
+            const timelineContainer = document.getElementById('report-chart-timeline');
+
+            const heatmapContainer = document.getElementById('report-chart-heatmap');
+
+            const trendContainer = document.getElementById('report-chart-trend');
+
+
+
+            if (pieContainer) ReactDOM.render(pieChart, pieContainer);
+
+            if (timelineContainer) ReactDOM.render(timelineChart, timelineContainer);
+
+            if (heatmapContainer) ReactDOM.render(heatmapChart, heatmapContainer);
+
+            if (trendContainer) ReactDOM.render(trendChart, trendContainer);
+
+        };
+
+
+
+        // Initialize Reports when view is shown
+
+        const initReports = () => {
+
+            updateReportMetrics();
+
+            renderCommHistory();
+
+            // Delay chart rendering to ensure DOM and React are ready
+
+            setTimeout(() => {
+
+                renderReportCharts();
+
+            }, 500);
+
+        };
+
+
+
+        // Global hook for chat system to record messages
+
+        window.recordChatMessage = (input, response, agent = 'Jais LLM', latency = 200) => {
+
+            addCommRecord('chat', agent, input, response, latency);
+
+        };
+
+
+
+        // Global hook for vision system to record analysis
+
+        window.recordVisionAnalysis = (input, response, latency = 300) => {
+
+            addCommRecord('vision', 'VLM', input, response, latency);
+
+        };
+
+
+
+        // Global hook for voice system to record transcription
+
+        window.recordVoiceTranscription = (input, response, latency = 150) => {
+
+            addCommRecord('voice', 'Whisper STT', input, response, latency);
+
+        };
+
+
 
         connect();
+
+
+
+        // Wait for all external scripts to load before initializing charts
+
+        window.addEventListener('load', () => {
+
+            console.log('Window loaded, checking Recharts...');
+
+            
+
+            // Load alerts and metrics from storage
+
+            updateReportMetricsFromStorage();
+
+            renderAlerts();
+
+            renderCommHistory();
+
+            
+
+            // Check for Recharts with retry
+
+            const checkRecharts = (attempt = 1) => {
+
+                console.log(`Checking Recharts (attempt ${attempt})...`);
+
+                
+
+                if (typeof Recharts !== 'undefined') {
+
+                    console.log('Recharts loaded successfully!');
+
+                    
+
+                    // Initialize breadboard charts if on that page
+
+                    if (bbData.length > 0) {
+
+                        setTimeout(() => {
+
+                            try {
+
+                                renderCharts();
+
+                                console.log('Breadboard charts rendered');
+
+                            } catch (e) {
+
+                                console.error('Failed to render breadboard charts:', e);
+
+                            }
+
+                        }, 100);
+
+                    }
+
+                    
+
+                    // Initialize reports charts if view is active
+
+                    const reportsView = document.getElementById('view-reports');
+
+                    if (reportsView && !reportsView.classList.contains('hidden')) {
+
+                        setTimeout(() => {
+
+                            try {
+
+                                initReports();
+
+                                console.log('Reports charts rendered');
+
+                            } catch (e) {
+
+                                console.error('Failed to render reports charts:', e);
+
+                            }
+
+                        }, 100);
+
+                    }
+
+                } else if (attempt < 10) {
+
+                    console.log('Recharts not loaded yet, retrying...');
+
+                    setTimeout(() => checkRecharts(attempt + 1), 500);
+
+                } else {
+
+                    console.error('Recharts failed to load after 10 attempts');
+
+                    console.log('React available:', typeof React !== 'undefined');
+
+                    console.log('ReactDOM available:', typeof ReactDOM !== 'undefined');
+
+                    console.log('Recharts available:', typeof Recharts !== 'undefined');
+
+                    // Fallback to Chart.js
+                    if (typeof Chart !== 'undefined') {
+                        console.log('Using Chart.js fallback for charts');
+                        window.useChartJs = true;
+
+                        // Try to render breadboard charts with Chart.js
+                        if (bbData.length > 0) {
+                            setTimeout(() => {
+                                try {
+                                    renderChartsChartJs();
+                                    console.log('Breadboard charts rendered with Chart.js');
+                                } catch (e) {
+                                    console.error('Failed to render breadboard charts with Chart.js:', e);
+                                }
+                            }, 100);
+                        }
+
+                        // Try to render report charts with Chart.js if view is active
+                        const reportsView = document.getElementById('view-reports');
+                        if (reportsView && !reportsView.classList.contains('hidden')) {
+                            setTimeout(() => {
+                                try {
+                                    renderReportChartsChartJs();
+                                    console.log('Report charts rendered with Chart.js');
+                                } catch (e) {
+                                    console.error('Failed to render report charts with Chart.js:', e);
+                                }
+                            }, 100);
+                        }
+                    }
+
+                }
+
+            };
+
+            
+
+            // Start checking after a short delay
+
+            setTimeout(() => checkRecharts(), 1000);
+
+        });
+
     </script>
+
 </body>
+
 </html>
+

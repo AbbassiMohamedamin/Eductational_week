@@ -1,0 +1,10 @@
+{
+    "description": "The child is looking at a circuit board.",
+    "objects": [
+        "resistor",
+        "LED",
+        "battery"
+    ],
+    "experiment_type": "electronics",
+    "safety_concern": "none"
+}
