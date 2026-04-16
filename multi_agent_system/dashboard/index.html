@@ -316,11 +316,19 @@
 
             </a>
 
+            <a id="nav-education" class="text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-all duration-300 flex items-center gap-3 p-3 rounded-xl" href="#">
+
+                <span class="material-symbols-outlined">electric_bolt</span>
+
+                <span class="font-headline font-medium text-sm tracking-tight" data-i18n="nav.education">House of Electricity</span>
+
+            </a>
+
             <a class="text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-all duration-300 flex items-center gap-3 p-3 rounded-xl" href="#">
 
                 <span class="material-symbols-outlined">settings</span>
 
-                <span class="font-headline font-medium text-sm tracking-tight">Settings</span>
+                <span class="font-headline font-medium text-sm tracking-tight" data-i18n="nav.settings">Settings</span>
 
             </a>
 
@@ -374,17 +382,31 @@
 
             </div>
 
-            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-3">
 
-                <button class="p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors">
+                <!-- Language Toggle -->
 
-                    <span class="material-symbols-outlined">notifications</span>
+                <div class="flex items-center bg-surface-container-low rounded-full p-1 gap-1">
+
+                    <button id="lang-en" class="px-2 py-1 text-[10px] font-bold rounded-full bg-primary text-white transition-all" onclick="setLanguage('en')">EN</button>
+
+                    <button id="lang-fr" class="px-2 py-1 text-[10px] font-bold rounded-full text-on-surface-variant hover:bg-surface-container-high transition-all" onclick="setLanguage('fr')">FR</button>
+
+                    <button id="lang-tn" class="px-2 py-1 text-[10px] font-bold rounded-full text-on-surface-variant hover:bg-surface-container-high transition-all" onclick="setLanguage('tn')">TN</button>
+
+                </div>
+
+                <!-- Theme Toggle -->
+
+                <button id="theme-toggle" class="p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors" onclick="toggleTheme()">
+
+                    <span class="material-symbols-outlined" id="theme-icon">dark_mode</span>
 
                 </button>
 
                 <button class="p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors">
 
-                    <span class="material-symbols-outlined">settings_suggest</span>
+                    <span class="material-symbols-outlined">notifications</span>
 
                 </button>
 
@@ -1344,6 +1366,478 @@
 
         </div>
 
+
+
+        <!-- House of Electricity (Dar El Kahraba) Content -->
+
+        <div id="view-education" class="hidden p-8 max-w-7xl mx-auto w-full space-y-8">
+
+            <!-- Header -->
+
+            <div class="flex items-center justify-between">
+
+                <div>
+
+                    <h2 class="text-2xl font-headline font-bold text-on-surface" data-i18n="education.title">House of Electricity</h2>
+
+                    <p class="text-sm text-on-surface-variant mt-1" data-i18n="education.subtitle">Learn about electricity safely with interactive lessons</p>
+
+                </div>
+
+                <div class="flex items-center gap-2">
+
+                    <div class="flex items-center gap-2 px-4 py-2 bg-primary-container/20 rounded-full">
+
+                        <span class="material-symbols-outlined text-primary">school</span>
+
+                        <span class="text-xs font-bold text-primary" data-i18n="education.progress">Learning Progress</span>
+
+                        <span id="header-average" class="text-xs font-bold text-primary/80 border-l border-primary/20 pl-2 ml-1">0/20</span>
+
+                    </div>
+
+                    <button onclick="resetLearningProgress()" class="p-2 text-on-surface-variant hover:text-error hover:bg-error-container/20 rounded-full transition-colors" title="Reset all progress">
+
+                        <span class="material-symbols-outlined text-sm">restart_alt</span>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Progress Overview -->
+
+            <section class="grid grid-cols-1 md:grid-cols-4 gap-4">
+
+                <div id="progress-basic" class="bg-gradient-to-br from-primary/10 to-primary-container/30 p-4 rounded-2xl border border-primary/20">
+
+                    <div class="flex items-center justify-between mb-2">
+
+                        <span class="material-symbols-outlined text-primary">electric_bolt</span>
+
+                        <span class="progress-percent text-xs font-bold text-primary">0%</span>
+
+                    </div>
+
+                    <p class="text-xs font-bold text-on-surface-variant" data-i18n="education.topics.basic">Basic Electricity</p>
+
+                    <div class="mt-2 h-1.5 bg-surface-container-high rounded-full overflow-hidden">
+
+                        <div class="progress-bar h-full w-0 bg-primary rounded-full transition-all duration-500"></div>
+
+                    </div>
+
+                    <p class="progress-status text-[10px] text-on-surface-variant mt-1">Start learning!</p>
+
+                </div>
+
+
+
+                <div id="progress-safety" class="bg-gradient-to-br from-secondary/10 to-secondary-container/30 p-4 rounded-2xl border border-secondary/20">
+
+                    <div class="flex items-center justify-between mb-2">
+
+                        <span class="material-symbols-outlined text-secondary">safety_check</span>
+
+                        <span class="progress-percent text-xs font-bold text-secondary">0%</span>
+
+                    </div>
+
+                    <p class="text-xs font-bold text-on-surface-variant" data-i18n="education.topics.safety">Safety Rules</p>
+
+                    <div class="mt-2 h-1.5 bg-surface-container-high rounded-full overflow-hidden">
+
+                        <div class="progress-bar h-full w-0 bg-secondary rounded-full transition-all duration-500"></div>
+
+                    </div>
+
+                    <p class="progress-status text-[10px] text-on-surface-variant mt-1">Start learning!</p>
+
+                </div>
+
+
+
+                <div id="progress-experiments" class="bg-gradient-to-br from-tertiary/10 to-tertiary-container/30 p-4 rounded-2xl border border-tertiary/20">
+
+                    <div class="flex items-center justify-between mb-2">
+
+                        <span class="material-symbols-outlined text-tertiary">science</span>
+
+                        <span class="progress-percent text-xs font-bold text-tertiary">0%</span>
+
+                    </div>
+
+                    <p class="text-xs font-bold text-on-surface-variant" data-i18n="education.topics.experiments">Experiments</p>
+
+                    <div class="mt-2 h-1.5 bg-surface-container-high rounded-full overflow-hidden">
+
+                        <div class="progress-bar h-full w-0 bg-tertiary rounded-full transition-all duration-500"></div>
+
+                    </div>
+
+                    <p class="progress-status text-[10px] text-on-surface-variant mt-1">Start learning!</p>
+
+                </div>
+
+
+
+                <div id="progress-logic" class="bg-gradient-to-br from-error/10 to-error-container/30 p-4 rounded-2xl border border-error/20">
+
+                    <div class="flex items-center justify-between mb-2">
+
+                        <span class="material-symbols-outlined text-error">hub</span>
+
+                        <span class="progress-percent text-xs font-bold text-error">0%</span>
+
+                    </div>
+
+                    <p class="text-xs font-bold text-on-surface-variant" data-i18n="education.topics.logic">Logic Gates</p>
+
+                    <div class="mt-2 h-1.5 bg-surface-container-high rounded-full overflow-hidden">
+
+                        <div class="progress-bar h-full w-0 bg-error rounded-full transition-all duration-500"></div>
+
+                    </div>
+
+                    <p class="progress-status text-[10px] text-on-surface-variant mt-1">Start learning!</p>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- Topics Grid -->
+
+            <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                <!-- Basic Electricity Card -->
+
+                <div onclick="openTopicModal('basic')" class="group bg-surface-container-lowest rounded-2xl shadow-sm border border-outline-variant/10 overflow-hidden hover:shadow-lg hover:shadow-primary/10 transition-all duration-300 cursor-pointer">
+
+                    <div class="h-32 bg-gradient-to-br from-primary/20 to-primary-container/40 flex items-center justify-center relative overflow-hidden">
+
+                        <span class="material-symbols-outlined text-6xl text-primary/60">electric_bolt</span>
+
+                        <div class="absolute top-3 right-3 px-2 py-1 bg-primary text-white text-[10px] font-bold rounded-full" data-i18n="status.in_progress">In Progress</div>
+
+                    </div>
+
+                    <div class="p-5">
+
+                        <h3 class="font-headline font-bold text-lg mb-2" data-i18n="education.cards.basic.title">Basic Electricity</h3>
+
+                        <p class="text-xs text-on-surface-variant mb-4" data-i18n="education.cards.basic.desc">Learn about voltage, current, and how electricity flows in circuits</p>
+
+                        <div class="flex items-center gap-2 flex-wrap">
+
+                            <span class="px-2 py-1 bg-primary-container/30 text-primary text-[10px] font-bold rounded-full">⚡ Current</span>
+
+                            <span class="px-2 py-1 bg-primary-container/30 text-primary text-[10px] font-bold rounded-full">🔋 Voltage</span>
+
+                            <span class="px-2 py-1 bg-primary-container/30 text-primary text-[10px] font-bold rounded-full">💡 Circuits</span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- Safety Rules Card -->
+
+                <div onclick="openTopicModal('safety')" class="group bg-surface-container-lowest rounded-2xl shadow-sm border border-outline-variant/10 overflow-hidden hover:shadow-lg hover:shadow-secondary/10 transition-all duration-300 cursor-pointer">
+
+                    <div class="h-32 bg-gradient-to-br from-secondary/20 to-secondary-container/40 flex items-center justify-center relative overflow-hidden">
+
+                        <span class="material-symbols-outlined text-6xl text-secondary/60">safety_check</span>
+
+                        <div class="absolute top-3 right-3 px-2 py-1 bg-secondary text-white text-[10px] font-bold rounded-full" data-i18n="status.in_progress">In Progress</div>
+
+                    </div>
+
+                    <div class="p-5">
+
+                        <h3 class="font-headline font-bold text-lg mb-2" data-i18n="education.cards.safety.title">Safety Rules</h3>
+
+                        <p class="text-xs text-on-surface-variant mb-4" data-i18n="education.cards.safety.desc">Important rules to stay safe around electricity</p>
+
+                        <div class="flex items-center gap-2 flex-wrap">
+
+                            <span class="px-2 py-1 bg-secondary-container/30 text-secondary text-[10px] font-bold rounded-full">⚠️ Wires</span>
+
+                            <span class="px-2 py-1 bg-secondary-container/30 text-secondary text-[10px] font-bold rounded-full">💧 Water</span>
+
+                            <span class="px-2 py-1 bg-secondary-container/30 text-secondary text-[10px] font-bold rounded-full">👋 Hands</span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- Simple Experiments Card -->
+
+                <div onclick="openTopicModal('experiments')" class="group bg-surface-container-lowest rounded-2xl shadow-sm border border-outline-variant/10 overflow-hidden hover:shadow-lg hover:shadow-tertiary/10 transition-all duration-300 cursor-pointer">
+
+                    <div class="h-32 bg-gradient-to-br from-tertiary/20 to-tertiary-container/40 flex items-center justify-center relative overflow-hidden">
+
+                        <span class="material-symbols-outlined text-6xl text-tertiary/60">science</span>
+
+                        <div class="absolute top-3 right-3 px-2 py-1 bg-slate-400 text-white text-[10px] font-bold rounded-full" data-i18n="status.not_started">Not Started</div>
+
+                    </div>
+
+                    <div class="p-5">
+
+                        <h3 class="font-headline font-bold text-lg mb-2" data-i18n="education.cards.experiments.title">Simple Experiments</h3>
+
+                        <p class="text-xs text-on-surface-variant mb-4" data-i18n="education.cards.experiments.desc">Fun and safe experiments you can try</p>
+
+                        <div class="flex items-center gap-2 flex-wrap">
+
+                            <span class="px-2 py-1 bg-tertiary-container/30 text-tertiary text-[10px] font-bold rounded-full">🔋 Battery</span>
+
+                            <span class="px-2 py-1 bg-tertiary-container/30 text-tertiary text-[10px] font-bold rounded-full">💡 Bulb</span>
+
+                            <span class="px-2 py-1 bg-tertiary-container/30 text-tertiary text-[10px] font-bold rounded-full">🔘 Switch</span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- Logic Gates Card -->
+
+                <div onclick="openTopicModal('logic')" class="group bg-surface-container-lowest rounded-2xl shadow-sm border border-outline-variant/10 overflow-hidden hover:shadow-lg hover:shadow-error/10 transition-all duration-300 cursor-pointer">
+
+                    <div class="h-32 bg-gradient-to-br from-error/20 to-error-container/40 flex items-center justify-center relative overflow-hidden">
+
+                        <span class="material-symbols-outlined text-6xl text-error/60">hub</span>
+
+                        <div class="absolute top-3 right-3 px-2 py-1 bg-slate-400 text-white text-[10px] font-bold rounded-full" data-i18n="status.not_started">Not Started</div>
+
+                    </div>
+
+                    <div class="p-5">
+
+                        <h3 class="font-headline font-bold text-lg mb-2" data-i18n="education.cards.logic.title">Logic Gates</h3>
+
+                        <p class="text-xs text-on-surface-variant mb-4" data-i18n="education.cards.logic.desc">Learn AND, OR, and NAND gates with visual examples</p>
+
+                        <div class="flex items-center gap-2 flex-wrap">
+
+                            <span class="px-2 py-1 bg-error-container/30 text-error text-[10px] font-bold rounded-full">AND</span>
+
+                            <span class="px-2 py-1 bg-error-container/30 text-error text-[10px] font-bold rounded-full">OR</span>
+
+                            <span class="px-2 py-1 bg-error-container/30 text-error text-[10px] font-bold rounded-full">NAND</span>
+
+                            <span class="px-2 py-1 bg-error-container/30 text-error text-[10px] font-bold rounded-full">NOR</span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- Interactive Circuit Builder Card -->
+
+                <div onclick="openTopicModal('builder')" class="group bg-surface-container-lowest rounded-2xl shadow-sm border border-outline-variant/10 overflow-hidden hover:shadow-lg hover:shadow-primary/10 transition-all duration-300 cursor-pointer md:col-span-2">
+
+                    <div class="h-32 bg-gradient-to-r from-primary/10 via-secondary/10 to-tertiary/10 flex items-center justify-center relative overflow-hidden">
+
+                        <div class="flex items-center gap-4">
+
+                            <span class="material-symbols-outlined text-5xl text-primary/60">memory</span>
+
+                            <span class="text-4xl">+</span>
+
+                            <span class="material-symbols-outlined text-5xl text-secondary/60">touch_app</span>
+
+                        </div>
+
+                        <div class="absolute top-3 right-3 px-2 py-1 bg-primary text-white text-[10px] font-bold rounded-full" data-i18n="status.new">New</div>
+
+                    </div>
+
+                    <div class="p-5">
+
+                        <h3 class="font-headline font-bold text-lg mb-2" data-i18n="education.cards.builder.title">Interactive Circuit Builder</h3>
+
+                        <p class="text-xs text-on-surface-variant mb-4" data-i18n="education.cards.builder.desc">Build your own circuits and see how electricity flows in real-time</p>
+
+                        <div class="flex items-center justify-between">
+
+                            <div class="flex items-center gap-2 flex-wrap">
+
+                                <span class="px-2 py-1 bg-surface-container-high text-on-surface-variant text-[10px] font-bold rounded-full">🎯 Interactive</span>
+
+                                <span class="px-2 py-1 bg-surface-container-high text-on-surface-variant text-[10px] font-bold rounded-full">🎮 Game Mode</span>
+
+                            </div>
+
+                            <button class="px-4 py-2 bg-primary text-white text-xs font-bold rounded-full hover:bg-primary-container hover:text-primary transition-colors" data-i18n="education.start">Start Learning</button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- Safety Tips Banner -->
+
+            <section class="bg-gradient-to-r from-secondary/10 via-secondary-container/20 to-secondary/10 p-6 rounded-2xl border border-secondary/20">
+
+                <div class="flex items-start gap-4">
+
+                    <div class="p-3 bg-secondary/20 rounded-full">
+
+                        <span class="material-symbols-outlined text-secondary">warning</span>
+
+                    </div>
+
+                    <div>
+
+                        <h3 class="font-headline font-bold text-lg mb-1" data-i18n="education.safety_title">Remember Safety First!</h3>
+
+                        <p class="text-sm text-on-surface-variant" data-i18n="education.safety_desc">Always ask an adult before doing any electricity experiments. Never touch wires or sockets with wet hands.</p>
+
+                        <div class="mt-3 flex items-center gap-3">
+
+                            <span class="text-2xl" title="Don't touch wires">⚡❌</span>
+
+                            <span class="text-2xl" title="Keep water away">💧⚠️</span>
+
+                            <span class="text-2xl" title="Ask adults">👨‍👩‍👧‍👦✅</span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+
+
+        <!-- Topic Modal -->
+
+        <div id="topic-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+
+            <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeTopicModal()"></div>
+
+            <div class="relative bg-surface-container-lowest rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+
+                <!-- Modal Header -->
+
+                <div class="p-6 border-b border-outline-variant/10 flex items-center justify-between bg-gradient-to-r from-primary/5 to-transparent">
+
+                    <div class="flex items-center gap-3">
+
+                        <span id="modal-icon" class="material-symbols-outlined text-3xl text-primary">electric_bolt</span>
+
+                        <div>
+
+                            <h2 id="modal-title" class="text-2xl font-headline font-bold text-on-surface">Topic Title</h2>
+
+                            <p id="modal-subtitle" class="text-sm text-on-surface-variant">Learn and test your knowledge</p>
+
+                        </div>
+
+                    </div>
+
+                    <button onclick="closeTopicModal()" class="p-2 hover:bg-surface-container-high rounded-full transition-colors">
+
+                        <span class="material-symbols-outlined text-on-surface-variant">close</span>
+
+                    </button>
+
+                </div>
+
+
+
+                <!-- Modal Content -->
+
+                <div class="flex-1 overflow-y-auto p-6 space-y-6">
+
+                    <!-- Topic Content -->
+
+                    <div id="modal-content" class="prose prose-sm max-w-none">
+
+                        <!-- Content injected dynamically -->
+
+                    </div>
+
+
+
+                    <!-- Quiz Section -->
+
+                    <div id="quiz-section" class="border-t border-outline-variant/10 pt-6">
+
+                        <h3 class="text-lg font-headline font-bold mb-4 flex items-center gap-2">
+
+                            <span class="material-symbols-outlined text-primary">quiz</span>
+
+                            Knowledge Check
+
+                        </h3>
+
+                        <div id="quiz-questions" class="space-y-4">
+
+                            <!-- Questions injected dynamically -->
+
+                        </div>
+
+                        <div id="quiz-results" class="hidden mt-4 p-4 rounded-xl bg-primary-container/20">
+
+                            <p class="font-bold text-primary" id="quiz-score"></p>
+
+                        </div>
+
+                        <div class="flex items-center gap-3 mt-4">
+
+                            <button onclick="submitQuiz()" id="submit-quiz-btn" class="px-6 py-2 bg-primary text-white font-bold rounded-full hover:bg-primary-container hover:text-primary transition-colors">
+
+                                Submit Answers
+
+                            </button>
+
+                            <button onclick="regenerateQuiz()" id="regenerate-btn" class="px-4 py-2 bg-surface-container-high text-on-surface-variant font-bold rounded-full hover:bg-secondary-container hover:text-secondary transition-colors flex items-center gap-2">
+
+                                <span class="material-symbols-outlined text-sm">refresh</span>
+
+                                New Questions
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </main>
 
 
@@ -1434,6 +1928,8 @@
 
         const navBreadboard = document.getElementById('nav-breadboard');
 
+        const navEducation = document.getElementById('nav-education');
+
         const viewDashboard = document.getElementById('view-dashboard');
 
         const viewReports = document.getElementById('view-reports');
@@ -1441,6 +1937,8 @@
         const viewHistory = document.getElementById('view-history');
 
         const viewBreadboard = document.getElementById('view-breadboard');
+
+        const viewEducation = document.getElementById('view-education');
 
         const historyTableBody = document.getElementById('history-table-body');
 
@@ -1460,7 +1958,9 @@
 
                 history: viewHistory,
 
-                breadboard: viewBreadboard
+                breadboard: viewBreadboard,
+
+                education: viewEducation
 
             };
 
@@ -1472,7 +1972,9 @@
 
                 history: navHistory,
 
-                breadboard: navBreadboard
+                breadboard: navBreadboard,
+
+                education: navEducation
 
             };
 
@@ -1524,6 +2026,2333 @@
 
 
 
+        // ========== LANGUAGE & THEME FUNCTIONS ==========
+
+        const translations = {
+
+            en: {
+
+                'nav.dashboard': 'Dashboard',
+
+                'nav.reports': 'Reports',
+
+                'nav.history': 'History',
+
+                'nav.breadboard': 'Breadboard Readings',
+
+                'nav.education': 'House of Electricity',
+
+                'nav.settings': 'Settings',
+
+                'top.live_system': 'LIVE SYSTEM: ACTIVE',
+
+                'top.risk_score': 'RISK SCORE',
+
+                'top.alerts': 'ALERTS',
+
+                'top.skill': 'SKILL',
+
+                'top.premium': 'Premium Access',
+
+                'top.upgrade': 'UPGRADE PLAN',
+
+                'assistant.title': 'Safety Chat',
+
+                'assistant.subtitle': 'Ask about the current scene, risk level, or what action the assistant is taking.',
+
+                'assistant.placeholder': 'Type a message...',
+
+                'assistant.welcome': "Hello! I'm your safety assistant. How can I help you today?",
+
+                'assistant.live': 'LIVE',
+
+                'breadboard.title': 'Breadboard Readings',
+
+                'breadboard.subtitle': 'Real-time experiment monitoring from Firebase',
+
+                'breadboard.live': 'LIVE',
+
+                'breadboard.avg_stability': 'AVERAGE STABILITY',
+
+                'breadboard.peak_power': 'PEAK POWER (W)',
+
+                'breadboard.avg_voltage': 'AVERAGE VOLTAGE (V)',
+
+                'breadboard.warning': 'WARNING',
+
+                'breadboard.watts': 'Watts',
+
+                'breadboard.volts': 'Volts',
+
+                'breadboard.live_monitoring': 'Live monitoring',
+
+                'history.title': 'Alert History',
+
+                'history.time': 'TIME',
+
+                'history.severity': 'SEVERITY',
+
+                'history.action': 'ACTION',
+
+                'history.reasoning': 'REASONING',
+
+                'reports.title': 'Safety Reports',
+
+                'reports.export': 'EXPORT REPORT',
+
+                'reports.total_alerts': 'TOTAL ALERTS',
+
+                'reports.high_risk': 'HIGH RISK EVENTS',
+
+                'reports.avg_score': 'AVG SAFETY SCORE',
+
+                'reports.active_monitoring': 'ACTIVE MONITORING',
+
+                'reports.last_7_days': 'Last 7 days',
+
+                'reports.requires_attention': 'Requires attention',
+
+                'reports.based_on_sessions': 'Based on all sessions',
+
+                'reports.total_duration': 'Total duration',
+
+                'reports.risk_distribution': 'Risk Distribution',
+
+                'reports.alert_timeline': 'Alert Timeline',
+
+                'reports.activity_hour': 'Activity by Hour',
+
+                'reports.safety_trend': 'Safety Score Trend',
+
+                'education.title': 'House of Electricity',
+
+                'education.subtitle': 'Learn about electricity safely with interactive lessons',
+
+                'education.progress': 'Learning Progress',
+
+                'education.topics.basic': 'Basic Electricity',
+
+                'education.topics.safety': 'Safety Rules',
+
+                'education.topics.experiments': 'Experiments',
+
+                'education.topics.logic': 'Logic Gates',
+
+                'education.cards.basic.title': 'Basic Electricity',
+
+                'education.cards.basic.desc': 'Learn about voltage, current, and how electricity flows in circuits',
+
+                'education.cards.safety.title': 'Safety Rules',
+
+                'education.cards.safety.desc': 'Important rules to stay safe around electricity',
+
+                'education.cards.experiments.title': 'Simple Experiments',
+
+                'education.cards.experiments.desc': 'Fun and safe experiments you can try',
+
+                'education.cards.logic.title': 'Logic Gates',
+
+                'education.cards.logic.desc': 'Learn AND, OR, and NAND gates with visual examples',
+
+                'education.cards.builder.title': 'Interactive Circuit Builder',
+
+                'education.cards.builder.desc': 'Build your own circuits and see how electricity flows in real-time',
+
+                'education.start': 'Start Learning',
+
+                'education.safety_title': 'Remember Safety First!',
+
+                'education.safety_desc': 'Always ask an adult before doing any electricity experiments. Never touch wires or sockets with wet hands.',
+
+                'quiz.knowledge_check': 'Knowledge Check',
+
+                'quiz.submit': 'Submit Answers',
+
+                'quiz.new_questions': 'New Questions',
+
+                'quiz.loading': 'AI is generating unique questions for you...',
+
+                'quiz.ai_generated': 'AI-Generated • Fresh & Unique!',
+
+                'quiz.cached': 'Cached Questions (AI temporarily unavailable)',
+
+                'status.in_progress': 'In Progress',
+
+                'status.not_started': 'Not Started',
+
+                'status.new': 'New',
+
+                'status.completed': 'Completed'
+
+            },
+
+            fr: {
+
+                'nav.dashboard': 'Tableau de bord',
+
+                'nav.reports': 'Rapports',
+
+                'nav.history': 'Historique',
+
+                'nav.breadboard': 'Lectures Breadboard',
+
+                'nav.education': "Maison de l'Électricité",
+
+                'nav.settings': 'Paramètres',
+
+                'top.live_system': 'SYSTÈME EN DIRECT: ACTIF',
+
+                'top.risk_score': 'SCORE DE RISQUE',
+
+                'top.alerts': 'ALERTES',
+
+                'top.skill': 'COMPÉTENCE',
+
+                'top.premium': 'Accès Premium',
+
+                'top.upgrade': 'METTRE À NIVEAU',
+
+                'assistant.title': 'Chat Sécurité',
+
+                'assistant.subtitle': 'Demandez des informations sur la scène actuelle, le niveau de risque ou les actions de l\'assistant.',
+
+                'assistant.placeholder': 'Tapez un message...',
+
+                'assistant.welcome': "Bonjour! Je suis votre assistant de sécurité. Comment puis-je vous aider aujourd'hui?",
+
+                'assistant.live': 'EN DIRECT',
+
+                'breadboard.title': 'Lectures Breadboard',
+
+                'breadboard.subtitle': 'Surveillance en temps réel des expériences depuis Firebase',
+
+                'breadboard.live': 'EN DIRECT',
+
+                'breadboard.avg_stability': 'STABILITÉ MOYENNE',
+
+                'breadboard.peak_power': 'PUISSANCE CRÊTE (W)',
+
+                'breadboard.avg_voltage': 'TENSION MOYENNE (V)',
+
+                'breadboard.warning': 'ATTENTION',
+
+                'breadboard.watts': 'Watts',
+
+                'breadboard.volts': 'Volts',
+
+                'breadboard.live_monitoring': 'Surveillance en direct',
+
+                'history.title': 'Historique des Alertes',
+
+                'history.time': 'HEURE',
+
+                'history.severity': 'GRAVITÉ',
+
+                'history.action': 'ACTION',
+
+                'history.reasoning': 'RAISONNEMENT',
+
+                'reports.title': 'Rapports de Sécurité',
+
+                'reports.export': 'EXPORTER LE RAPPORT',
+
+                'reports.total_alerts': 'ALERTES TOTALES',
+
+                'reports.high_risk': 'ÉVÉNEMENTS À RISQUE ÉLEVÉ',
+
+                'reports.avg_score': 'SCORE MOYEN',
+
+                'reports.active_monitoring': 'SURVEILLANCE ACTIVE',
+
+                'reports.last_7_days': '7 derniers jours',
+
+                'reports.requires_attention': 'Nécessite attention',
+
+                'reports.based_on_sessions': 'Basé sur toutes les sessions',
+
+                'reports.total_duration': 'Durée totale',
+
+                'reports.risk_distribution': 'Distribution des Risques',
+
+                'reports.alert_timeline': 'Chronologie des Alertes',
+
+                'reports.activity_hour': 'Activité par Heure',
+
+                'reports.safety_trend': 'Tendance du Score',
+
+                'education.title': "Maison de l'Électricité",
+
+                'education.subtitle': 'Apprenez l\'électricité en toute sécurité avec des leçons interactives',
+
+                'education.progress': 'Progression',
+
+                'education.topics.basic': 'Électricité de Base',
+
+                'education.topics.safety': 'Règles de Sécurité',
+
+                'education.topics.experiments': 'Expériences',
+
+                'education.topics.logic': 'Portes Logiques',
+
+                'education.cards.basic.title': 'Électricité de Base',
+
+                'education.cards.basic.desc': 'Apprenez la tension, le courant et comment l\'électricité circule dans les circuits',
+
+                'education.cards.safety.title': 'Règles de Sécurité',
+
+                'education.cards.safety.desc': 'Règles importantes pour rester en sécurité avec l\'électricité',
+
+                'education.cards.experiments.title': 'Expériences Simples',
+
+                'education.cards.experiments.desc': 'Expériences amusantes et sûres à essayer',
+
+                'education.cards.logic.title': 'Portes Logiques',
+
+                'education.cards.logic.desc': 'Apprenez les portes AND, OR et NAND avec des exemples visuels',
+
+                'education.cards.builder.title': 'Constructeur de Circuits',
+
+                'education.cards.builder.desc': 'Construisez vos propres circuits et voyez comment l\'électricité circule',
+
+                'education.start': 'Commencer',
+
+                'education.safety_title': 'La Sécurité d\'abord!',
+
+                'education.safety_desc': 'Demandez toujours à un adulte avant de faire des expériences. Ne touchez jamais les fils avec les mains mouillées.',
+
+                'quiz.knowledge_check': 'Vérification des Connaissances',
+
+                'quiz.submit': 'Soumettre les Réponses',
+
+                'quiz.new_questions': 'Nouvelles Questions',
+
+                'quiz.loading': 'L\'IA génère des questions uniques pour vous...',
+
+                'quiz.ai_generated': 'Généré par IA • Questions Fraîches!',
+
+                'quiz.cached': 'Questions en Cache (IA temporairement indisponible)',
+
+                'status.in_progress': 'En Cours',
+
+                'status.not_started': 'Non Commencé',
+
+                'status.new': 'Nouveau',
+
+                'status.completed': 'Terminé'
+
+            },
+
+            ar: {
+
+                'nav.dashboard': 'لوحة التحكم',
+
+                'nav.reports': 'التقارير',
+
+                'nav.history': 'السجل',
+
+                'nav.breadboard': 'قراءات اللوحة التجريبية',
+
+                'nav.education': 'دار الكهرباء',
+
+                'nav.settings': 'الإعدادات',
+
+                'top.live_system': 'النظام الحي: نشط',
+
+                'top.risk_score': 'درجة المخاطرة',
+
+                'top.alerts': 'التنبيهات',
+
+                'top.skill': 'المستوى',
+
+                'top.premium': 'الوصول المميز',
+
+                'top.upgrade': 'ترقية الخطة',
+
+                'assistant.title': 'دردشة السلامة',
+
+                'assistant.subtitle': 'اسأل عن المشهد الحالي، مستوى الخطر، أو ما يقوم به المساعد.',
+
+                'assistant.placeholder': 'اكتب رسالة...',
+
+                'assistant.welcome': 'مرحباً! أنا مساعد السلامة الخاص بك. كيف يمكنني مساعدتك اليوم؟',
+
+                'assistant.live': 'مباشر',
+
+                'breadboard.title': 'قراءات اللوحة التجريبية',
+
+                'breadboard.subtitle': 'مراقبة التجارب في الوقت الفعلي من Firebase',
+
+                'breadboard.live': 'مباشر',
+
+                'breadboard.avg_stability': 'الاستقرار المتوسط',
+
+                'breadboard.peak_power': 'أقصى قدرة (واط)',
+
+                'breadboard.avg_voltage': 'الجهد المتوسط (فولت)',
+
+                'breadboard.warning': 'تحذير',
+
+                'breadboard.watts': 'واط',
+
+                'breadboard.volts': 'فولت',
+
+                'breadboard.live_monitoring': 'مراقبة مباشرة',
+
+                'history.title': 'سجل التنبيهات',
+
+                'history.time': 'الوقت',
+
+                'history.severity': 'الخطورة',
+
+                'history.action': 'الإجراء',
+
+                'history.reasoning': 'السبب',
+
+                'reports.title': 'تقارير السلامة',
+
+                'reports.export': 'تصدير التقرير',
+
+                'reports.total_alerts': 'إجمالي التنبيهات',
+
+                'reports.high_risk': 'أحداث خطرة',
+
+                'reports.avg_score': 'متوسط درجة السلامة',
+
+                'reports.active_monitoring': 'المراقبة النشطة',
+
+                'reports.last_7_days': 'آخر 7 أيام',
+
+                'reports.requires_attention': 'يتطلب اهتماماً',
+
+                'reports.based_on_sessions': 'بناءً على جميع الجلسات',
+
+                'reports.total_duration': 'المدة الإجمالية',
+
+                'reports.risk_distribution': 'توزيع المخاطر',
+
+                'reports.alert_timeline': 'الجدول الزمني للتنبيهات',
+
+                'reports.activity_hour': 'النشاط حسب الساعة',
+
+                'reports.safety_trend': 'اتجاه درجة السلامة',
+
+                'education.title': 'دار الكهرباء',
+
+                'education.subtitle': 'تعلم الكهرباء بأمان مع دروس تفاعلية',
+
+                'education.progress': 'تقدم التعلم',
+
+                'education.topics.basic': 'كهرباء أساسية',
+
+                'education.topics.safety': 'قواعد السلامة',
+
+                'education.topics.experiments': 'تجارب',
+
+                'education.topics.logic': 'البوابات المنطقية',
+
+                'education.cards.basic.title': 'كهرباء أساسية',
+
+                'education.cards.basic.desc': 'تعلم الجهد والتيار وكيفية تدفق الكهرباء في الدوائر',
+
+                'education.cards.safety.title': 'قواعد السلامة',
+
+                'education.cards.safety.desc': 'قواعد مهمة للسلامة حول الكهرباء',
+
+                'education.cards.experiments.title': 'تجارب بسيطة',
+
+                'education.cards.experiments.desc': 'تجارب ممتعة وآمنة يمكنك تجربتها',
+
+                'education.cards.logic.title': 'البوابات المنطقية',
+
+                'education.cards.logic.desc': 'تعلم AND و OR و NAND مع أمثلة مرئية',
+
+                'education.cards.builder.title': 'بناء الدوائر التفاعلي',
+
+                'education.cards.builder.desc': 'ابنِ دوائرك الخاصة وشاهد كيف تتدفق الكهرباء',
+
+                'education.start': 'ابدأ التعلم',
+
+                'education.safety_title': 'تذكر السلامة أولاً!',
+
+                'education.safety_desc': 'اطلب دائماً من الكبار قبل القيام بأي تجارب كهربائية. لا تلمس الأسلاك أو المقابس بيدين مبللتين.',
+
+                'quiz.knowledge_check': 'اختبار المعرفة',
+
+                'quiz.submit': 'إرسال الإجابات',
+
+                'quiz.new_questions': 'أسئلة جديدة',
+
+                'quiz.loading': 'الذكاء الاصطناعي يولد أسئلة فريدة لك...',
+
+                'quiz.ai_generated': 'مولد بالذكاء الاصطناعي • أسئلة جديدة!',
+
+                'quiz.cached': 'أسئلة مخزنة (الذكاء الاصطناعي غير متاح مؤقتاً)',
+
+                'status.in_progress': 'قيد التقدم',
+
+                'status.not_started': 'لم يبدأ',
+
+                'status.new': 'جديد',
+
+                'status.completed': 'مكتمل'
+
+            },
+
+            tn: {
+
+                'nav.dashboard': 'لوحة التحكم',
+
+                'nav.reports': 'تقارير',
+
+                'nav.history': 'التاريخ',
+
+                'nav.breadboard': 'قراءات البريدبورد',
+
+                'nav.education': 'دار الكهرباء',
+
+                'nav.settings': 'إعدادات',
+
+                'top.live_system': 'النظام شغال',
+
+                'top.risk_score': 'درجة الخطر',
+
+                'top.alerts': 'تنبيهات',
+
+                'top.skill': 'المستوى',
+
+                'top.premium': 'وصول مميز',
+
+                'top.upgrade': 'ترقية',
+
+                'assistant.title': 'شات السلامة',
+
+                'assistant.subtitle': 'سول على المشهد، مستوى الخطر، أو شنو يدير المساعد.',
+
+                'assistant.placeholder': 'اكتب رسالة...',
+
+                'assistant.welcome': 'مرحبا! أنا مساعد السلامة. كيفاش نجي؟',
+
+                'assistant.live': 'مباشر',
+
+                'breadboard.title': 'قراءات البريدبورد',
+
+                'breadboard.subtitle': 'مراقبة التجارب في الوقت الحقيقي',
+
+                'breadboard.live': 'مباشر',
+
+                'breadboard.avg_stability': 'استقرار متوسط',
+
+                'breadboard.peak_power': 'أقصى قدرة',
+
+                'breadboard.avg_voltage': 'جهد متوسط',
+
+                'breadboard.warning': 'تحذير',
+
+                'breadboard.watts': 'واط',
+
+                'breadboard.volts': 'فولت',
+
+                'breadboard.live_monitoring': 'مراقبة مباشرة',
+
+                'history.title': 'تاريخ التنبيهات',
+
+                'history.time': 'الوقت',
+
+                'history.severity': 'الخطورة',
+
+                'history.action': 'الإجراء',
+
+                'history.reasoning': 'السبب',
+
+                'reports.title': 'تقارير السلامة',
+
+                'reports.export': 'تصدير التقرير',
+
+                'reports.total_alerts': 'مجموع التنبيهات',
+
+                'reports.high_risk': 'أحداث خطيرة',
+
+                'reports.avg_score': 'متوسط السلامة',
+
+                'reports.active_monitoring': 'مراقبة نشطة',
+
+                'reports.last_7_days': 'آخر 7 أيام',
+
+                'reports.requires_attention': 'يستحق الانتباه',
+
+                'reports.based_on_sessions': 'حسب الجلسات',
+
+                'reports.total_duration': 'المدة الكل',
+
+                'reports.risk_distribution': 'توزيع الخطر',
+
+                'reports.alert_timeline': 'جدول التنبيهات',
+
+                'reports.activity_hour': 'النشاط حسب الساعة',
+
+                'reports.safety_trend': 'اتجاه السلامة',
+
+                'education.title': 'دار الكهرباء',
+
+                'education.subtitle': 'تعلم الكهرباء بأمان مع دروس تفاعلية',
+
+                'education.progress': 'تقدم التعلم',
+
+                'education.topics.basic': 'كهرباء الأساسية',
+
+                'education.topics.safety': 'قواعد السلامة',
+
+                'education.topics.experiments': 'تجارب',
+
+                'education.topics.logic': 'البوابات المنطقية',
+
+                'education.cards.basic.title': 'كهرباء الأساسية',
+
+                'education.cards.basic.desc': 'تعلم التيار والجهد وكيفية تدفق الكهرباء في الدوائر',
+
+                'education.cards.safety.title': 'قواعد السلامة',
+
+                'education.cards.safety.desc': 'قواعد مهمة للسلامة حول الكهرباء',
+
+                'education.cards.experiments.title': 'تجارب بسيطة',
+
+                'education.cards.experiments.desc': 'تجارب ممتعة وآمنة يمكنك تجربتها',
+
+                'education.cards.logic.title': 'البوابات المنطقية',
+
+                'education.cards.logic.desc': 'تعلم AND و OR و NAND مع أمثلة مرئية',
+
+                'education.cards.builder.title': 'بناء الدوائر التفاعلي',
+
+                'education.cards.builder.desc': 'ابنِ دوائرك الخاصة وشاهد كيف تتدفق الكهرباء',
+
+                'education.start': 'ابدأ التعلم',
+
+                'education.safety_title': 'شد بالك! السلامة أولاً',
+
+                'education.safety_desc': 'اطلب من الكبار قبل ما تعمل أي تجربة. ما تمسش الأسلاك بالإيدين مبلولين.',
+
+                'quiz.knowledge_check': 'فحص المعرفة',
+
+                'quiz.submit': 'أرسل الإجابات',
+
+                'quiz.new_questions': 'أسئلة جديدة',
+
+                'quiz.loading': 'الذكاء الاصطناعي يولد أسئلة فريدة...',
+
+                'quiz.ai_generated': 'مولد بالAI • أسئلة جديدة!',
+
+                'quiz.cached': 'أسئلة مخزنة (AI غير متاح)',
+
+                'status.in_progress': 'في التقدم',
+
+                'status.not_started': 'ما بداش',
+
+                'status.new': 'جديد',
+
+                'status.completed': 'كمل'
+
+            }
+
+        };
+
+
+
+        let currentLang = localStorage.getItem('guardian_lang') || 'en';
+
+        let currentTheme = localStorage.getItem('guardian_theme') || 'light';
+
+
+
+        const setLanguage = (lang) => {
+
+            currentLang = lang;
+
+            localStorage.setItem('guardian_lang', lang);
+
+            
+
+            // Update all elements with data-i18n attribute
+
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+
+                const key = el.getAttribute('data-i18n');
+
+                if (translations[lang] && translations[lang][key]) {
+
+                    el.textContent = translations[lang][key];
+
+                }
+
+            });
+
+            
+
+            // Update language buttons
+
+            ['en', 'fr', 'tn'].forEach(l => {
+
+                const btn = document.getElementById(`lang-${l}`);
+
+                if (btn) {
+
+                    if (l === lang) {
+
+                        btn.classList.add('bg-primary', 'text-white');
+
+                        btn.classList.remove('text-on-surface-variant');
+
+                    } else {
+
+                        btn.classList.remove('bg-primary', 'text-white');
+
+                        btn.classList.add('text-on-surface-variant');
+
+                    }
+
+                }
+
+            });
+
+            
+
+            // Update HTML lang attribute
+
+            document.documentElement.lang = lang === 'tn' ? 'ar' : lang;
+
+            document.documentElement.dir = lang === 'tn' ? 'rtl' : 'ltr';
+
+        };
+
+
+
+        const toggleTheme = () => {
+
+            currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+
+            localStorage.setItem('guardian_theme', currentTheme);
+
+            applyTheme();
+
+        };
+
+
+
+        const applyTheme = () => {
+
+            const html = document.documentElement;
+
+            const themeIcon = document.getElementById('theme-icon');
+
+            
+
+            if (currentTheme === 'dark') {
+
+                html.classList.add('dark');
+
+                html.classList.remove('light');
+
+                if (themeIcon) themeIcon.textContent = 'light_mode';
+
+            } else {
+
+                html.classList.add('light');
+
+                html.classList.remove('dark');
+
+                if (themeIcon) themeIcon.textContent = 'dark_mode';
+
+            }
+
+        };
+
+
+
+        // Initialize language and theme on load
+
+        setLanguage(currentLang);
+
+        applyTheme();
+
+
+
+        // ========== TOPIC MODAL & QUIZ FUNCTIONS ==========
+
+        const topicData = {
+
+            basic: {
+
+                title: 'Basic Electricity',
+
+                title_fr: 'Électricité de Base',
+
+                title_ar: 'كهرباء أساسية',
+
+                icon: 'electric_bolt',
+
+                content: {
+
+                    en: `
+
+                    <div class="space-y-4">
+
+                        <div class="bg-primary-container/20 p-4 rounded-xl">
+
+                            <h4 class="font-bold text-primary mb-2">⚡ What is Electricity?</h4>
+
+                            <p class="text-sm text-on-surface-variant">Electricity is the flow of tiny particles called electrons through a material. Think of it like water flowing through a pipe!</p>
+
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                            <div class="bg-surface-container-high p-4 rounded-xl">
+
+                                <h4 class="font-bold text-on-surface mb-2">🔋 Voltage (V)</h4>
+
+                                <p class="text-sm text-on-surface-variant">Voltage is like the pressure that pushes electricity through wires. Higher voltage = stronger push!</p>
+
+                                <div class="mt-2 text-xs text-primary">Example: Battery = 1.5V, Wall socket = 220V</div>
+
+                            </div>
+
+                            <div class="bg-surface-container-high p-4 rounded-xl">
+
+                                <h4 class="font-bold text-on-surface mb-2">⚡ Current (I)</h4>
+
+                                <p class="text-sm text-on-surface-variant">Current is how much electricity is flowing. Think of it as the amount of water in the pipe.</p>
+
+                                <div class="mt-2 text-xs text-primary">Measured in Amps (A)</div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="bg-surface-container-high p-4 rounded-xl">
+
+                            <h4 class="font-bold text-on-surface mb-2">💡 Simple Circuit</h4>
+
+                            <p class="text-sm text-on-surface-variant mb-3">A circuit needs three things to work:</p>
+
+                            <ul class="text-sm text-on-surface-variant space-y-1 list-disc list-inside">
+
+                                <li><strong>Power source</strong> - like a battery</li>
+
+                                <li><strong>Load</strong> - like a light bulb</li>
+
+                                <li><strong>Wires</strong> - to connect everything</li>
+
+                            </ul>
+
+                        </div>
+
+                    </div>
+
+                    `,
+
+                    fr: `
+
+                    <div class="space-y-4">
+
+                        <div class="bg-primary-container/20 p-4 rounded-xl">
+
+                            <h4 class="font-bold text-primary mb-2">⚡ Qu'est-ce que l'électricité?</h4>
+
+                            <p class="text-sm text-on-surface-variant">L'électricité est le flux de petites particules appelées électrons à travers un matériau. Pensez-y comme de l'eau coulant dans un tuyau!</p>
+
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                            <div class="bg-surface-container-high p-4 rounded-xl">
+
+                                <h4 class="font-bold text-on-surface mb-2">🔋 Tension (V)</h4>
+
+                                <p class="text-sm text-on-surface-variant">La tension est comme la pression qui pousse l'électricité à travers les fils. Plus de tension = poussée plus forte!</p>
+
+                                <div class="mt-2 text-xs text-primary">Exemple: Pile = 1.5V, Prise = 220V</div>
+
+                            </div>
+
+                            <div class="bg-surface-container-high p-4 rounded-xl">
+
+                                <h4 class="font-bold text-on-surface mb-2">⚡ Courant (I)</h4>
+
+                                <p class="text-sm text-on-surface-variant">Le courant est la quantité d'électricité qui circule. Pensez-y comme la quantité d'eau dans le tuyau.</p>
+
+                                <div class="mt-2 text-xs text-primary">Mesuré en Ampères (A)</div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="bg-surface-container-high p-4 rounded-xl">
+
+                            <h4 class="font-bold text-on-surface mb-2">💡 Circuit Simple</h4>
+
+                            <p class="text-sm text-on-surface-variant mb-3">Un circuit a besoin de trois choses pour fonctionner:</p>
+
+                            <ul class="text-sm text-on-surface-variant space-y-1 list-disc list-inside">
+
+                                <li><strong>Source d'énergie</strong> - comme une pile</li>
+
+                                <li><strong>Charge</strong> - comme une ampoule</li>
+
+                                <li><strong>Fils</strong> - pour connecter tout</li>
+
+                            </ul>
+
+                        </div>
+
+                    </div>
+
+                    `,
+
+                    ar: `
+
+                    <div class="space-y-4" dir="rtl">
+
+                        <div class="bg-primary-container/20 p-4 rounded-xl">
+
+                            <h4 class="font-bold text-primary mb-2">⚡ ما هي الكهرباء؟</h4>
+
+                            <p class="text-sm text-on-surface-variant">الكهرباء هي تدفق جسيمات صغيرة تسمى الإلكترونات عبر مادة. فكر فيها مثل الماء يتدفق عبر أنبوب!</p>
+
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                            <div class="bg-surface-container-high p-4 rounded-xl">
+
+                                <h4 class="font-bold text-on-surface mb-2">🔋 الجهد (V)</h4>
+
+                                <p class="text-sm text-on-surface-variant">الجهد مثل الضغط الذي يدفع الكهرباء عبر الأسلاك. جهد أعلى = دفع أقوى!</p>
+
+                                <div class="mt-2 text-xs text-primary">مثال: بطارية = 1.5V، مقبس الحائط = 220V</div>
+
+                            </div>
+
+                            <div class="bg-surface-container-high p-4 rounded-xl">
+
+                                <h4 class="font-bold text-on-surface mb-2">⚡ التيار (I)</h4>
+
+                                <p class="text-sm text-on-surface-variant">التيار هو مقدار الكهرباء المتدفق. فكر فيه كمية الماء في الأنبوب.</p>
+
+                                <div class="mt-2 text-xs text-primary">يقاس بالأمبير (A)</div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="bg-surface-container-high p-4 rounded-xl">
+
+                            <h4 class="font-bold text-on-surface mb-2">💡 دائرة بسيطة</h4>
+
+                            <p class="text-sm text-on-surface-variant mb-3">الدائرة تحتاج ثلاثة أشياء للعمل:</p>
+
+                            <ul class="text-sm text-on-surface-variant space-y-1 list-disc list-inside">
+
+                                <li><strong>مصدر طاقة</strong> - مثل البطارية</li>
+
+                                <li><strong>حمل</strong> - مثل المصباح</li>
+
+                                <li><strong>أسلاك</strong> - لتوصيل كل شيء</li>
+
+                            </ul>
+
+                        </div>
+
+                    </div>
+
+                    `
+
+                },
+
+                questions: [
+
+                    { q: 'What pushes electricity through wires?', options: ['Voltage', 'Current', 'Resistance', 'Power'], correct: 0 },
+
+                    { q: 'What is the unit of electric current?', options: ['Volts', 'Amps', 'Watts', 'Ohms'], correct: 1 },
+
+                    { q: 'What does a circuit need to work?', options: ['Only a battery', 'Battery, load, and wires', 'Just wires', 'Only a switch'], correct: 1 },
+
+                    { q: 'If voltage is like water pressure, current is like:', options: ['Pipe size', 'Water amount', 'Water color', 'Pipe material'], correct: 1 }
+
+                ]
+
+            },
+
+            safety: {
+
+                title: 'Safety Rules',
+
+                title_fr: 'Règles de Sécurité',
+
+                title_ar: 'قواعد السلامة',
+
+                icon: 'safety_check',
+
+                content: {
+
+                    en: `
+
+                    <div class="space-y-4">
+
+                        <div class="bg-error-container/20 p-4 rounded-xl border border-error/20">
+                            <h4 class="font-bold text-error mb-2">⚠️ Rule #1: Never Touch Wires!</h4>
+                            <p class="text-sm text-on-surface-variant">Even low voltage can hurt you. Never touch exposed wires or electrical components with your bare hands.</p>
+
+                        </div>
+
+                        <div class="bg-secondary-container/20 p-4 rounded-xl">
+
+                            <h4 class="font-bold text-secondary mb-2">💧 Rule #2: Water + Electricity = Danger!</h4>
+
+                            <p class="text-sm text-on-surface-variant">Water conducts electricity. Never use electrical devices with wet hands or near water. Always dry your hands first!</p>
+
+                        </div>
+
+                        <div class="bg-tertiary-container/20 p-4 rounded-xl">
+
+                            <h4 class="font-bold text-tertiary mb-2">👨‍👩‍👧‍👦 Rule #3: Ask an Adult!</h4>
+
+                            <p class="text-sm text-on-surface-variant">Before doing any electricity experiments, always ask a parent or teacher to help and supervise.</p>
+
+                        </div>
+
+                        <div class="bg-primary-container/20 p-4 rounded-xl">
+
+                            <h4 class="font-bold text-primary mb-2">🔌 Rule #4: Unplug Safely</h4>
+
+                            <p class="text-sm text-on-surface-variant">Always pull the plug from the socket, never pull the wire. Make sure devices are off before unplugging.</p>
+
+                        </div>
+
+                    </div>
+
+                    `,
+
+                    fr: `
+
+                    <div class="space-y-4">
+
+                        <div class="bg-error-container/20 p-4 rounded-xl border border-error/20">
+                            <h4 class="font-bold text-error mb-2">⚠️ Règle #1: Ne touchez jamais les fils!</h4>
+                            <p class="text-sm text-on-surface-variant">Même basse tension peut vous blesser. Ne touchez jamais les fils exposés ou composants électriques avec les mains nues.</p>
+
+                        </div>
+
+                        <div class="bg-secondary-container/20 p-4 rounded-xl">
+
+                            <h4 class="font-bold text-secondary mb-2">💧 Règle #2: Eau + Électricité = Danger!</h4>
+
+                            <p class="text-sm text-on-surface-variant">L'eau conduit l'électricité. N'utilisez jamais d'appareils électriques avec les mains mouillées ou près de l'eau. Séchez toujours vos mains d'abord!</p>
+
+                        </div>
+
+                        <div class="bg-tertiary-container/20 p-4 rounded-xl">
+
+                            <h4 class="font-bold text-tertiary mb-2">👨‍👩‍👧‍👦 Règle #3: Demandez à un adulte!</h4>
+
+                            <p class="text-sm text-on-surface-variant">Avant de faire des expériences électriques, demandez toujours à un parent ou professeur d'aider et superviser.</p>
+
+                        </div>
+
+                        <div class="bg-primary-container/20 p-4 rounded-xl">
+
+                            <h4 class="font-bold text-primary mb-2">🔌 Règle #4: Débranchez en sécurité</h4>
+
+                            <p class="text-sm text-on-surface-variant">Tirez toujours la prise de la socket, jamais le fil. Assurez-vous que les appareils sont éteints avant de débrancher.</p>
+
+                        </div>
+
+                    </div>
+
+                    `,
+
+                    ar: `
+
+                    <div class="space-y-4" dir="rtl">
+
+                        <div class="bg-error-container/20 p-4 rounded-xl border border-error/20">
+                            <h4 class="font-bold text-error mb-2">⚠️ القاعدة #1: لا تلمس الأسلاك أبدًا!</h4>
+                            <p class="text-sm text-on-surface-variant">حتى الجهد المنخفض يمكن أن يؤذيك. لا تلمس الأسلاك المكشوفة أو المكونات الكهربائية بيديك العاريتين.</p>
+
+                        </div>
+
+                        <div class="bg-secondary-container/20 p-4 rounded-xl">
+
+                            <h4 class="font-bold text-secondary mb-2">💧 القاعدة #2: الماء + الكهرباء = خطر!</h4>
+
+                            <p class="text-sm text-on-surface-variant">الماء يوصل الكهرباء. لا تستخدم الأجهزة الكهربائية بيدين مبللتين أو بالقرب من الماء. جفف يديك أولاً!</p>
+
+                        </div>
+
+                        <div class="bg-tertiary-container/20 p-4 rounded-xl">
+
+                            <h4 class="font-bold text-tertiary mb-2">👨‍👩‍👧‍👦 القاعدة #3: اطلب من الكبار!</h4>
+
+                            <p class="text-sm text-on-surface-variant">قبل القيام بأي تجارب كهربائية، اطلب دائمًا من الوالدين أو المعلم المساعدة والإشراف.</p>
+
+                        </div>
+
+                        <div class="bg-primary-container/20 p-4 rounded-xl">
+
+                            <h4 class="font-bold text-primary mb-2">🔌 القاعدة #4: افصل بأمان</h4>
+
+                            <p class="text-sm text-on-surface-variant">اسحب دائمًا القابس من المقبس، لا تسحب السلك. تأكد من إيقاف الأجهزة قبل فصلها.</p>
+
+                        </div>
+
+                    </div>
+
+                    `
+
+                },
+
+                questions: [
+
+                    { q: 'What should you do before doing electricity experiments?', options: ['Start immediately', 'Ask an adult', 'Use wet hands', 'Touch all wires'], correct: 1 },
+
+                    { q: 'Why is water dangerous with electricity?', options: ['It makes electricity flow', 'It changes color', 'It smells bad', 'It makes noise'], correct: 0 },
+
+                    { q: 'How should you unplug a device?', options: ['Pull the wire', 'Pull the plug', 'Cut the wire', 'Leave it plugged'], correct: 1 },
+
+                    { q: 'Can you touch exposed wires?', options: ['Yes, if they look safe', 'No, never', 'Only with one hand', 'Only low voltage'], correct: 1 }
+
+                ]
+
+            },
+
+            experiments: {
+
+                title: 'Simple Experiments',
+
+                title_ar: 'تجارب بسيطة',
+
+                icon: 'science',
+
+                content: {
+
+                    en: `
+
+                    <div class="space-y-4">
+
+                        <div class="bg-primary-container/20 p-4 rounded-xl">
+
+                            <h4 class="font-bold text-primary mb-2">🔋 Experiment 1: Lemon Battery</h4>
+
+                            <p class="text-sm text-on-surface-variant mb-2">Make electricity from a lemon!</p>
+
+                            <ul class="text-sm text-on-surface-variant space-y-1 list-disc list-inside">
+
+                                <li>Insert a copper coin and zinc nail into a lemon</li>
+
+                                <li>Connect them with a wire to an LED</li>
+
+                                <li>Watch it glow! (Dim, but it works!)</li>
+
+                            </ul>
+
+                        </div>
+
+                        <div class="bg-secondary-container/20 p-4 rounded-xl">
+
+                            <h4 class="font-bold text-secondary mb-2">💡 Experiment 2: Simple Circuit</h4>
+
+                            <p class="text-sm text-on-surface-variant mb-2">Build your first circuit!</p>
+
+                            <ul class="text-sm text-on-surface-variant space-y-1 list-disc list-inside">
+
+                                <li>Connect battery → switch → bulb → battery</li>
+
+                                <li>When you flip the switch, the bulb lights up!</li>
+
+                                <li>This is how all switches in your house work</li>
+
+                            </ul>
+
+                        </div>
+
+                        <div class="bg-tertiary-container/20 p-4 rounded-xl">
+
+                            <h4 class="font-bold text-tertiary mb-2">🧲 Experiment 3: Electromagnet</h4>
+
+                            <p class="text-sm text-on-surface-variant mb-2">Turn electricity into magnetism!</p>
+
+                            <ul class="text-sm text-on-surface-variant space-y-1 list-disc list-inside">
+
+                                <li>Wrap copper wire around a nail (50 turns)</li>
+
+                                <li>Connect to a battery</li>
+
+                                <li>The nail can now pick up paperclips!</li>
+
+                            </ul>
+
+                        </div>
+
+                    </div>
+
+                    `,
+
+                    ar: `
+
+                    <div class="space-y-4" dir="rtl">
+
+                        <div class="bg-primary-container/20 p-4 rounded-xl">
+
+                            <h4 class="font-bold text-primary mb-2">🔋 التجربة 1: بطارية الليمون</h4>
+
+                            <p class="text-sm text-on-surface-variant mb-2">اصنع كهرباء من ليمونة!</p>
+
+                            <ul class="text-sm text-on-surface-variant space-y-1 list-disc list-inside">
+
+                                <li>أدخل عملة نحاسية ومسمار زنك في الليمون</li>
+
+                                <li>وصلهما بسلك إلى LED</li>
+
+                                <li>شاهده يتوهج! (خافت، لكنه يعمل!)</li>
+
+                            </ul>
+
+                        </div>
+
+                        <div class="bg-secondary-container/20 p-4 rounded-xl">
+
+                            <h4 class="font-bold text-secondary mb-2">💡 التجربة 2: دائرة بسيطة</h4>
+
+                            <p class="text-sm text-on-surface-variant mb-2">ابنِ أول دائرة لك!</p>
+
+                            <ul class="text-sm text-on-surface-variant space-y-1 list-disc list-inside">
+
+                                <li>وصل بطارية ← مفتاح ← مصباح ← بطارية</li>
+
+                                <li>عندما تقلب المفتاح، يضيء المصباح!</li>
+
+                                <li>هكذا تعمل جميع المفاتيح في منزلك</li>
+
+                            </ul>
+
+                        </div>
+
+                        <div class="bg-tertiary-container/20 p-4 rounded-xl">
+
+                            <h4 class="font-bold text-tertiary mb-2">🧲 التجربة 3: مغناطيس كهربائي</h4>
+
+                            <p class="text-sm text-on-surface-variant mb-2">حول الكهرباء إلى مغناطيسية!</p>
+
+                            <ul class="text-sm text-on-surface-variant space-y-1 list-disc list-inside">
+
+                                <li>لف سلك نحاسي حول مسمار (50 لفة)</li>
+
+                                <li>وصله ببطارية</li>
+
+                                <li>يمكن للمسمار الآن التقاط مشابك الورق!</li>
+
+                            </ul>
+
+                        </div>
+
+                    </div>
+
+                    `
+
+                },
+
+                questions: [
+
+                    { q: 'What do you need for a lemon battery?', options: ['Just a lemon', 'Copper and zinc', 'Only water', 'Salt and sugar'], correct: 1 },
+
+                    { q: 'What happens when you close a switch in a circuit?', options: ['The light turns on', 'The battery dies', 'Nothing happens', 'The wire gets hot'], correct: 0 },
+
+                    { q: 'What does an electromagnet need?', options: ['Just a nail', 'Wire wrapped around a nail', 'Only a battery', 'A magnet'], correct: 1 },
+
+                    { q: 'Which way does electricity flow in a circuit?', options: ['From + to -', 'From - to +', 'Both ways', 'It does not flow'], correct: 0 }
+
+                ]
+
+            },
+
+            logic: {
+
+                title: 'Logic Gates',
+
+                title_ar: 'البوابات المنطقية',
+
+                icon: 'hub',
+
+                content: {
+
+                    en: `
+
+                    <div class="space-y-4">
+
+                        <p class="text-sm text-on-surface-variant">Logic gates are the building blocks of computers. They make decisions using ON (1) and OFF (0) signals.</p>
+
+                        
+
+                        <div class="bg-primary-container/20 p-4 rounded-xl">
+
+                            <h4 class="font-bold text-primary mb-2">AND Gate</h4>
+
+                            <p class="text-sm text-on-surface-variant mb-2">Output is ON only if BOTH inputs are ON</p>
+
+                            <div class="grid grid-cols-3 gap-2 text-xs font-mono bg-surface-container-high p-2 rounded">
+
+                                <div class="text-center font-bold">Input A</div>
+
+                                <div class="text-center font-bold">Input B</div>
+
+                                <div class="text-center font-bold">Output</div>
+
+                                <div class="text-center">0</div><div class="text-center">0</div><div class="text-center text-error">0</div>
+
+                                <div class="text-center">0</div><div class="text-center">1</div><div class="text-center text-error">0</div>
+
+                                <div class="text-center">1</div><div class="text-center">0</div><div class="text-center text-error">0</div>
+
+                                <div class="text-center">1</div><div class="text-center">1</div><div class="text-center text-primary">1</div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="bg-secondary-container/20 p-4 rounded-xl">
+
+                            <h4 class="font-bold text-secondary mb-2">OR Gate</h4>
+
+                            <p class="text-sm text-on-surface-variant mb-2">Output is ON if AT LEAST ONE input is ON</p>
+
+                            <div class="grid grid-cols-3 gap-2 text-xs font-mono bg-surface-container-high p-2 rounded">
+
+                                <div class="text-center font-bold">Input A</div>
+
+                                <div class="text-center font-bold">Input B</div>
+
+                                <div class="text-center font-bold">Output</div>
+
+                                <div class="text-center">0</div><div class="text-center">0</div><div class="text-center text-error">0</div>
+
+                                <div class="text-center">0</div><div class="text-center">1</div><div class="text-center text-primary">1</div>
+
+                                <div class="text-center">1</div><div class="text-center">0</div><div class="text-center text-primary">1</div>
+
+                                <div class="text-center">1</div><div class="text-center">1</div><div class="text-center text-primary">1</div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="bg-tertiary-container/20 p-4 rounded-xl">
+
+                            <h4 class="font-bold text-tertiary mb-2">NAND Gate (NOT AND)</h4>
+
+                            <p class="text-sm text-on-surface-variant mb-2">Opposite of AND - Output is OFF only when BOTH inputs are ON</p>
+
+                            <div class="grid grid-cols-3 gap-2 text-xs font-mono bg-surface-container-high p-2 rounded">
+
+                                <div class="text-center font-bold">Input A</div>
+
+                                <div class="text-center font-bold">Input B</div>
+
+                                <div class="text-center font-bold">Output</div>
+
+                                <div class="text-center">0</div><div class="text-center">0</div><div class="text-center text-primary">1</div>
+
+                                <div class="text-center">0</div><div class="text-center">1</div><div class="text-center text-primary">1</div>
+
+                                <div class="text-center">1</div><div class="text-center">0</div><div class="text-center text-primary">1</div>
+
+                                <div class="text-center">1</div><div class="text-center">1</div><div class="text-center text-error">0</div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="bg-error-container/20 p-4 rounded-xl">
+
+                            <h4 class="font-bold text-error mb-2">NOR Gate (NOT OR)</h4>
+
+                            <p class="text-sm text-on-surface-variant mb-2">Opposite of OR - Output is ON only when BOTH inputs are OFF</p>
+
+                            <div class="grid grid-cols-3 gap-2 text-xs font-mono bg-surface-container-high p-2 rounded">
+
+                                <div class="text-center font-bold">Input A</div>
+
+                                <div class="text-center font-bold">Input B</div>
+
+                                <div class="text-center font-bold">Output</div>
+
+                                <div class="text-center">0</div><div class="text-center">0</div><div class="text-center text-primary">1</div>
+
+                                <div class="text-center">0</div><div class="text-center">1</div><div class="text-center text-error">0</div>
+
+                                <div class="text-center">1</div><div class="text-center">0</div><div class="text-center text-error">0</div>
+
+                                <div class="text-center">1</div><div class="text-center">1</div><div class="text-center text-error">0</div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    `,
+
+                    ar: `
+
+                    <div class="space-y-4" dir="rtl">
+
+                        <p class="text-sm text-on-surface-variant">البوابات المنطقية هي اللبنات الأساسية للحواسيب. إتخاذ القرارات باستخدام إشارات التشغيل (1) والإيقاف (0).</p>
+
+                        
+
+                        <div class="bg-primary-container/20 p-4 rounded-xl">
+
+                            <h4 class="font-bold text-primary mb-2">بوابة AND</h4>
+
+                            <p class="text-sm text-on-surface-variant mb-2">المخرج يكون شغالاً فقط إذا كان كلا المدخلين شغالين</p>
+
+                            <div class="grid grid-cols-3 gap-2 text-xs font-mono bg-surface-container-high p-2 rounded">
+
+                                <div class="text-center font-bold">المدخل أ</div>
+
+                                <div class="text-center font-bold">المدخل ب</div>
+
+                                <div class="text-center font-bold">المخرج</div>
+
+                                <div class="text-center">0</div><div class="text-center">0</div><div class="text-center text-error">0</div>
+
+                                <div class="text-center">0</div><div class="text-center">1</div><div class="text-center text-error">0</div>
+
+                                <div class="text-center">1</div><div class="text-center">0</div><div class="text-center text-error">0</div>
+
+                                <div class="text-center">1</div><div class="text-center">1</div><div class="text-center text-primary">1</div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="bg-secondary-container/20 p-4 rounded-xl">
+
+                            <h4 class="font-bold text-secondary mb-2">بوابة OR</h4>
+
+                            <p class="text-sm text-on-surface-variant mb-2">المخرج شغال إذا كان على الأقل مدخل واحد شغال</p>
+
+                            <div class="grid grid-cols-3 gap-2 text-xs font-mono bg-surface-container-high p-2 rounded">
+
+                                <div class="text-center font-bold">المدخل أ</div>
+
+                                <div class="text-center font-bold">المدخل ب</div>
+
+                                <div class="text-center font-bold">المخرج</div>
+
+                                <div class="text-center">0</div><div class="text-center">0</div><div class="text-center text-error">0</div>
+
+                                <div class="text-center">0</div><div class="text-center">1</div><div class="text-center text-primary">1</div>
+
+                                <div class="text-center">1</div><div class="text-center">0</div><div class="text-center text-primary">1</div>
+
+                                <div class="text-center">1</div><div class="text-center">1</div><div class="text-center text-primary">1</div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="bg-tertiary-container/20 p-4 rounded-xl">
+
+                            <h4 class="font-bold text-tertiary mb-2">بوابة NAND (عكس AND)</h4>
+
+                            <p class="text-sm text-on-surface-variant mb-2">عكس AND - المخرج متوقف فقط عندما يكون كلا المدخلين شغالين</p>
+
+                            <div class="grid grid-cols-3 gap-2 text-xs font-mono bg-surface-container-high p-2 rounded">
+
+                                <div class="text-center font-bold">المدخل أ</div>
+
+                                <div class="text-center font-bold">المدخل ب</div>
+
+                                <div class="text-center font-bold">المخرج</div>
+
+                                <div class="text-center">0</div><div class="text-center">0</div><div class="text-center text-primary">1</div>
+
+                                <div class="text-center">0</div><div class="text-center">1</div><div class="text-center text-primary">1</div>
+
+                                <div class="text-center">1</div><div class="text-center">0</div><div class="text-center text-primary">1</div>
+
+                                <div class="text-center">1</div><div class="text-center">1</div><div class="text-center text-error">0</div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="bg-error-container/20 p-4 rounded-xl">
+
+                            <h4 class="font-bold text-error mb-2">بوابة NOR (عكس OR)</h4>
+
+                            <p class="text-sm text-on-surface-variant mb-2">عكس OR - المخرج شغال فقط عندما يكون كلا المدخلين متوقفين</p>
+
+                            <div class="grid grid-cols-3 gap-2 text-xs font-mono bg-surface-container-high p-2 rounded">
+
+                                <div class="text-center font-bold">المدخل أ</div>
+
+                                <div class="text-center font-bold">المدخل ب</div>
+
+                                <div class="text-center font-bold">المخرج</div>
+
+                                <div class="text-center">0</div><div class="text-center">0</div><div class="text-center text-primary">1</div>
+
+                                <div class="text-center">0</div><div class="text-center">1</div><div class="text-center text-error">0</div>
+
+                                <div class="text-center">1</div><div class="text-center">0</div><div class="text-center text-error">0</div>
+
+                                <div class="text-center">1</div><div class="text-center">1</div><div class="text-center text-error">0</div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    `
+
+                },
+
+                questions: [
+
+                    { q: 'AND gate output is 1 when:', options: ['Both inputs are 1', 'One input is 1', 'No inputs are 1', 'Any input is 0'], correct: 0 },
+
+                    { q: 'OR gate output is 0 when:', options: ['Both inputs are 0', 'One input is 1', 'Both inputs are 1', 'Any input is 1'], correct: 0 },
+
+                    { q: 'NAND is the opposite of:', options: ['OR', 'AND', 'NOR', 'XOR'], correct: 1 },
+
+                    { q: 'NOR gate output is 1 when:', options: ['Both inputs are 0', 'One input is 1', 'Both inputs are 1', 'Any input is 1'], correct: 0 },
+
+                    { q: 'If inputs are 1 and 0, what is AND output?', options: ['0', '1', 'Both', 'None'], correct: 0 },
+
+                    { q: 'If inputs are 1 and 0, what is OR output?', options: ['0', '1', 'Both', 'None'], correct: 1 }
+
+                ]
+
+            },
+
+            builder: {
+
+                title: 'Circuit Builder',
+
+                title_ar: 'بناء الدوائر',
+
+                icon: 'memory',
+
+                content: {
+
+                    en: `
+
+                    <div class="space-y-4">
+
+                        <div class="bg-primary-container/20 p-4 rounded-xl">
+
+                            <h4 class="font-bold text-primary mb-2">🎯 How to Use the Circuit Builder</h4>
+
+                            <ol class="text-sm text-on-surface-variant space-y-2 list-decimal list-inside">
+
+                                <li>Drag components from the sidebar to the canvas</li>
+
+                                <li>Click on a component terminal to start a wire</li>
+
+                                <li>Click on another terminal to complete the connection</li>
+
+                                <li>Press the power button to see electricity flow!</li>
+
+                            </ol>
+
+                        </div>
+
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+
+                            <div class="bg-surface-container-high p-3 rounded-xl text-center">
+
+                                <span class="text-2xl">🔋</span>
+
+                                <p class="text-xs font-bold mt-1">Battery</p>
+
+                                <p class="text-[10px] text-on-surface-variant">Power source</p>
+
+                            </div>
+
+                            <div class="bg-surface-container-high p-3 rounded-xl text-center">
+
+                                <span class="text-2xl">💡</span>
+
+                                <p class="text-xs font-bold mt-1">LED</p>
+
+                                <p class="text-[10px] text-on-surface-variant">Light output</p>
+
+                            </div>
+
+                            <div class="bg-surface-container-high p-3 rounded-xl text-center">
+
+                                <span class="text-2xl">🔘</span>
+
+                                <p class="text-xs font-bold mt-1">Switch</p>
+
+                                <p class="text-[10px] text-on-surface-variant">Open/close</p>
+
+                            </div>
+
+                            <div class="bg-surface-container-high p-3 rounded-xl text-center">
+
+                                <span class="text-2xl">🏃</span>
+
+                                <p class="text-xs font-bold mt-1">Resistor</p>
+
+                                <p class="text-[10px] text-on-surface-variant">Limits current</p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="bg-secondary-container/20 p-4 rounded-xl">
+
+                            <h4 class="font-bold text-secondary mb-2">🎮 Challenges</h4>
+
+                            <ul class="text-sm text-on-surface-variant space-y-1">
+
+                                <li>✅ <strong>Level 1:</strong> Light up one LED</li>
+
+                                <li>✅ <strong>Level 2:</strong> Add a switch to control the LED</li>
+
+                                <li>✅ <strong>Level 3:</strong> Connect two LEDs in parallel</li>
+
+                                <li>✅ <strong>Level 4:</strong> Build a circuit with a resistor</li>
+
+                            </ul>
+
+                        </div>
+
+                        <div class="text-center p-4">
+
+                            <button class="px-8 py-3 bg-primary text-white font-bold rounded-full hover:bg-primary-container hover:text-primary transition-colors">
+
+                                🚀 Launch Circuit Builder
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    `,
+
+                    ar: `
+
+                    <div class="space-y-4" dir="rtl">
+
+                        <div class="bg-primary-container/20 p-4 rounded-xl">
+
+                            <h4 class="font-bold text-primary mb-2">🎯 كيفية استخدام منشئ الدوائر</h4>
+
+                            <ol class="text-sm text-on-surface-variant space-y-2 list-decimal list-inside">
+
+                                <li>اسحب المكونات من الشريط الجانبي إلى اللوحة</li>
+
+                                <li>انقر على طرف المكون لبدء سلك</li>
+
+                                <li>انقر على طرف آخر لإكمال التوصيلة</li>
+
+                                <li>اضغط على زر الطاقة لرؤية تدفق الكهرباء!</li>
+
+                            </ol>
+
+                        </div>
+
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+
+                            <div class="bg-surface-container-high p-3 rounded-xl text-center">
+
+                                <span class="text-2xl">🔋</span>
+
+                                <p class="text-xs font-bold mt-1">البطارية</p>
+
+                                <p class="text-[10px] text-on-surface-variant">مصدر الطاقة</p>
+
+                            </div>
+
+                            <div class="bg-surface-container-high p-3 rounded-xl text-center">
+
+                                <span class="text-2xl">💡</span>
+
+                                <p class="text-xs font-bold mt-1">LED</p>
+
+                                <p class="text-[10px] text-on-surface-variant">مخرج الضوء</p>
+
+                            </div>
+
+                            <div class="bg-surface-container-high p-3 rounded-xl text-center">
+
+                                <span class="text-2xl">🔘</span>
+
+                                <p class="text-xs font-bold mt-1">المفتاح</p>
+
+                                <p class="text-[10px] text-on-surface-variant">فتح/إغلاق</p>
+
+                            </div>
+
+                            <div class="bg-surface-container-high p-3 rounded-xl text-center">
+
+                                <span class="text-2xl">🏃</span>
+
+                                <p class="text-xs font-bold mt-1">المقاومة</p>
+
+                                <p class="text-[10px] text-on-surface-variant">تحد التيار</p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="bg-secondary-container/20 p-4 rounded-xl">
+
+                            <h4 class="font-bold text-secondary mb-2">🎮 التحديات</h4>
+
+                            <ul class="text-sm text-on-surface-variant space-y-1">
+
+                                <li>✅ <strong>المستوى 1:</strong> أضئ LED واحد</li>
+
+                                <li>✅ <strong>المستوى 2:</strong> أضف مفتاحاً للتحكم في LED</li>
+
+                                <li>✅ <strong>المستوى 3:</strong> وصل LEDين على التوازي</li>
+
+                                <li>✅ <strong>المستوى 4:</strong> ابنِ دائرة بمقاومة</li>
+
+                            </ul>
+
+                        </div>
+
+                        <div class="text-center p-4">
+
+                            <button class="px-8 py-3 bg-primary text-white font-bold rounded-full hover:bg-primary-container hover:text-primary transition-colors">
+
+                                🚀 ابدأ منشئ الدوائر
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    `
+
+                },
+
+                questions: [
+
+                    { q: 'What does a battery do in a circuit?', options: ['Stores energy', 'Provides power', 'Blocks current', 'Makes light'], correct: 1 },
+
+                    { q: 'What happens if you don\'t use a resistor with an LED?', options: ['LED gets brighter', 'LED may burn out', 'Nothing happens', 'Battery lasts longer'], correct: 1 },
+
+                    { q: 'What does a switch do?', options: ['Makes power', 'Controls flow', 'Stores energy', 'Changes color'], correct: 1 },
+
+                    { q: 'LED stands for:', options: ['Light Emitting Diode', 'Little Electric Dot', 'Light Energy Device', 'Low Electricity Drain'], correct: 0 }
+
+                ]
+
+            }
+
+        };
+
+
+
+        let currentTopic = null;
+
+        let currentQuestions = [];
+
+        let userAnswers = [];
+
+        let isLoadingQuiz = false;
+
+
+
+        const openTopicModal = async (topicId) => {
+
+            const topic = topicData[topicId];
+
+            if (!topic) return;
+
+            
+
+            currentTopic = topicId;
+
+            
+
+            // Determine language for content
+
+            let contentLang = 'en';
+
+            let title = topic.title;
+
+            
+
+            if (currentLang === 'fr') {
+
+                contentLang = 'fr';
+
+                title = topic.title_fr || topic.title;
+
+            } else if (currentLang === 'ar' || currentLang === 'tn') {
+
+                contentLang = 'ar';
+
+                title = topic.title_ar || topic.title;
+
+            }
+
+            
+
+            // Update modal header with translated title
+
+            document.getElementById('modal-title').textContent = title;
+
+            document.getElementById('modal-icon').textContent = topic.icon;
+
+            
+
+            // Update content with correct language
+
+            const content = topic.content[contentLang] || topic.content.en;
+
+            document.getElementById('modal-content').innerHTML = content;
+
+            
+
+            // Show modal immediately with loading state
+
+            document.getElementById('topic-modal').classList.remove('hidden');
+
+            document.body.style.overflow = 'hidden';
+
+            
+
+            // Show loading for quiz
+
+            const quizContainer = document.getElementById('quiz-questions');
+
+            quizContainer.innerHTML = `
+
+                <div class="flex items-center justify-center p-8">
+
+                    <div class="flex items-center gap-3 text-on-surface-variant">
+
+                        <span class="material-symbols-outlined animate-spin">refresh</span>
+
+                        <span class="text-sm font-bold">AI is generating unique questions for you...</span>
+
+                    </div>
+
+                </div>
+
+            `;
+
+            document.getElementById('quiz-results').classList.add('hidden');
+
+            document.getElementById('submit-quiz-btn').classList.add('hidden');
+
+            
+
+            isLoadingQuiz = true;
+
+            
+
+            try {
+
+                console.log(`[QUIZ] Fetching questions for topic: ${topicId}`);
+
+                
+
+                // Fetch dynamic quiz questions from API with current language
+
+                const response = await fetch('/quiz/generate', {
+
+                    method: 'POST',
+
+                    headers: { 'Content-Type': 'application/json' },
+
+                    body: JSON.stringify({
+
+                        topic: topicId,
+
+                        difficulty: 'easy',
+
+                        count: 4,
+
+                        language: currentLang === 'tn' ? 'ar' : currentLang  // Map TN to AR for Arabic
+
+                    })
+
+                });
+
+                
+
+                const data = await response.json();
+
+                console.log('[QUIZ] Response:', data);
+
+                
+
+                if (data.questions && data.questions.length > 0) {
+
+                    currentQuestions = data.questions;
+
+                    userAnswers = new Array(currentQuestions.length).fill(-1);
+
+                    
+
+                    // Render dynamic quiz questions
+
+                    quizContainer.innerHTML = currentQuestions.map((q, idx) => `
+
+                        <div class="bg-surface-container-high p-4 rounded-xl">
+
+                            <p class="font-bold text-on-surface mb-3">${idx + 1}. ${q.q}</p>
+
+                            <div class="space-y-2">
+
+                                ${q.options.map((opt, optIdx) => `
+
+                                    <label class="flex items-center gap-3 p-2 rounded-lg hover:bg-surface-container-lowest cursor-pointer transition-colors">
+
+                                        <input type="radio" name="q${idx}" value="${optIdx}" 
+
+                                            onchange="selectAnswer(${idx}, ${optIdx})"
+
+                                            class="w-4 h-4 text-primary border-2 border-outline-variant focus:ring-primary">
+
+                                        <span class="text-sm text-on-surface-variant">${opt}</span>
+
+                                    </label>
+
+                                `).join('')}
+
+                            </div>
+
+                        </div>
+
+                    `).join('');
+
+                    
+
+                    // Show appropriate badge based on generation status
+
+                    if (data.ai_generated) {
+
+                        quizContainer.insertAdjacentHTML('afterbegin', `
+
+                            <div class="flex items-center gap-2 mb-4 px-3 py-1 bg-green-100 dark:bg-green-900/30 rounded-full w-fit animate-pulse">
+
+                                <span class="material-symbols-outlined text-green-600 text-sm">auto_awesome</span>
+
+                                <span class="text-xs font-bold text-green-600">AI-Generated • Fresh & Unique!</span>
+
+                            </div>
+
+                        `);
+
+                    } else if (data.fallback) {
+
+                        quizContainer.insertAdjacentHTML('afterbegin', `
+
+                            <div class="flex items-center gap-2 mb-4 px-3 py-1 bg-amber-100 dark:bg-amber-900/30 rounded-full w-fit">
+
+                                <span class="material-symbols-outlined text-amber-600 text-sm">storage</span>
+
+                                <span class="text-xs font-bold text-amber-600">Cached Questions (AI temporarily unavailable)</span>
+
+                            </div>
+
+                        `);
+
+                    }
+
+                    
+
+                    document.getElementById('submit-quiz-btn').classList.remove('hidden');
+
+                } else {
+
+                    throw new Error('No questions received');
+
+                }
+
+            } catch (error) {
+
+                console.error('Failed to load quiz:', error);
+
+                // Fallback to static questions from topicData
+
+                currentQuestions = topic.questions || [];
+
+                userAnswers = new Array(currentQuestions.length).fill(-1);
+
+                
+
+                quizContainer.innerHTML = currentQuestions.map((q, idx) => `
+
+                    <div class="bg-surface-container-high p-4 rounded-xl">
+
+                        <p class="font-bold text-on-surface mb-3">${idx + 1}. ${q.q}</p>
+
+                        <div class="space-y-2">
+
+                            ${q.options.map((opt, optIdx) => `
+
+                                <label class="flex items-center gap-3 p-2 rounded-lg hover:bg-surface-container-lowest cursor-pointer transition-colors">
+
+                                    <input type="radio" name="q${idx}" value="${optIdx}" 
+
+                                        onchange="selectAnswer(${idx}, ${optIdx})"
+
+                                        class="w-4 h-4 text-primary border-2 border-outline-variant focus:ring-primary">
+
+                                    <span class="text-sm text-on-surface-variant">${opt}</span>
+
+                                </label>
+
+                            `).join('')}
+
+                        </div>
+
+                    </div>
+
+                `).join('');
+
+                
+                quizContainer.insertAdjacentHTML('afterbegin', `
+
+                    <div class="flex items-center gap-2 mb-4 px-3 py-1 bg-amber-100 dark:bg-amber-900/30 rounded-full w-fit">
+
+                        <span class="material-symbols-outlined text-amber-600 text-sm">storage</span>
+
+                        <span class="text-xs font-bold text-amber-600">Cached Questions (AI temporarily unavailable)</span>
+
+                    </div>
+
+                `);
+
+                
+
+                document.getElementById('submit-quiz-btn').classList.remove('hidden');
+
+            } finally {
+
+                isLoadingQuiz = false;
+
+            }
+
+        };
+
+
+
+        const closeTopicModal = () => {
+
+            document.getElementById('topic-modal').classList.add('hidden');
+
+            document.body.style.overflow = '';
+
+            currentTopic = null;
+
+            userAnswers = [];
+
+        };
+
+
+
+        const selectAnswer = (questionIdx, answerIdx) => {
+
+            userAnswers[questionIdx] = answerIdx;
+
+        };
+
+
+
+        const submitQuiz = () => {
+
+            if (!currentTopic || currentQuestions.length === 0) return;
+
+            
+
+            let correct = 0;
+
+            
+
+            userAnswers.forEach((answer, idx) => {
+
+                if (answer === currentQuestions[idx].correct) {
+
+                    correct++;
+
+                }
+
+            });
+
+            
+
+            const score = Math.round((correct / currentQuestions.length) * 100);
+
+            
+
+            // Show results
+
+            const resultsDiv = document.getElementById('quiz-results');
+
+            const scoreText = document.getElementById('quiz-score');
+
+            
+
+            let emoji = score >= 80 ? '🎉' : score >= 60 ? '👍' : '💪';
+
+            let message = score >= 80 ? 'Excellent! You mastered this topic!' : 
+
+                           score >= 60 ? 'Good job! Keep learning!' : 'Keep practicing! You\'ll get better!';
+
+            
+
+            scoreText.innerHTML = `${emoji} Score: ${correct}/${currentQuestions.length} (${score}%) - ${message}`;
+
+            resultsDiv.classList.remove('hidden');
+
+            
+
+            // Update learning progress
+
+            updateTopicProgress(currentTopic, score);
+
+            
+
+            // Hide submit button
+
+            document.getElementById('submit-quiz-btn').classList.add('hidden');
+
+            
+
+            // Highlight correct/incorrect answers
+
+            currentQuestions.forEach((q, idx) => {
+
+                const selected = userAnswers[idx];
+
+                const radios = document.querySelectorAll(`input[name="q${idx}"]`);
+
+                
+
+                radios.forEach((radio, optIdx) => {
+
+                    const label = radio.parentElement;
+
+                    
+
+                    if (optIdx === q.correct) {
+
+                        label.classList.add('bg-green-100', 'border-green-300');
+
+                        label.innerHTML += ' <span class="text-green-600 font-bold">✓ Correct</span>';
+
+                    } else if (optIdx === selected && selected !== q.correct) {
+
+                        label.classList.add('bg-red-100', 'border-red-300');
+
+                        label.innerHTML += ' <span class="text-red-600 font-bold">✗ Wrong</span>';
+
+                    }
+
+                    
+
+                    radio.disabled = true;
+
+                });
+
+            });
+
+        };
+
+
+
+        const regenerateQuiz = async () => {
+
+            if (!currentTopic || isLoadingQuiz) return;
+
+            
+
+            // Clear previous answers and results
+
+            userAnswers = [];
+
+            document.getElementById('quiz-results').classList.add('hidden');
+
+            
+
+            // Show loading
+
+            const quizContainer = document.getElementById('quiz-questions');
+
+            quizContainer.innerHTML = `
+
+                <div class="flex items-center justify-center p-8">
+
+                    <div class="flex items-center gap-3 text-on-surface-variant">
+
+                        <span class="material-symbols-outlined animate-spin">refresh</span>
+
+                        <span class="text-sm font-bold">Generating new questions...</span>
+
+                    </div>
+
+                </div>
+
+            `;
+
+            
+
+            document.getElementById('submit-quiz-btn').classList.add('hidden');
+
+            document.getElementById('regenerate-btn').disabled = true;
+
+            
+
+            isLoadingQuiz = true;
+
+            
+
+            try {
+
+                // Add timestamp to ensure fresh questions
+
+                const timestamp = Date.now();
+
+                
+
+                const response = await fetch('/quiz/generate', {
+
+                    method: 'POST',
+
+                    headers: { 'Content-Type': 'application/json' },
+
+                    body: JSON.stringify({
+
+                        topic: currentTopic,
+
+                        difficulty: 'easy',
+
+                        count: 4,
+
+                        language: currentLang === 'tn' ? 'ar' : currentLang  // Map TN to AR for Arabic
+
+                    })
+
+                });
+
+                
+
+                const data = await response.json();
+
+                
+
+                if (data.questions && data.questions.length > 0) {
+
+                    currentQuestions = data.questions;
+
+                    userAnswers = new Array(currentQuestions.length).fill(-1);
+
+                    
+
+                    // Render new questions
+
+                    quizContainer.innerHTML = currentQuestions.map((q, idx) => `
+
+                        <div class="bg-surface-container-high p-4 rounded-xl">
+
+                            <p class="font-bold text-on-surface mb-3">${idx + 1}. ${q.q}</p>
+
+                            <div class="space-y-2">
+
+                                ${q.options.map((opt, optIdx) => `
+
+                                    <label class="flex items-center gap-3 p-2 rounded-lg hover:bg-surface-container-lowest cursor-pointer transition-colors">
+
+                                        <input type="radio" name="q${idx}" value="${optIdx}" 
+
+                                            onchange="selectAnswer(${idx}, ${optIdx})"
+
+                                            class="w-4 h-4 text-primary border-2 border-outline-variant focus:ring-primary">
+
+                                        <span class="text-sm text-on-surface-variant">${opt}</span>
+
+                                    </label>
+
+                                `).join('')}
+
+                            </div>
+
+                        </div>
+
+                    `).join('');
+
+                    
+
+                    // Add fresh badge based on generation status
+
+                    if (data.ai_generated) {
+
+                        quizContainer.insertAdjacentHTML('afterbegin', `
+
+                            <div class="flex items-center gap-2 mb-4 px-3 py-1 bg-green-100 dark:bg-green-900/30 rounded-full w-fit animate-pulse">
+
+                                <span class="material-symbols-outlined text-green-600 text-sm">auto_awesome</span>
+
+                                <span class="text-xs font-bold text-green-600">Fresh AI Questions • ${new Date().toLocaleTimeString()}</span>
+
+                            </div>
+
+                        `);
+
+                    } else {
+
+                        quizContainer.insertAdjacentHTML('afterbegin', `
+
+                            <div class="flex items-center gap-2 mb-4 px-3 py-1 bg-amber-100 dark:bg-amber-900/30 rounded-full w-fit">
+
+                                <span class="material-symbols-outlined text-amber-600 text-sm">storage</span>
+
+                                <span class="text-xs font-bold text-amber-600">Cached Questions (AI temporarily unavailable)</span>
+
+                            </div>
+
+                        `);
+
+                    }
+
+                    
+
+                    document.getElementById('submit-quiz-btn').classList.remove('hidden');
+
+                }
+
+            } catch (error) {
+
+                console.error('Failed to regenerate quiz:', error);
+
+                // Keep existing questions on error
+
+            } finally {
+
+                isLoadingQuiz = false;
+
+                document.getElementById('regenerate-btn').disabled = false;
+
+            }
+
+        };
+
+
+
         // ========== LOCAL STORAGE FUNCTIONS ==========
 
         const STORAGE_KEYS = {
@@ -1532,7 +4361,261 @@
 
             COMM_HISTORY: 'guardian_comm_history',
 
-            REPORT_METRICS: 'guardian_metrics'
+            REPORT_METRICS: 'guardian_metrics',
+
+            LEARNING_PROGRESS: 'guardian_learning_progress'
+
+        };
+
+
+
+        // ========== LEARNING PROGRESS FUNCTIONS ==========
+
+        const loadLearningProgress = () => {
+
+            try {
+
+                const stored = localStorage.getItem(STORAGE_KEYS.LEARNING_PROGRESS);
+
+                if (stored) {
+
+                    return JSON.parse(stored);
+
+                }
+
+            } catch (e) {
+
+                console.error('Failed to load learning progress:', e);
+
+            }
+
+            // Default progress
+
+            return {
+
+                basic: { score: 0, attempts: 0, bestScore: 0 },
+
+                safety: { score: 0, attempts: 0, bestScore: 0 },
+
+                experiments: { score: 0, attempts: 0, bestScore: 0 },
+
+                logic: { score: 0, attempts: 0, bestScore: 0 },
+
+                builder: { score: 0, attempts: 0, bestScore: 0 }
+
+            };
+
+        };
+
+
+
+        const saveLearningProgress = (progress) => {
+
+            try {
+
+                localStorage.setItem(STORAGE_KEYS.LEARNING_PROGRESS, JSON.stringify(progress));
+
+            } catch (e) {
+
+                console.error('Failed to save learning progress:', e);
+
+            }
+
+        };
+
+
+
+        const updateTopicProgress = (topicId, score) => {
+
+            const progress = loadLearningProgress();
+
+            
+
+            if (progress[topicId]) {
+
+                progress[topicId].attempts += 1;
+
+                progress[topicId].score = score;
+
+                
+
+                // Update best score if current is better
+
+                if (score > progress[topicId].bestScore) {
+
+                    progress[topicId].bestScore = score;
+
+                }
+
+                
+
+                saveLearningProgress(progress);
+
+                updateProgressUI();
+
+            }
+
+        };
+
+
+
+        const updateProgressUI = () => {
+
+            const progress = loadLearningProgress();
+
+            
+
+            const topics = ['basic', 'safety', 'experiments', 'logic'];
+
+            const colors = {
+
+                basic: 'primary',
+
+                safety: 'secondary',
+
+                experiments: 'tertiary',
+
+                logic: 'error'
+
+            };
+
+            
+
+            topics.forEach(topic => {
+
+                const card = document.getElementById(`progress-${topic}`);
+
+                if (!card) return;
+
+                
+
+                const data = progress[topic];
+
+                const percentEl = card.querySelector('.progress-percent');
+
+                const barEl = card.querySelector('.progress-bar');
+
+                const statusEl = card.querySelector('.progress-status');
+
+                
+
+                // Calculate progress based on best score (0-100%)
+
+                const percent = data.bestScore;
+
+                
+
+                // Update percentage text
+
+                if (percentEl) percentEl.textContent = `${percent}%`;
+
+                
+
+                // Update progress bar width
+
+                if (barEl) barEl.style.width = `${percent}%`;
+
+                
+
+                // Update status text based on progress
+
+                if (statusEl) {
+
+                    if (data.attempts === 0) {
+
+                        statusEl.textContent = 'Start learning!';
+
+                    } else if (percent < 60) {
+
+                        statusEl.textContent = `Attempt ${data.attempts} • Keep practicing!`;
+
+                    } else if (percent < 80) {
+
+                        statusEl.textContent = `Attempt ${data.attempts} • Good progress!`;
+
+                    } else {
+
+                        statusEl.textContent = `Attempt ${data.attempts} • Mastered! 🎉`;
+
+                    }
+
+                }
+
+            });
+
+            
+
+            // Calculate and update average score
+
+            const allTopics = ['basic', 'safety', 'experiments', 'logic', 'builder'];
+
+            let totalScore = 0;
+
+            let completedTopics = 0;
+
+            
+
+            allTopics.forEach(topic => {
+
+                if (progress[topic] && progress[topic].bestScore > 0) {
+
+                    totalScore += progress[topic].bestScore;
+
+                    completedTopics++;
+
+                }
+
+            });
+
+            
+
+            // Update header average display as /20
+
+            const headerAverageEl = document.getElementById('header-average');
+
+            
+
+            if (completedTopics > 0) {
+
+                const average = Math.round(totalScore / allTopics.length);  // Average across all 5 topics (0-100)
+
+                const scoreOutOf20 = Math.round((average / 100) * 20 * 10) / 10;  // Convert to /20 with 1 decimal
+
+                
+
+                if (headerAverageEl) {
+
+                    headerAverageEl.textContent = `${scoreOutOf20}/20`;
+
+                }
+
+            } else {
+
+                if (headerAverageEl) headerAverageEl.textContent = '0/20';
+
+            }
+
+        };
+
+
+
+        // Initialize progress on load
+
+        updateProgressUI();
+
+
+
+        const resetLearningProgress = () => {
+
+            if (confirm('Are you sure you want to reset all learning progress? This cannot be undone.')) {
+
+                localStorage.removeItem(STORAGE_KEYS.LEARNING_PROGRESS);
+
+                updateProgressUI();
+
+                alert('Progress reset successfully!');
+
+            }
 
         };
 
@@ -1717,6 +4800,8 @@
         navHistory.addEventListener('click', (e) => { e.preventDefault(); switchView('history'); });
 
         navBreadboard.addEventListener('click', (e) => { e.preventDefault(); switchView('breadboard'); });
+
+        navEducation.addEventListener('click', (e) => { e.preventDefault(); switchView('education'); });
 
 
 
